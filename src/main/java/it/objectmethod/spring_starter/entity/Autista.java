@@ -7,6 +7,7 @@ import java.util.Date;
 import java.util.List;
 
 @Entity
+@Table(name = "autista")
 public class Autista {
 
     @Column(name = "autista_ID")

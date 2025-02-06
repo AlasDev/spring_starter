@@ -41,7 +41,7 @@ public class AutistaMapper implements BasicMethodMapping<AutistaDTO, Autista> {
 
     @Override
     public List<Autista> mapToEntities(List<AutistaDTO> autistaDTOS) {
-        List<Autista> autistas = new ArrayList<Autista>();
+        List<Autista> autistas = new ArrayList<>(autistaDTOS.size());
         for (AutistaDTO autistaDTO : autistaDTOS) {
             autistas.add(mapToEntity(autistaDTO));
         }
