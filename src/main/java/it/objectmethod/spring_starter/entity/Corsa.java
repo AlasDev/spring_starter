@@ -1,16 +1,23 @@
 package it.objectmethod.spring_starter.entity;
 
 import jakarta.persistence.*;
-import org.springframework.format.annotation.DateTimeFormat;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
-import java.util.Date;
+import java.time.OffsetDateTime;
 
+@Data
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 @Entity
+@Table(name = "corsa")
 public class Corsa {
     @Column(name = "corsa_ID")
-    @Id
-    @GeneratedValue
-    private Integer id;
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     @Column(name = "stato_corsa")
     private String statoCorsa;
@@ -28,16 +35,13 @@ public class Corsa {
     private String indirizzoFine;
 
     @Column(name = "data_prenotazione")
-    @DateTimeFormat(pattern = "yyyy-MM-dd hh:mm:ss")
-    private Date dataPrenotazione;
+    private OffsetDateTime dataPrenotazione;
 
     @Column(name = "data_inizio")
-    @DateTimeFormat(pattern = "yyyy-MM-dd hh:mm:ss")
-    private Date dataInizio;
+    private OffsetDateTime dataInizio;
 
     @Column(name = "data_fine")
-    @DateTimeFormat(pattern = "yyyy-MM-dd hh:mm:ss")
-    private Date dataFine;
+    private OffsetDateTime dataFine;
 
     @ManyToOne
     @JoinColumn(name = "autista_ID", nullable = false)
@@ -47,107 +51,4 @@ public class Corsa {
     @ManyToOne
     @JoinColumn(name = "cliente_ID", nullable = false)
     private Cliente cliente;
-
-    public Corsa() {}
-
-    public Corsa(String statoCorsa, Double distanzaPercorsa, Double costoCorsa, String indirizzoInizio, String indirizzoFine, Date dataPrenotazione, Date dataInizio, Date dataFine, Autista autista, Cliente cliente) {
-        this.statoCorsa = statoCorsa;
-        this.distanzaPercorsa = distanzaPercorsa;
-        this.costoCorsa = costoCorsa;
-        this.indirizzoInizio = indirizzoInizio;
-        this.indirizzoFine = indirizzoFine;
-        this.dataPrenotazione = dataPrenotazione;
-        this.dataInizio = dataInizio;
-        this.dataFine = dataFine;
-        this.autista = autista;
-        this.cliente = cliente;
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public String getStatoCorsa() {
-        return statoCorsa;
-    }
-
-    public void setStatoCorsa(String statoCorsa) {
-        this.statoCorsa = statoCorsa;
-    }
-
-    public Double getDistanzaPercorsa() {
-        return distanzaPercorsa;
-    }
-
-    public void setDistanzaPercorsa(Double distanzaPercorsa) {
-        this.distanzaPercorsa = distanzaPercorsa;
-    }
-
-    public Double getCostoCorsa() {
-        return costoCorsa;
-    }
-
-    public void setCostoCorsa(Double costoCorsa) {
-        this.costoCorsa = costoCorsa;
-    }
-
-    public String getIndirizzoInizio() {
-        return indirizzoInizio;
-    }
-
-    public void setIndirizzoInizio(String indirizzoInizio) {
-        this.indirizzoInizio = indirizzoInizio;
-    }
-
-    public String getIndirizzoFine() {
-        return indirizzoFine;
-    }
-
-    public void setIndirizzoFine(String indirizzoFine) {
-        this.indirizzoFine = indirizzoFine;
-    }
-
-    public Date getDataPrenotazione() {
-        return dataPrenotazione;
-    }
-
-    public void setDataPrenotazione(Date dataPrenotazione) {
-        this.dataPrenotazione = dataPrenotazione;
-    }
-
-    public Date getDataInizio() {
-        return dataInizio;
-    }
-
-    public void setDataInizio(Date dataInizio) {
-        this.dataInizio = dataInizio;
-    }
-
-    public Date getDataFine() {
-        return dataFine;
-    }
-
-    public void setDataFine(Date dataFine) {
-        this.dataFine = dataFine;
-    }
-
-    public Autista getAutista() {
-        return autista;
-    }
-
-    public void setAutista(Autista autista) {
-        this.autista = autista;
-    }
-
-    public Cliente getCliente() {
-        return cliente;
-    }
-
-    public void setCliente(Cliente cliente) {
-        this.cliente = cliente;
-    }
 }

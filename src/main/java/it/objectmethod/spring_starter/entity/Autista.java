@@ -1,18 +1,26 @@
 package it.objectmethod.spring_starter.entity;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.List;
 
+@Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
+@Table(name = "autista")
 public class Autista {
 
     @Column(name = "autista_ID")
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     @Column(name = "nome")
     private String nome;
@@ -22,7 +30,7 @@ public class Autista {
 
     @Column(name = "data_nascita")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private Date dataNascita;
+    private LocalDate dataNascita;
 
     @Column(name = "cod_fiscale")
     private String codFiscale;
@@ -34,71 +42,4 @@ public class Autista {
 
     @OneToMany(mappedBy = "autista")
     private List<Corsa> corse;
-
-    public Autista() {}
-
-    public Autista(String nome, String cognome, Date dataNascita, String codFiscale, Veicolo veicolo, List<Corsa> corse) {
-        this.nome = nome;
-        this.cognome = cognome;
-        this.dataNascita = dataNascita;
-        this.codFiscale = codFiscale;
-        this.veicolo = veicolo;
-        this.corse = corse;
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public String getNome() {
-        return nome;
-    }
-
-    public void setNome(String nome) {
-        this.nome = nome;
-    }
-
-    public String getCognome() {
-        return cognome;
-    }
-
-    public void setCognome(String cognome) {
-        this.cognome = cognome;
-    }
-
-    public Date getDataNascita() {
-        return dataNascita;
-    }
-
-    public void setDataNascita(Date dataNascita) {
-        this.dataNascita = dataNascita;
-    }
-
-    public String getCodFiscale() {
-        return codFiscale;
-    }
-
-    public void setCodFiscale(String codFiscale) {
-        this.codFiscale = codFiscale;
-    }
-
-    public Veicolo getVeicolo() {
-        return veicolo;
-    }
-
-    public void setVeicolo(Veicolo veicolo) {
-        this.veicolo = veicolo;
-    }
-
-    public List<Corsa> getCorse() {
-        return corse;
-    }
-
-    public void setCorse(List<Corsa> corse) {
-        this.corse = corse;
-    }
 }
