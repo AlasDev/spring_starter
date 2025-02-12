@@ -1,42 +1,86 @@
 package it.objectmethod.spring_starter.service;
 
 import it.objectmethod.spring_starter.dto.AutistaDTO;
+import it.objectmethod.spring_starter.dto.PageDTO;
+import it.objectmethod.spring_starter.dto.filter.AutistaSearchParams;
 import it.objectmethod.spring_starter.entity.Autista;
 import it.objectmethod.spring_starter.mapper.AutistaMapper;
 import it.objectmethod.spring_starter.repository.AutistaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Service
 public class AutistaService {
+    private final AutistaRepository autistaRepository;
+    private final AutistaMapper autistaMapper;
 
     @Autowired
-    private AutistaRepository autistaRepository;
-
-    @Autowired
-    private AutistaMapper autistaMapper;
+    public AutistaService(AutistaRepository autistaRepository, AutistaMapper autistaMapper) {
+        this.autistaRepository = autistaRepository;
+        this.autistaMapper = autistaMapper;
+    }
 
     public List<AutistaDTO> getAll() {
         return autistaMapper.mapToDtos(autistaRepository.findAll());
     }
-
-    public AutistaDTO getAutista(Integer id) {
-        return autistaMapper.mapToDto(autistaRepository.getAutistaById(id));
+    public AutistaDTO getAutista( Long id) {
+        return autistaMapper.mapToDto(autistaRepository.getReferenceById(id));
     }
-
-    public AutistaDTO setAutista(AutistaDTO autistaDTO) {
+    public AutistaDTO setAutista( AutistaDTO autistaDTO) {
         Autista autista = autistaMapper.mapToEntity(autistaDTO);
-        Autista save = autistaRepository.save(autista);
-        return autistaMapper.mapToDto(save);
+        Autista autistaSaved = autistaRepository.save(autista);
+        return autistaMapper.mapToDto(autistaSaved);
+    }
+    public AutistaDTO deleteAutista( Long id) {
+        if (!autistaRepository.existsById(id)) {
+            throw new NullPointerException("L'autista con id: " + id + " che stai provando a cancellare non è stato trovato");
+        }
+        autistaRepository.deleteById(id);
+        return getAutista(id);
+    }
+    public AutistaDTO save( AutistaDTO autistaDTO) {
+        return autistaMapper.mapToDto(autistaRepository.save(autistaMapper.mapToEntity(autistaDTO)));
     }
 
-    public void deleteAutista(Integer id) {
-
+    public List<AutistaDTO> byNome( String nome) {
+        return autistaMapper.mapToDtos(autistaRepository.getAutistaByNome(nome).orElse(new ArrayList<>()));
+    }
+    public List<AutistaDTO> byCognome( String cognome) {
+        return autistaMapper.mapToDtos(autistaRepository.getAutistaByCognome(cognome).orElse(new ArrayList<>()));
+    }
+    public List<AutistaDTO> byDataNascita( Date dataNascita) {
+        return autistaMapper.mapToDtos(autistaRepository.getAutistaByDataNascita(dataNascita).orElse(new ArrayList<>()));
+    }
+    public List<AutistaDTO> byCodFiscale( String codFiscale) {
+        return autistaMapper.mapToDtos(autistaRepository.getAutistaByCodFiscale(codFiscale).orElse(new ArrayList<>()));
+    }
+    public List<AutistaDTO> byVeicoloId(Long veicoloId) {
+        return autistaMapper.mapToDtos(autistaRepository.getAutistaByVeicoloId(veicoloId).orElse(new ArrayList<>()));
     }
 
-    public AutistaDTO getByNome(String nome) {
-        return autistaMapper.mapToDto(autistaRepository.getAutistaByNome(nome));
+    public List<AutistaDTO> byNomeCognome( String nome, String cognome) {
+        return autistaMapper.mapToDtos(autistaRepository.getAutistaByNomeCognome(nome, cognome).orElse(new ArrayList<>()));
+    }
+    public List<AutistaDTO> byColoreVeicolo( String colore) {
+        return autistaMapper.mapToDtos(autistaRepository.getAutistaWithColoreVeicolo(colore).orElse(new ArrayList<>()));
+    }
+
+    //PAGE
+    public PageDTO<AutistaDTO> getPage(Pageable pageable) {
+        Page<Autista> autistaPage = autistaRepository.findAll(pageable);
+        PageDTO<AutistaDTO> pageAutistaDto = autistaMapper.mapToPageDTO(autistaPage);
+        return pageAutistaDto;
+    }
+
+    //FILTER
+    public List<AutistaDTO> searchAutistaBySpecification(AutistaSearchParams autistaSearchParams) {
+        List<Autista> autistaList = autistaRepository.findAll(autistaSearchParams.toSpecification());
+        return autistaMapper.mapToDtos(autistaList);
     }
 }
