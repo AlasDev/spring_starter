@@ -1,10 +1,12 @@
 package it.objectmethod.spring_starter.mapper;
 
 import it.objectmethod.spring_starter.dto.CorsaDTO;
+import it.objectmethod.spring_starter.dto.PageDTO;
 import it.objectmethod.spring_starter.entity.Autista;
 import it.objectmethod.spring_starter.entity.Cliente;
 import it.objectmethod.spring_starter.entity.Corsa;
 import it.objectmethod.spring_starter.util.BasicMethodMapping;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -15,59 +17,71 @@ public class CorsaMapper implements BasicMethodMapping<CorsaDTO, Corsa> {
 
     @Override
     public CorsaDTO mapToDto(Corsa corsa) {
-        CorsaDTO corsaDTO = new CorsaDTO();
-        corsaDTO.setId(corsa.getId());
-        corsaDTO.setStatoCorsa(corsa.getStatoCorsa());
-        corsaDTO.setDistanzaPercorsa(corsa.getDistanzaPercorsa());
-        corsaDTO.setCostoCorsa(corsa.getCostoCorsa());
-        corsaDTO.setIndirizzoInizio(corsa.getIndirizzoInizio());
-        corsaDTO.setIndirizzoFine(corsa.getIndirizzoFine());
-        corsaDTO.setDataPrenotazione(corsa.getDataPrenotazione());
-        corsaDTO.setDataInizio(corsa.getDataInizio());
-        corsaDTO.setDataFine(corsa.getDataFine());
-        corsaDTO.setCliente_ID(corsa.getCliente().getId());
-        corsaDTO.setAutista_ID(corsa.getAutista().getId());
-        return corsaDTO;
+        return CorsaDTO.builder()
+                .id(corsa.getId())
+                .statoCorsa(corsa.getStatoCorsa())
+                .distanzaPercorsa(corsa.getDistanzaPercorsa())
+                .costoCorsa(corsa.getCostoCorsa())
+                .indirizzoInizio(corsa.getIndirizzoInizio())
+                .indirizzoFine(corsa.getIndirizzoFine())
+                .dataPrenotazione(corsa.getDataPrenotazione())
+                .dataInizio(corsa.getDataInizio())
+                .dataFine(corsa.getDataFine())
+                .cliente_ID(corsa.getCliente().getId())
+                .autista_ID(corsa.getAutista().getId())
+                .build();
     }
 
     @Override
     public Corsa mapToEntity(CorsaDTO corsaDTO) {
-        Corsa corsa = new Corsa();
-        corsa.setId(corsaDTO.getId());
-        corsa.setStatoCorsa(corsaDTO.getStatoCorsa());
-        corsa.setDistanzaPercorsa(corsaDTO.getDistanzaPercorsa());
-        corsa.setCostoCorsa(corsaDTO.getCostoCorsa());
-        corsa.setIndirizzoInizio(corsaDTO.getIndirizzoInizio());
-        corsa.setIndirizzoFine(corsaDTO.getIndirizzoFine());
-        corsa.setDataPrenotazione(corsaDTO.getDataPrenotazione());
-        corsa.setDataInizio(corsaDTO.getDataInizio());
-        corsa.setDataFine(corsaDTO.getDataFine());
-
-        Cliente cliente = new Cliente();
-        cliente.setId(corsaDTO.getCliente_ID());
-        corsa.setCliente(cliente);
-
-        Autista autista = new Autista();
-        autista.setId(corsaDTO.getAutista_ID());
-        corsa.setAutista(autista);
-        return corsa;
+        return Corsa.builder()
+                .id(corsaDTO.getId())
+                .statoCorsa(corsaDTO.getStatoCorsa())
+                .distanzaPercorsa(corsaDTO.getDistanzaPercorsa())
+                .costoCorsa(corsaDTO.getCostoCorsa())
+                .indirizzoInizio(corsaDTO.getIndirizzoInizio())
+                .indirizzoFine(corsaDTO.getIndirizzoFine())
+                .dataPrenotazione(corsaDTO.getDataPrenotazione())
+                .dataInizio(corsaDTO.getDataInizio())
+                .dataFine(corsaDTO.getDataFine())
+                .cliente(Cliente.builder()
+                        .id(corsaDTO.getCliente_ID())
+                        .build())
+                .autista(Autista.builder()
+                        .id(corsaDTO.getAutista_ID())
+                        .build())
+                .build();
     }
 
     @Override
-    public List<Corsa> mapToEntities(List<CorsaDTO> corsaDTOS) {
-        List<Corsa> corsaList = new ArrayList<>();
-        for (CorsaDTO corsaDTO : corsaDTOS) {
-            corsaList.add(mapToEntity(corsaDTO));
+    public List<Corsa> mapToEntities(List<CorsaDTO> dtos) {
+        List<Corsa> entities = new ArrayList<>();
+        for (CorsaDTO dto : dtos) {
+            entities.add(mapToEntity(dto));
         }
-        return corsaList;
+        return entities;
     }
 
     @Override
-    public List<CorsaDTO> mapToDtos(List<Corsa> corsas) {
-        List<CorsaDTO> corsaDTOS = new ArrayList<>();
-        for (Corsa corsa : corsas) {
-            corsaDTOS.add(mapToDto(corsa));
+    public List<CorsaDTO> mapToDtos(List<Corsa> entities) {
+        List<CorsaDTO> dtos = new ArrayList<>();
+        for (Corsa entity : entities) {
+            dtos.add(mapToDto(entity));
         }
-        return corsaDTOS;
+        return dtos;
+    }
+
+    //PAGE
+    @Override
+    public PageDTO<CorsaDTO> mapToPageDTO(Page<Corsa> page) {
+        return PageDTO.<CorsaDTO>builder()
+                .content(this.mapToDtos(page.getContent()))
+                .pageSize(page.getSize())
+                .numberOfElements(page.getNumberOfElements())
+                .firstPage(page.isFirst())
+                .lastPage(page.isLast())
+                .totalPages(page.getTotalPages())
+                .pageNumber(page.getNumber())
+                .build();
     }
 }

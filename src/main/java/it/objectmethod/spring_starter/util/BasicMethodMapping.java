@@ -1,5 +1,8 @@
 package it.objectmethod.spring_starter.util;
 
+import it.objectmethod.spring_starter.dto.PageDTO;
+import org.springframework.data.domain.Page;
+
 import java.util.List;
 
 public interface BasicMethodMapping<DTO, ENTITY> {
@@ -14,4 +17,6 @@ public interface BasicMethodMapping<DTO, ENTITY> {
 
     //gets a list of Entities, output: list of DTOs
     List<DTO> mapToDtos(List<ENTITY> entities);
+
+    PageDTO<DTO> mapToPageDTO(Page<ENTITY> page);
 }

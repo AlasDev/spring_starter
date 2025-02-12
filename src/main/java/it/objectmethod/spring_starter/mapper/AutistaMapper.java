@@ -1,9 +1,11 @@
 package it.objectmethod.spring_starter.mapper;
 
 import it.objectmethod.spring_starter.dto.AutistaDTO;
+import it.objectmethod.spring_starter.dto.PageDTO;
 import it.objectmethod.spring_starter.entity.Autista;
 import it.objectmethod.spring_starter.entity.Veicolo;
 import it.objectmethod.spring_starter.util.BasicMethodMapping;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -14,48 +16,59 @@ public class AutistaMapper implements BasicMethodMapping<AutistaDTO, Autista> {
 
     @Override
     public AutistaDTO mapToDto(Autista autista) {
-        AutistaDTO autistaTDO = new AutistaDTO();
-        autistaTDO.setId(autista.getId());
-        autistaTDO.setNome(autista.getNome());
-        autistaTDO.setCognome(autista.getCognome());
-        autistaTDO.setDataNascita(autista.getDataNascita());
-        autistaTDO.setCodFiscale(autista.getCodFiscale());
-        autistaTDO.setVeicolo_ID(autista.getVeicolo().getId());
-        return autistaTDO;
+        return AutistaDTO.builder()
+                .id(autista.getId())
+                .nome(autista.getNome())
+                .cognome(autista.getCognome())
+                .dataNascita(autista.getDataNascita())
+                .codFiscale(autista.getCodFiscale())
+                .veicolo_ID(autista.getVeicolo().getId())
+                .build();
     }
 
     @Override
     public Autista mapToEntity(AutistaDTO autistaDTO) {
-        Autista autista = new Autista();
-        autista.setId(autistaDTO.getId());
-        autista.setNome(autistaDTO.getNome());
-        autista.setCognome(autistaDTO.getCognome());
-        autista.setDataNascita(autistaDTO.getDataNascita());
-        autista.setCodFiscale(autistaDTO.getCodFiscale());
-
-        Veicolo veicolo = new Veicolo();
-        veicolo.setId(autistaDTO.getVeicolo_ID());
-        autista.setVeicolo(veicolo);
-        return autista;
+        return Autista.builder()
+                .id(autistaDTO.getId())
+                .nome(autistaDTO.getNome())
+                .cognome(autistaDTO.getCognome())
+                .dataNascita(autistaDTO.getDataNascita())
+                .codFiscale(autistaDTO.getCodFiscale())
+                .veicolo(Veicolo.builder()
+                        .id(autistaDTO.getId())
+                        .build())
+                .build();
     }
 
     @Override
-    public List<Autista> mapToEntities(List<AutistaDTO> autistaDTOS) {
-        List<Autista> autistas = new ArrayList<Autista>();
-        for (AutistaDTO autistaDTO : autistaDTOS) {
-            autistas.add(mapToEntity(autistaDTO));
+    public List<Autista> mapToEntities(List<AutistaDTO> dtos) {
+        List<Autista> entities = new ArrayList<>();
+        for (AutistaDTO dto : dtos) {
+            entities.add(mapToEntity(dto));
         }
-        //return autistaDTOS.stream().map(this::mapToEntity).toList();
-        return autistas;
+        return entities;
     }
 
     @Override
-    public List<AutistaDTO> mapToDtos(List<Autista> autistas) {
-        List<AutistaDTO> autistaDTOS = new ArrayList<AutistaDTO>();
-        for (Autista autista : autistas) {
-            autistaDTOS.add(mapToDto(autista));
+    public List<AutistaDTO> mapToDtos(List<Autista> entities) {
+        List<AutistaDTO> dtos = new ArrayList<>();
+        for (Autista entity : entities) {
+            dtos.add(mapToDto(entity));
         }
-        //return autistas.stream().map(this::mapToDto).toList();
-        return autistaDTOS;
+        return dtos;
+    }
+
+    //PAGE
+    @Override
+    public PageDTO<AutistaDTO> mapToPageDTO(Page<Autista> page) {
+        return PageDTO.<AutistaDTO>builder()
+                .content(this.mapToDtos(page.getContent()))
+                .pageSize(page.getSize())
+                .numberOfElements(page.getNumberOfElements())
+                .firstPage(page.isFirst())
+                .lastPage(page.isLast())
+                .totalPages(page.getTotalPages())
+                .pageNumber(page.getNumber())
+                .build();
     }
 }
