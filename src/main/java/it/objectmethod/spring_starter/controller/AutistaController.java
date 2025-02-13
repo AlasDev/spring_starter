@@ -39,8 +39,8 @@ public class AutistaController {
 
     //delete something
     @DeleteMapping("/delete/{id}") // esempio di url: localhost:8080/autista/delete/3
-    public AutistaDTO deleteAutista(@PathVariable @Validated Long id) {
-        return autistaService.deleteAutista(id);
+    public void deleteAutista(@PathVariable @Validated Long id) {
+         autistaService.deleteAutista(id);
     }
 
     //post (save) something new
@@ -48,13 +48,6 @@ public class AutistaController {
     public AutistaDTO addAutista(@RequestBody @Validated AutistaDTO autistaDTO) {
         return autistaService.save(autistaDTO);
     }
-
-    //more than one parameter in query
-    @GetMapping("/getByColoreVeicolo") // esempio di url: localhost:8080/autista/getByColoreVeicolo?coloreVeicolo="bianco"
-    public List<AutistaDTO> getAutistaWithColoreVeicolo(@RequestParam @Validated String coloreVeicolo) {
-        return autistaService.byColoreVeicolo(coloreVeicolo);
-    }
-
 
     //PAGE
     @GetMapping("/page")

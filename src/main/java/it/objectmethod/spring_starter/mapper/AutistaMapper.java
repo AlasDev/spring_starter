@@ -35,7 +35,7 @@ public class AutistaMapper implements BasicMethodMapping<AutistaDTO, Autista> {
                 .dataNascita(autistaDTO.getDataNascita())
                 .codFiscale(autistaDTO.getCodFiscale())
                 .veicolo(Veicolo.builder()
-                        .id(autistaDTO.getId())
+                        .id(autistaDTO.getVeicolo_ID())
                         .build())
                 .build();
     }

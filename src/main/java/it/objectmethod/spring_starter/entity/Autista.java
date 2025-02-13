@@ -37,7 +37,7 @@ public class Autista {
 
     //Foreign Keys
     @ManyToOne
-    @JoinColumn(name = "veicolo_ID", nullable = false)
+    @JoinColumn(name = "veicolo_ID")
     private Veicolo veicolo;
 
     @OneToMany(mappedBy = "autista")
