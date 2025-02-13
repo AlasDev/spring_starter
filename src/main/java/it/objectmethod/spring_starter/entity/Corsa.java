@@ -6,7 +6,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.OffsetDateTime;
+import java.time.LocalDateTime;
 
 @Data
 @Builder
@@ -35,20 +35,20 @@ public class Corsa {
     private String indirizzoFine;
 
     @Column(name = "data_prenotazione")
-    private OffsetDateTime dataPrenotazione;
+    private LocalDateTime dataPrenotazione;
 
     @Column(name = "data_inizio")
-    private OffsetDateTime dataInizio;
+    private LocalDateTime dataInizio;
 
     @Column(name = "data_fine")
-    private OffsetDateTime dataFine;
+    private LocalDateTime dataFine;
 
     @ManyToOne
-    @JoinColumn(name = "autista_ID", nullable = false)
+    @JoinColumn(name = "autista_ID")
     private Autista autista;
 
     //Foreign Keys
     @ManyToOne
-    @JoinColumn(name = "cliente_ID", nullable = false)
+    @JoinColumn(name = "cliente_ID")
     private Cliente cliente;
 }

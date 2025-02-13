@@ -6,6 +6,7 @@ import it.objectmethod.spring_starter.dto.filter.ClienteSearchParams;
 import it.objectmethod.spring_starter.entity.Cliente;
 import it.objectmethod.spring_starter.mapper.ClienteMapper;
 import it.objectmethod.spring_starter.repository.ClienteRepository;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -35,12 +36,11 @@ public class ClienteService {
         Cliente clienteSaved = clienteRepository.save(cliente);
         return clienteMapper.mapToDto(clienteSaved);
     }
-    public ClienteDTO deleteCliente(Long id) {
-        if (clienteRepository.existsById(id)) {
-            throw new NullPointerException("Il cliente con id: " + id + " che stai provando a cancellare non è stato trovato");
+    public void deleteCliente(Long id) {
+        if (!clienteRepository.existsById(id)) {
+            throw new EntityNotFoundException("Il cliente con id: " + id + " che stai provando a cancellare non è stato trovato");
         }
         clienteRepository.deleteById(id);
-        return getCliente(id);
     }
     public ClienteDTO save( ClienteDTO clienteDTO) {
         Cliente cliente = clienteMapper.mapToEntity(clienteDTO);

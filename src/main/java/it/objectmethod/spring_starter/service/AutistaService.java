@@ -6,11 +6,13 @@ import it.objectmethod.spring_starter.dto.filter.AutistaSearchParams;
 import it.objectmethod.spring_starter.entity.Autista;
 import it.objectmethod.spring_starter.mapper.AutistaMapper;
 import it.objectmethod.spring_starter.repository.AutistaRepository;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -37,15 +39,14 @@ public class AutistaService {
         Autista autistaSaved = autistaRepository.save(autista);
         return autistaMapper.mapToDto(autistaSaved);
     }
-    public AutistaDTO deleteAutista( Long id) {
+    public void deleteAutista( Long id) {
         if (!autistaRepository.existsById(id)) {
-            throw new NullPointerException("L'autista con id: " + id + " che stai provando a cancellare non è stato trovato");
+            throw new EntityNotFoundException("L'autista con id: " + id + " che stai provando a cancellare non è stato trovato");
         }
         autistaRepository.deleteById(id);
-        return getAutista(id);
     }
     public AutistaDTO save( AutistaDTO autistaDTO) {
-        return autistaMapper.mapToDto(autistaRepository.save(autistaMapper.mapToEntity(autistaDTO)));
+        return setAutista(autistaDTO);
     }
 
     public List<AutistaDTO> byNome( String nome) {
@@ -54,7 +55,7 @@ public class AutistaService {
     public List<AutistaDTO> byCognome( String cognome) {
         return autistaMapper.mapToDtos(autistaRepository.getAutistaByCognome(cognome).orElse(new ArrayList<>()));
     }
-    public List<AutistaDTO> byDataNascita( Date dataNascita) {
+    public List<AutistaDTO> byDataNascita(LocalDate dataNascita) {
         return autistaMapper.mapToDtos(autistaRepository.getAutistaByDataNascita(dataNascita).orElse(new ArrayList<>()));
     }
     public List<AutistaDTO> byCodFiscale( String codFiscale) {
@@ -62,13 +63,6 @@ public class AutistaService {
     }
     public List<AutistaDTO> byVeicoloId(Long veicoloId) {
         return autistaMapper.mapToDtos(autistaRepository.getAutistaByVeicoloId(veicoloId).orElse(new ArrayList<>()));
-    }
-
-    public List<AutistaDTO> byNomeCognome( String nome, String cognome) {
-        return autistaMapper.mapToDtos(autistaRepository.getAutistaByNomeCognome(nome, cognome).orElse(new ArrayList<>()));
-    }
-    public List<AutistaDTO> byColoreVeicolo( String colore) {
-        return autistaMapper.mapToDtos(autistaRepository.getAutistaWithColoreVeicolo(colore).orElse(new ArrayList<>()));
     }
 
     //PAGE
