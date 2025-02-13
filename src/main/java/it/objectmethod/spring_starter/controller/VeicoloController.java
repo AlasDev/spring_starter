@@ -8,6 +8,7 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -25,22 +26,22 @@ public class VeicoloController {
     }
 
     @GetMapping("/{id}")
-    public VeicoloDTO getVeicolo(@PathVariable Long id) {
+    public VeicoloDTO getVeicolo(@PathVariable @Validated Long id) {
         return veicoloService.getVeicolo(id);
     }
 
     @PutMapping("")
-    public VeicoloDTO updateVeicolo(@RequestBody @Valid VeicoloDTO veicoloDTO) {
+    public VeicoloDTO updateVeicolo(@RequestBody @Validated VeicoloDTO veicoloDTO) {
         return veicoloService.setVeicolo(veicoloDTO);
     }
 
     @DeleteMapping("/delete/{id}")
-    public VeicoloDTO deleteVeicolo(@PathVariable Long id) {
-        return veicoloService.deleteVeicolo(id);
+    public void deleteVeicolo(@PathVariable @Validated Long id) {
+         veicoloService.deleteVeicolo(id);
     }
 
     @PostMapping("/post")
-    public VeicoloDTO addVeicolo(@RequestBody @Valid VeicoloDTO veicoloDTO) {
+    public VeicoloDTO addVeicolo(@RequestBody @Validated VeicoloDTO veicoloDTO) {
         return veicoloService.save(veicoloDTO);
     }
 
