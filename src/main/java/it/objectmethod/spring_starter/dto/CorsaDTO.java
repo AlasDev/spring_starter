@@ -1,13 +1,13 @@
 package it.objectmethod.spring_starter.dto;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
 
-import java.time.OffsetDateTime;
+import java.time.LocalDateTime;
 
 @Data
 @Builder
@@ -15,7 +15,6 @@ import java.time.OffsetDateTime;
 @NoArgsConstructor
 public class CorsaDTO {
 
-    @NotNull
     private Long id;
 
     @NotNull
@@ -33,14 +32,14 @@ public class CorsaDTO {
     @NotNull
     private String indirizzoFine;
 
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    private OffsetDateTime dataPrenotazione;
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private LocalDateTime dataPrenotazione;
 
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    private OffsetDateTime dataInizio;
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private LocalDateTime dataInizio;
 
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    private OffsetDateTime dataFine;
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private LocalDateTime dataFine;
 
     //Foreign Key
     @NotNull

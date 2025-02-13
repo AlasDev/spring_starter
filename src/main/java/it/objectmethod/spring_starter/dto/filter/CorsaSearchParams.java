@@ -9,7 +9,7 @@ import jakarta.persistence.criteria.Root;
 import lombok.Data;
 import org.springframework.data.jpa.domain.Specification;
 
-import java.time.OffsetDateTime;
+import java.time.LocalDateTime;
 
 @Data
 public class CorsaSearchParams {
@@ -21,9 +21,9 @@ public class CorsaSearchParams {
     private String indirizzoFine;
 
     //in fuso orario default: UTC+0 "Zulu time"
-    private OffsetDateTime dataPrenotazione;
-    private OffsetDateTime dataInizio;
-    private OffsetDateTime dataFine;
+    private LocalDateTime dataPrenotazione;
+    private LocalDateTime dataInizio;
+    private LocalDateTime dataFine;
 
     private Cliente cliente;
     private Autista autista;
@@ -181,7 +181,7 @@ public class CorsaSearchParams {
     }
 
     //dataPrenotazione
-    private Specification<Corsa> equalDataPrenotazioneSpecification(OffsetDateTime dataPrenotazione) {
+    private Specification<Corsa> equalDataPrenotazioneSpecification(LocalDateTime dataPrenotazione) {
         return (Root<Corsa> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) -> {
             if (dataPrenotazione == null) {
                 return null;
@@ -192,7 +192,7 @@ public class CorsaSearchParams {
             return criteriaBuilder.equal(root.get("dataPrenotazione"), dataPrenotazione);
         };
     }
-    private Specification<Corsa> inDataPrenotazioneSpecification(OffsetDateTime dataPrenotazione) {
+    private Specification<Corsa> inDataPrenotazioneSpecification(LocalDateTime dataPrenotazione) {
         return (Root<Corsa> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) -> {
             if (dataPrenotazione == null) {
                 return null;
@@ -205,7 +205,7 @@ public class CorsaSearchParams {
     }
 
     //dataInizio
-    private Specification<Corsa> equalDataInizioSpecification(OffsetDateTime dataInizio) {
+    private Specification<Corsa> equalDataInizioSpecification(LocalDateTime dataInizio) {
         return (Root<Corsa> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) -> {
             if (dataInizio == null) {
                 return null;
@@ -216,7 +216,7 @@ public class CorsaSearchParams {
             return criteriaBuilder.equal(root.get("dataInizio"), dataInizio);
         };
     }
-    private Specification<Corsa> inDataInizioSpecification(OffsetDateTime dataInizio) {
+    private Specification<Corsa> inDataInizioSpecification(LocalDateTime dataInizio) {
         return (Root<Corsa> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) -> {
             if (dataInizio == null) {
                 return null;
@@ -229,7 +229,7 @@ public class CorsaSearchParams {
     }
 
     //dataFine
-    private Specification<Corsa> equalDataFineSpecification(OffsetDateTime dataFine) {
+    private Specification<Corsa> equalDataFineSpecification(LocalDateTime dataFine) {
         return (Root<Corsa> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) -> {
             if (dataFine == null) {
                 return null;
@@ -240,7 +240,7 @@ public class CorsaSearchParams {
             return criteriaBuilder.equal(root.get("dataFine"), dataFine);
         };
     }
-    private Specification<Corsa> inDataFineSpecification(OffsetDateTime dataFine) {
+    private Specification<Corsa> inDataFineSpecification(LocalDateTime dataFine) {
         return (Root<Corsa> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) -> {
             if (dataFine == null) {
                 return null;

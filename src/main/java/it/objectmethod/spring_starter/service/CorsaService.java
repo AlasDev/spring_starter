@@ -28,30 +28,23 @@ public class CorsaService {
     public List<CorsaDTO> getAll() {
         return corsaMapper.mapToDtos(corsaRepository.findAll());
     }
-
-    public CorsaDTO getCorsa(@Validated Long id) {
+    public CorsaDTO getCorsa(Long id) {
         return corsaMapper.mapToDto(corsaRepository.getCorsaById(id).orElseGet(Corsa::new));
     }
-
-    public CorsaDTO setCorsa(@Validated CorsaDTO corsaDTO) {
+    public CorsaDTO setCorsa(CorsaDTO corsaDTO) {
         Corsa corsa = corsaMapper.mapToEntity(corsaDTO);
         Corsa corsaSaved = corsaRepository.save(corsa);
         return corsaMapper.mapToDto(corsaSaved);
     }
-
-    public CorsaDTO deleteCorsa(@Validated Long id) {
+    public void deleteCorsa(Long id) {
         if (!corsaRepository.existsById(id)) {
             throw new NullPointerException("La corsa con id: " + id + " che stai provando a cancellare non è stata trovata");
         }
         corsaRepository.deleteById(id);
-        return getCorsa(id);
     }
-
-    public CorsaDTO save(@Validated CorsaDTO corsaDTO) {
-        corsaRepository.save(corsaMapper.mapToEntity(corsaDTO));
-        return getCorsa(corsaDTO.getAutista_ID());
+    public CorsaDTO save(CorsaDTO corsaDTO) {
+        return corsaMapper.mapToDto(corsaRepository.save(corsaMapper.mapToEntity(corsaDTO)));
     }
-
 
     //PAGE
     public PageDTO<CorsaDTO> getPage(Pageable pageable) {

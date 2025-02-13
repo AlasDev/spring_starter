@@ -30,7 +30,7 @@ public class CorsaController {
     }
 
     @PutMapping("")
-    public CorsaDTO updateCliente(@PathVariable @Validated CorsaDTO corsaDTO) {
+    public CorsaDTO updateCliente(@RequestBody @Validated CorsaDTO corsaDTO) {
         return corsaService.setCorsa(corsaDTO);
     }
 
