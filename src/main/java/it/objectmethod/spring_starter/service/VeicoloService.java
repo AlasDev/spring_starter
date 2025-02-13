@@ -6,12 +6,12 @@ import it.objectmethod.spring_starter.dto.filter.VeicoloSearchParams;
 import it.objectmethod.spring_starter.entity.Veicolo;
 import it.objectmethod.spring_starter.mapper.VeicoloMapper;
 import it.objectmethod.spring_starter.repository.VeicoloRepository;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -36,26 +36,14 @@ public class VeicoloService {
         Veicolo veicoloSaved = veicoloRepository.save(veicolo);
         return veicoloMapper.mapToDto(veicoloSaved);
     }
-    public VeicoloDTO deleteVeicolo(Long id) {
+    public void deleteVeicolo(Long id) {
         if (!veicoloRepository.existsById(id)) {
-            throw new NullPointerException("Il veicolo con id:" + id + " che stai provando a cancellare non è stato trovato");
+            throw new EntityNotFoundException("Il veicolo con id:" + id + " che stai provando a cancellare non è stato trovato");
         }
         veicoloRepository.deleteById(id);
-        return getVeicolo(id);
     }
     public VeicoloDTO save(VeicoloDTO veicoloDTO) {
-        veicoloRepository.save(veicoloMapper.mapToEntity(veicoloDTO));
-        return getVeicolo(veicoloDTO.getId());
-    }
-
-    public VeicoloDTO getByNumTarga(String numTarga) {
-        if (!veicoloRepository.existsByNumTarga(numTarga)) {
-            throw new NullPointerException("L'autista con targa:" + numTarga + " che stai provando a cercare non è stato trovato");
-        }
-        return veicoloMapper.mapToDto(veicoloRepository.getVeicoloByNumTarga(numTarga).orElseGet(Veicolo::new));
-    }
-    public List<VeicoloDTO> byModello(String modello) {
-        return veicoloMapper.mapToDtos(veicoloRepository.modelloVeicolo(modello).orElseGet(ArrayList::new));
+        return veicoloMapper.mapToDto(veicoloRepository.save(veicoloMapper.mapToEntity(veicoloDTO)));
     }
 
     //PAGE

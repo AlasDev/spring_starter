@@ -12,7 +12,6 @@ import lombok.NoArgsConstructor;
 @Builder
 public class VeicoloDTO {
 
-    @NotNull
     private Long id;
 
     @NotNull
