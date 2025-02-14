@@ -15,6 +15,8 @@
     <description>spring_starter</description>
     <properties>
         <java.version>21</java.version>
+        <org.mapstruct.version>1.5.5.Final</org.mapstruct.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
     <dependencies>
         <dependency>
@@ -48,8 +50,21 @@
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <version>1.18.36</version>
-            <optional>true</optional>
+            <scope>provided</scope>
         </dependency>
+
+        <dependency>
+            <groupId>org.hibernate.orm</groupId>
+            <artifactId>hibernate-jpamodelgen</artifactId>
+            <version>6.1.7.Final</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.mapstruct</groupId>
+            <artifactId>mapstruct</artifactId>
+            <version>${org.mapstruct.version}</version>
+        </dependency>
+
     </dependencies>
 
     <build>
@@ -57,34 +72,38 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.8.1</version>
                 <configuration>
-                    <parameters>true</parameters>
-                    <source>21</source>
-                    <target>21</target>
+                    <source>${java.version}</source>
+                    <target>${java.version}</target>
+
+                    <forceJavacCompilerUse>true</forceJavacCompilerUse>
+                    <encoding>${project.build.sourceEncoding}</encoding>
+                    <showDeprecation>true</showDeprecation>
+                    <showWarnings>true</showWarnings>
+
                     <annotationProcessorPaths>
-                        <!--                    <path>-->
-                        <!--                        <groupId>org.mapstruct.extensions.spring</groupId>-->
-                        <!--                        <artifactId>mapstruct-spring-extensions</artifactId>-->
-                        <!--                        <version>1.1.1</version>-->
-                        <!--                    </path>-->
+                        <path>
+                            <groupId>org.mapstruct</groupId>
+                            <artifactId>mapstruct-processor</artifactId>
+                            <version>${org.mapstruct.version}</version>
+                        </path>
                         <path>
                             <groupId>org.projectlombok</groupId>
                             <artifactId>lombok</artifactId>
-                            <version>1.18.36</version>
+                            <version>1.18.30</version>
                         </path>
-                        <!--                    <path>-->
-                        <!--                        <groupId>org.mapstruct</groupId>-->
-                        <!--                        <artifactId>mapstruct-processor</artifactId>-->
-                        <!--                        <version>1.6.0</version>-->
-                        <!--                    </path>-->
-                        <!--                    <path>-->
-                        <!--                        <groupId>org.projectlombok</groupId>-->
-                        <!--                        <artifactId>lombok-mapstruct-binding</artifactId>-->
-                        <!--                        <version>0.2.0</version>-->
-                        <!--                    </path>-->
+                        <path>
+                            <groupId>org.projectlombok</groupId>
+                            <artifactId>lombok-mapstruct-binding</artifactId>
+                            <version>0.2.0</version>
+                        </path>
+                        <path>
+                            <groupId>org.hibernate.orm</groupId>
+                            <artifactId>hibernate-jpamodelgen</artifactId>
+                            <version>6.1.7.Final</version>
+                        </path>
                     </annotationProcessorPaths>
-                    <showDeprecation>true</showDeprecation>
-                    <showWarnings>true</showWarnings>
                 </configuration>
             </plugin>
         </plugins>
