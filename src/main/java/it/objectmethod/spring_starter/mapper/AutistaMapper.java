@@ -3,6 +3,7 @@ package it.objectmethod.spring_starter.mapper;
 import it.objectmethod.spring_starter.dto.AutistaDTO;
 import it.objectmethod.spring_starter.dto.PageDTO;
 import it.objectmethod.spring_starter.entity.Autista;
+import it.objectmethod.spring_starter.entity.Veicolo;
 import it.objectmethod.spring_starter.util.BasicMethodMapping;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -25,7 +26,7 @@ public class AutistaMapper implements BasicMethodMapping<AutistaDTO, Autista> {
                 .cognome(autista.getCognome())
                 .dataNascita(autista.getDataNascita())
                 .codFiscale(autista.getCodFiscale())
-                .veicolo(veicoloMapper.mapToDto(autista.getVeicolo()))
+                .veicolo(autista.getVeicolo().getId())
                 .build();
     }
 
@@ -37,7 +38,10 @@ public class AutistaMapper implements BasicMethodMapping<AutistaDTO, Autista> {
                 .cognome(autistaDTO.getCognome())
                 .dataNascita(autistaDTO.getDataNascita())
                 .codFiscale(autistaDTO.getCodFiscale())
-                .veicolo(veicoloMapper.mapToEntity(autistaDTO.getVeicolo()))
+                .veicolo(Veicolo
+                        .builder()
+                        .id(autistaDTO.getId())
+                        .build())
                 .build();
     }
 

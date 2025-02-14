@@ -19,17 +19,17 @@ public class ClienteController {
     @Autowired
     private ClienteService clienteService;
 
-    @GetMapping("")
+    @GetMapping("/get/all")
     public List<ClienteDTO> getAll() {
         return clienteService.getAll();
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/get/{id}")
     public ClienteDTO getCliente(@PathVariable @Validated long id) {
         return clienteService.getCliente(id);
     }
 
-    @PutMapping("")
+    @PutMapping("/update")
     public ClienteDTO updateCliente(@RequestBody @Validated ClienteDTO clienteDTO) {
         return clienteService.setCliente(clienteDTO);
     }

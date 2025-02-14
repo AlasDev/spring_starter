@@ -48,21 +48,21 @@ public class AutistaService {
         return setAutista(autistaDTO);
     }
 
-    public List<AutistaDTO> byNome( String nome) {
-        return autistaMapper.mapToDtos(autistaRepository.getAutistaByNome(nome).orElse(new ArrayList<>()));
-    }
-    public List<AutistaDTO> byCognome( String cognome) {
-        return autistaMapper.mapToDtos(autistaRepository.getAutistaByCognome(cognome).orElse(new ArrayList<>()));
-    }
-    public List<AutistaDTO> byDataNascita(LocalDate dataNascita) {
-        return autistaMapper.mapToDtos(autistaRepository.getAutistaByDataNascita(dataNascita).orElse(new ArrayList<>()));
-    }
-    public List<AutistaDTO> byCodFiscale( String codFiscale) {
-        return autistaMapper.mapToDtos(autistaRepository.getAutistaByCodFiscale(codFiscale).orElse(new ArrayList<>()));
-    }
-    public List<AutistaDTO> byVeicoloId(Long veicoloId) {
-        return autistaMapper.mapToDtos(autistaRepository.getAutistaByVeicoloId(veicoloId).orElse(new ArrayList<>()));
-    }
+//    public List<AutistaDTO> byNome( String nome) {
+//        return autistaMapper.mapToDtos(autistaRepository.getAutistaByNome(nome).orElse(new ArrayList<>()));
+//    }
+//    public List<AutistaDTO> byCognome( String cognome) {
+//        return autistaMapper.mapToDtos(autistaRepository.getAutistaByCognome(cognome).orElse(new ArrayList<>()));
+//    }
+//    public List<AutistaDTO> byDataNascita(LocalDate dataNascita) {
+//        return autistaMapper.mapToDtos(autistaRepository.getAutistaByDataNascita(dataNascita).orElse(new ArrayList<>()));
+//    }
+//    public List<AutistaDTO> byCodFiscale( String codFiscale) {
+//        return autistaMapper.mapToDtos(autistaRepository.getAutistaByCodFiscale(codFiscale).orElse(new ArrayList<>()));
+//    }
+//    public List<AutistaDTO> byVeicoloId(Long veicoloId) {
+//        return autistaMapper.mapToDtos(autistaRepository.getAutistaByVeicoloId(veicoloId).orElse(new ArrayList<>()));
+//    }
 
     //PAGE
     public PageDTO<AutistaDTO> getPage(Pageable pageable) {

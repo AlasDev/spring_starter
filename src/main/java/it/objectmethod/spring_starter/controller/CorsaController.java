@@ -19,17 +19,17 @@ public class CorsaController {
     @Autowired
     private CorsaService corsaService;
 
-    @GetMapping("")
+    @GetMapping("/get/all")
     public List<CorsaDTO> getAll() {
         return corsaService.getAll();
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/get/{id}")
     public CorsaDTO getCorsa(@PathVariable @Validated long id) {
         return corsaService.getCorsa(id);
     }
 
-    @PutMapping("")
+    @PutMapping("/update")
     public CorsaDTO updateCliente(@RequestBody @Validated CorsaDTO corsaDTO) {
         return corsaService.setCorsa(corsaDTO);
     }

@@ -43,9 +43,9 @@ public class CorsaDTO {
 
     //Foreign Key
     @NotNull
-    private AutistaDTO autista;
+    private Long autista;
 
     //Foreign Key
     @NotNull
-    private ClienteDTO cliente;
+    private Long cliente;
 }

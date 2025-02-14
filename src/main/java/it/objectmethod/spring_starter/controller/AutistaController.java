@@ -20,19 +20,19 @@ public class AutistaController {
     private AutistaService autistaService;
 
     //copy all
-    @GetMapping("") // esempio di url: localhost:8080/autista
+    @GetMapping("/get/all") // esempio di url: localhost:8080/autista/get/all
     public List<AutistaDTO> getAll() {
         return autistaService.getAll();
     }
 
     //read something
-    @GetMapping("/{id}") // esempio di url: localhost:8080/autista/5
+    @GetMapping("/get/{id}") // esempio di url: localhost:8080/autista/get/5
     public AutistaDTO getAutista(@PathVariable @Validated Long id) {
         return autistaService.getAutista(id);
     }
 
     //update something
-    @PutMapping("") // esempio di url: localhost:8080/autista
+    @PutMapping("/update") // esempio di url: localhost:8080/autista/update
     public AutistaDTO updateAutista(@RequestBody @Validated AutistaDTO autistaDTO) {
         return autistaService.setAutista(autistaDTO);
     }

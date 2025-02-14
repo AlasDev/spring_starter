@@ -31,6 +31,6 @@ public class AutistaDTO {
     private String codFiscale;
 
     //Foreign Key
-    private VeicoloDTO veicolo;
+    private Long veicolo;
 
 }

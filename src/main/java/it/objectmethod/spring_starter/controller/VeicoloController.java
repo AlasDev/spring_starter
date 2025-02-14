@@ -19,17 +19,17 @@ public class VeicoloController {
     @Autowired
     private VeicoloService veicoloService;
 
-    @GetMapping("")
+    @GetMapping("get/all")
     public List<VeicoloDTO> getAll() {
         return veicoloService.getAll();
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/get/{id}")
     public VeicoloDTO getVeicolo(@PathVariable @Validated Long id) {
         return veicoloService.getVeicolo(id);
     }
 
-    @PutMapping("")
+    @PutMapping("/update")
     public VeicoloDTO updateVeicolo(@RequestBody @Validated VeicoloDTO veicoloDTO) {
         return veicoloService.setVeicolo(veicoloDTO);
     }

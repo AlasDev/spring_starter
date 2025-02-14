@@ -2,6 +2,8 @@ package it.objectmethod.spring_starter.mapper;
 
 import it.objectmethod.spring_starter.dto.CorsaDTO;
 import it.objectmethod.spring_starter.dto.PageDTO;
+import it.objectmethod.spring_starter.entity.Autista;
+import it.objectmethod.spring_starter.entity.Cliente;
 import it.objectmethod.spring_starter.entity.Corsa;
 import it.objectmethod.spring_starter.util.BasicMethodMapping;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,8 +33,8 @@ public class CorsaMapper implements BasicMethodMapping<CorsaDTO, Corsa> {
                 .dataPrenotazione(corsa.getDataPrenotazione())
                 .dataInizio(corsa.getDataInizio())
                 .dataFine(corsa.getDataFine())
-                .cliente(clienteMapper.mapToDto(corsa.getCliente()))
-                .autista(autistaMapper.mapToDto(corsa.getAutista()))
+                .cliente(corsa.getCliente().getId())
+                .autista(corsa.getAutista().getId())
                 .build();
     }
 
@@ -48,8 +50,14 @@ public class CorsaMapper implements BasicMethodMapping<CorsaDTO, Corsa> {
                 .dataPrenotazione(corsaDTO.getDataPrenotazione())
                 .dataInizio(corsaDTO.getDataInizio())
                 .dataFine(corsaDTO.getDataFine())
-                .cliente(clienteMapper.mapToEntity(corsaDTO.getCliente()))
-                .autista(autistaMapper.mapToEntity(corsaDTO.getAutista()))
+                .cliente(Cliente
+                        .builder()
+                        .id(corsaDTO.getCliente())
+                        .build())
+                .autista(Autista
+                        .builder()
+                        .id(corsaDTO.getAutista())
+                        .build())
                 .build();
     }
 
