@@ -2,10 +2,9 @@ package it.objectmethod.spring_starter.mapper;
 
 import it.objectmethod.spring_starter.dto.CorsaDTO;
 import it.objectmethod.spring_starter.dto.PageDTO;
-import it.objectmethod.spring_starter.entity.Autista;
-import it.objectmethod.spring_starter.entity.Cliente;
 import it.objectmethod.spring_starter.entity.Corsa;
 import it.objectmethod.spring_starter.util.BasicMethodMapping;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
 
@@ -14,6 +13,11 @@ import java.util.List;
 
 @Component
 public class CorsaMapper implements BasicMethodMapping<CorsaDTO, Corsa> {
+
+    @Autowired
+    ClienteMapper clienteMapper;
+    @Autowired
+    AutistaMapper autistaMapper;
 
     @Override
     public CorsaDTO mapToDto(Corsa corsa) {
@@ -27,8 +31,8 @@ public class CorsaMapper implements BasicMethodMapping<CorsaDTO, Corsa> {
                 .dataPrenotazione(corsa.getDataPrenotazione())
                 .dataInizio(corsa.getDataInizio())
                 .dataFine(corsa.getDataFine())
-                .cliente_ID(corsa.getCliente().getId())
-                .autista_ID(corsa.getAutista().getId())
+                .cliente(clienteMapper.mapToDto(corsa.getCliente()))
+                .autista(autistaMapper.mapToDto(corsa.getAutista()))
                 .build();
     }
 
@@ -44,12 +48,8 @@ public class CorsaMapper implements BasicMethodMapping<CorsaDTO, Corsa> {
                 .dataPrenotazione(corsaDTO.getDataPrenotazione())
                 .dataInizio(corsaDTO.getDataInizio())
                 .dataFine(corsaDTO.getDataFine())
-                .cliente(Cliente.builder()
-                        .id(corsaDTO.getCliente_ID())
-                        .build())
-                .autista(Autista.builder()
-                        .id(corsaDTO.getAutista_ID())
-                        .build())
+                .cliente(clienteMapper.mapToEntity(corsaDTO.getCliente()))
+                .autista(autistaMapper.mapToEntity(corsaDTO.getAutista()))
                 .build();
     }
 

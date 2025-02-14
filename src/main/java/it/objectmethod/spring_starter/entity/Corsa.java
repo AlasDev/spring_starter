@@ -47,7 +47,7 @@ public class Corsa {
     @JoinColumn(name = "autista_ID")
     private Autista autista;
 
-    //Foreign Keys
+    //Foreign Key
     @ManyToOne
     @JoinColumn(name = "cliente_ID")
     private Cliente cliente;
