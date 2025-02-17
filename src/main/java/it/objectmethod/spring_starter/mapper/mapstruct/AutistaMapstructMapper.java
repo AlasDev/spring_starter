@@ -15,11 +15,9 @@ import org.springframework.data.domain.Page;
         builder = @Builder(disableBuilder = true))
 public interface AutistaMapstructMapper extends BasicMethodMapping<AutistaDTO, Autista> {
 
-    @Override
     @Mapping(target = "veicolo", source = "veicolo.id")
     AutistaDTO mapToDto(Autista autista);
 
-    @Override
     @Mapping(target = "veicolo.id", source = "veicolo")
     @Mapping(target = "corse", source = "corse")
     Autista mapToEntity(AutistaDTO autistaDTO);

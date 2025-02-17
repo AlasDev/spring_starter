@@ -13,10 +13,8 @@ import org.springframework.data.domain.Page;
         builder = @Builder(disableBuilder = true))
 public interface VeicoloMapstructMapper extends BasicMethodMapping<VeicoloDTO, Veicolo> {
 
-    @Override
     VeicoloDTO mapToDto(Veicolo veicolo);
 
-    @Override
     Veicolo mapToEntity(VeicoloDTO veicoloDTO);
 
     PageDTO<VeicoloDTO> mapToPageDTO(Page<Veicolo> page);
