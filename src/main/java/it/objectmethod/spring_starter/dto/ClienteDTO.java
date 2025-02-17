@@ -35,5 +35,5 @@ public class ClienteDTO {
     private LocalDate dataIscrizione;
 
     //Foreign key
-    private List<CorsaDTO> corse;
+    private List<Long> corse;
 }

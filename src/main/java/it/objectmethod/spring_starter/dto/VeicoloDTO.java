@@ -25,6 +25,5 @@ public class VeicoloDTO {
     @NotNull
     private String colore;
 
-    @NotNull
-    private List<AutistaDTO> autisti;
+    private List<Long> autisti;
 }
