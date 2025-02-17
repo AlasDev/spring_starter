@@ -35,6 +35,6 @@ public class AutistaDTO {
     private Long veicolo;
 
     //Foreign Key
-    private List<CorsaDTO> corse;
+    private List<Long> corse;
 
 }
