@@ -6,7 +6,6 @@ import it.objectmethod.spring_starter.entity.Autista;
 import it.objectmethod.spring_starter.entity.Cliente;
 import it.objectmethod.spring_starter.entity.Corsa;
 import it.objectmethod.spring_starter.util.BasicMethodMapping;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
 
@@ -15,11 +14,6 @@ import java.util.List;
 
 @Component
 public class CorsaMapper implements BasicMethodMapping<CorsaDTO, Corsa> {
-
-    @Autowired
-    ClienteMapper clienteMapper;
-    @Autowired
-    AutistaMapper autistaMapper;
 
     @Override
     public CorsaDTO mapToDto(Corsa corsa) {
@@ -84,12 +78,12 @@ public class CorsaMapper implements BasicMethodMapping<CorsaDTO, Corsa> {
     public PageDTO<CorsaDTO> mapToPageDTO(Page<Corsa> page) {
         return PageDTO.<CorsaDTO>builder()
                 .content(this.mapToDtos(page.getContent()))
-                .pageSize(page.getSize())
+                .size(page.getSize())
                 .numberOfElements(page.getNumberOfElements())
-                .firstPage(page.isFirst())
-                .lastPage(page.isLast())
+                .first(page.isFirst())
+                .last(page.isLast())
                 .totalPages(page.getTotalPages())
-                .pageNumber(page.getNumber())
+                .number(page.getNumber())
                 .build();
     }
 }

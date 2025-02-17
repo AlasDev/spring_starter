@@ -5,7 +5,6 @@ import it.objectmethod.spring_starter.dto.PageDTO;
 import it.objectmethod.spring_starter.entity.Autista;
 import it.objectmethod.spring_starter.entity.Veicolo;
 import it.objectmethod.spring_starter.util.BasicMethodMapping;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
 
@@ -14,9 +13,6 @@ import java.util.List;
 
 @Component
 public class AutistaMapper implements BasicMethodMapping<AutistaDTO, Autista> {
-
-    @Autowired
-    VeicoloMapper veicoloMapper;
 
     @Override
     public AutistaDTO mapToDto(Autista autista) {
@@ -68,12 +64,12 @@ public class AutistaMapper implements BasicMethodMapping<AutistaDTO, Autista> {
     public PageDTO<AutistaDTO> mapToPageDTO(Page<Autista> page) {
         return PageDTO.<AutistaDTO>builder()
                 .content(this.mapToDtos(page.getContent()))
-                .pageSize(page.getSize())
+                .size(page.getSize())
                 .numberOfElements(page.getNumberOfElements())
-                .firstPage(page.isFirst())
-                .lastPage(page.isLast())
+                .first(page.isFirst())
+                .last(page.isLast())
                 .totalPages(page.getTotalPages())
-                .pageNumber(page.getNumber())
+                .number(page.getNumber())
                 .build();
     }
 }

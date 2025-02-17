@@ -55,12 +55,12 @@ public class VeicoloMapper implements BasicMethodMapping<VeicoloDTO, Veicolo> {
     public PageDTO<VeicoloDTO> mapToPageDTO(Page<Veicolo> page) {
         return PageDTO.<VeicoloDTO>builder()
                 .content(this.mapToDtos(page.getContent()))
-                .pageSize(page.getSize())
+                .size(page.getSize())
                 .numberOfElements(page.getNumberOfElements())
-                .firstPage(page.isFirst())
-                .lastPage(page.isLast())
+                .first(page.isFirst())
+                .last(page.isLast())
                 .totalPages(page.getTotalPages())
-                .pageNumber(page.getNumber())
+                .number(page.getNumber())
                 .build();
     }
 }

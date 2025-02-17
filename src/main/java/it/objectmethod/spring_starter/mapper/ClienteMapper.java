@@ -20,7 +20,7 @@ public class ClienteMapper implements BasicMethodMapping<ClienteDTO, Cliente> {
                 .nome(cliente.getNome())
                 .cognome(cliente.getCognome())
                 .dataNascita(cliente.getDataNascita())
-                .codiceFiscale(cliente.getCodFiscale())
+                .codFiscale(cliente.getCodFiscale())
                 .dataIscrizione(cliente.getDataIscrizione())
                 .build();
     }
@@ -32,7 +32,7 @@ public class ClienteMapper implements BasicMethodMapping<ClienteDTO, Cliente> {
                 .nome(clienteDTO.getNome())
                 .cognome(clienteDTO.getCognome())
                 .dataNascita(clienteDTO.getDataNascita())
-                .codFiscale(clienteDTO.getCodiceFiscale())
+                .codFiscale(clienteDTO.getCodFiscale())
                 .dataIscrizione(clienteDTO.getDataIscrizione())
                 .build();
     }
@@ -60,12 +60,12 @@ public class ClienteMapper implements BasicMethodMapping<ClienteDTO, Cliente> {
     public PageDTO<ClienteDTO> mapToPageDTO(Page<Cliente> page) {
         return PageDTO.<ClienteDTO>builder()
                 .content(this.mapToDtos(page.getContent()))
-                .pageSize(page.getSize())
+                .size(page.getSize())
                 .numberOfElements(page.getNumberOfElements())
-                .firstPage(page.isFirst())
-                .lastPage(page.isLast())
+                .first(page.isFirst())
+                .last(page.isLast())
                 .totalPages(page.getTotalPages())
-                .pageNumber(page.getNumber())
+                .number(page.getNumber())
                 .build();
     }
 }
