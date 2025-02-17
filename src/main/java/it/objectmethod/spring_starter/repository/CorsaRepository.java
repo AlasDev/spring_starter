@@ -9,7 +9,5 @@ import java.util.Optional;
 
 @Repository
 public interface CorsaRepository extends JpaRepository<Corsa, Long>, JpaSpecificationExecutor<Corsa> {
-    Optional<Corsa> getAutistaById(Long id);
-
     Optional<Corsa> getCorsaById(Long id);
 }

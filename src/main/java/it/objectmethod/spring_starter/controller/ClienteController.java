@@ -16,8 +16,11 @@ import java.util.List;
 @RequestMapping("/cliente")
 public class ClienteController {
 
-    @Autowired
-    private ClienteService clienteService;
+    private final ClienteService clienteService;
+
+    public ClienteController(ClienteService clienteService) {
+        this.clienteService = clienteService;
+    }
 
     @GetMapping("/get/all")
     public List<ClienteDTO> getAll() {

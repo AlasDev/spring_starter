@@ -48,9 +48,7 @@ public class CorsaService {
     //PAGE
     public PageDTO<CorsaDTO> getPage(Pageable pageable) {
         Page<Corsa> page = corsaRepository.findAll(pageable);
-
-        PageDTO<CorsaDTO> pageDto = corsaMapper.mapToPageDTO(page);
-        return pageDto;
+        return corsaMapper.mapToPageDTO(page);
     }
 
     //FILTER

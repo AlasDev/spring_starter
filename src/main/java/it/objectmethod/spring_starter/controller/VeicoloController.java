@@ -4,7 +4,6 @@ import it.objectmethod.spring_starter.dto.PageDTO;
 import it.objectmethod.spring_starter.dto.VeicoloDTO;
 import it.objectmethod.spring_starter.dto.filter.VeicoloSearchParams;
 import it.objectmethod.spring_starter.service.VeicoloService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.validation.annotation.Validated;
@@ -16,8 +15,11 @@ import java.util.List;
 @RequestMapping("/veicolo")
 public class VeicoloController {
 
-    @Autowired
-    private VeicoloService veicoloService;
+    private final VeicoloService veicoloService;
+
+    public VeicoloController(VeicoloService veicoloService) {
+        this.veicoloService = veicoloService;
+    }
 
     @GetMapping("get/all")
     public List<VeicoloDTO> getAll() {

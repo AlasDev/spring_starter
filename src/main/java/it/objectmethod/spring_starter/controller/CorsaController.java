@@ -4,7 +4,6 @@ import it.objectmethod.spring_starter.dto.CorsaDTO;
 import it.objectmethod.spring_starter.dto.PageDTO;
 import it.objectmethod.spring_starter.dto.filter.CorsaSearchParams;
 import it.objectmethod.spring_starter.service.CorsaService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.validation.annotation.Validated;
@@ -16,8 +15,11 @@ import java.util.List;
 @RequestMapping("/corsa")
 public class CorsaController {
 
-    @Autowired
-    private CorsaService corsaService;
+    private final CorsaService corsaService;
+
+    public CorsaController(CorsaService corsaService) {
+        this.corsaService = corsaService;
+    }
 
     @GetMapping("/get/all")
     public List<CorsaDTO> getAll() {

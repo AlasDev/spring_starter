@@ -4,7 +4,6 @@ import it.objectmethod.spring_starter.dto.AutistaDTO;
 import it.objectmethod.spring_starter.dto.PageDTO;
 import it.objectmethod.spring_starter.dto.filter.AutistaSearchParams;
 import it.objectmethod.spring_starter.service.AutistaService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.validation.annotation.Validated;
@@ -16,8 +15,11 @@ import java.util.List;
 @RequestMapping("/autista")
 public class AutistaController {
 
-    @Autowired
-    private AutistaService autistaService;
+    private final AutistaService autistaService;
+
+    public AutistaController(AutistaService autistaService) {
+        this.autistaService = autistaService;
+    }
 
     //copy all
     @GetMapping("/get/all") // esempio di url: localhost:8080/autista/get/all

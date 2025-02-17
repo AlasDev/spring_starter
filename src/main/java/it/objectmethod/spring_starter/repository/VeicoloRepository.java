@@ -9,7 +9,5 @@ import java.util.Optional;
 
 @Repository
 public interface VeicoloRepository extends JpaRepository<Veicolo, Long>, JpaSpecificationExecutor<Veicolo> {
-
     Optional<Veicolo> getVeicoloById(Long id);
-
 }

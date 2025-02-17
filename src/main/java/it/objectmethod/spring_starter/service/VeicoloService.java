@@ -49,9 +49,7 @@ public class VeicoloService {
     //PAGE
     public PageDTO<VeicoloDTO> getPage(Pageable pageable) {
         Page<Veicolo> page = veicoloRepository.findAll(pageable);
-
-        PageDTO<VeicoloDTO> pageDto = veicoloMapper.mapToPageDTO(page);
-        return pageDto;
+        return veicoloMapper.mapToPageDTO(page);
     }
 
     //FILTER

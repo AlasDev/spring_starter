@@ -51,9 +51,7 @@ public class ClienteService {
     //PAGE
     public PageDTO<ClienteDTO> getPage(Pageable pageable) {
         Page<Cliente> page = clienteRepository.findAll(pageable);
-
-        PageDTO<ClienteDTO> pageDto = clienteMapper.mapToPageDTO(page);
-        return pageDto;
+        return clienteMapper.mapToPageDTO(page);
     }
 
     //FILTER
