@@ -4,10 +4,9 @@ import it.objectmethod.spring_starter.dto.PageDTO;
 import it.objectmethod.spring_starter.dto.VeicoloDTO;
 import it.objectmethod.spring_starter.dto.filter.VeicoloSearchParams;
 import it.objectmethod.spring_starter.entity.Veicolo;
-import it.objectmethod.spring_starter.mapper.VeicoloMapper;
+import it.objectmethod.spring_starter.mapper.mapstruct.VeicoloMapstructMapper;
 import it.objectmethod.spring_starter.repository.VeicoloRepository;
 import jakarta.persistence.EntityNotFoundException;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -17,24 +16,23 @@ import java.util.List;
 @Service
 public class VeicoloService {
     private final VeicoloRepository veicoloRepository;
-    private final VeicoloMapper veicoloMapper;
+    private final VeicoloMapstructMapper veicoloMapstructMapper;
 
-    @Autowired
-    public VeicoloService(VeicoloRepository veicoloRepository, VeicoloMapper veicoloMapper) {
+    public VeicoloService(VeicoloRepository veicoloRepository, VeicoloMapstructMapper veicoloMapstructMapper) {
         this.veicoloRepository = veicoloRepository;
-        this.veicoloMapper = veicoloMapper;
+        this.veicoloMapstructMapper = veicoloMapstructMapper;
     }
 
     public List<VeicoloDTO> getAll() {
-        return veicoloMapper.mapToDtos(veicoloRepository.findAll());
+        return veicoloMapstructMapper.mapToDtos(veicoloRepository.findAll());
     }
     public VeicoloDTO getVeicolo(Long id) {
-        return veicoloMapper.mapToDto(veicoloRepository.getVeicoloById(id).orElseGet(Veicolo::new));
+        return veicoloMapstructMapper.mapToDto(veicoloRepository.getVeicoloById(id).orElseGet(Veicolo::new));
     }
     public VeicoloDTO setVeicolo(VeicoloDTO veicoloDTO) {
-        Veicolo veicolo = veicoloMapper.mapToEntity(veicoloDTO);
+        Veicolo veicolo = veicoloMapstructMapper.mapToEntity(veicoloDTO);
         Veicolo veicoloSaved = veicoloRepository.save(veicolo);
-        return veicoloMapper.mapToDto(veicoloSaved);
+        return veicoloMapstructMapper.mapToDto(veicoloSaved);
     }
     public void deleteVeicolo(Long id) {
         if (!veicoloRepository.existsById(id)) {
@@ -43,18 +41,18 @@ public class VeicoloService {
         veicoloRepository.deleteById(id);
     }
     public VeicoloDTO save(VeicoloDTO veicoloDTO) {
-        return veicoloMapper.mapToDto(veicoloRepository.save(veicoloMapper.mapToEntity(veicoloDTO)));
+        return veicoloMapstructMapper.mapToDto(veicoloRepository.save(veicoloMapstructMapper.mapToEntity(veicoloDTO)));
     }
 
     //PAGE
     public PageDTO<VeicoloDTO> getPage(Pageable pageable) {
         Page<Veicolo> page = veicoloRepository.findAll(pageable);
-        return veicoloMapper.mapToPageDTO(page);
+        return veicoloMapstructMapper.mapToPageDTO(page);
     }
 
     //FILTER
     public List<VeicoloDTO> searchVeicoloBySpecification(VeicoloSearchParams veicoloSearchParams) {
         List<Veicolo> veicoloList = veicoloRepository.findAll(veicoloSearchParams.toSpecification());
-        return veicoloMapper.mapToDtos(veicoloList);
+        return veicoloMapstructMapper.mapToDtos(veicoloList);
     }
 }

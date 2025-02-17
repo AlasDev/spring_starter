@@ -4,10 +4,9 @@ import it.objectmethod.spring_starter.dto.ClienteDTO;
 import it.objectmethod.spring_starter.dto.PageDTO;
 import it.objectmethod.spring_starter.dto.filter.ClienteSearchParams;
 import it.objectmethod.spring_starter.entity.Cliente;
-import it.objectmethod.spring_starter.mapper.ClienteMapper;
+import it.objectmethod.spring_starter.mapper.mapstruct.ClienteMapstructMapper;
 import it.objectmethod.spring_starter.repository.ClienteRepository;
 import jakarta.persistence.EntityNotFoundException;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -17,24 +16,23 @@ import java.util.List;
 @Service
 public class ClienteService {
     private final ClienteRepository clienteRepository;
-    private final ClienteMapper clienteMapper;
+    private final ClienteMapstructMapper clienteMapstructMapper;
 
-    @Autowired
-    public ClienteService(ClienteRepository clienteRepository, ClienteMapper clienteMapper) {
+    public ClienteService(ClienteRepository clienteRepository, ClienteMapstructMapper clienteMapstructMapper) {
         this.clienteRepository = clienteRepository;
-        this.clienteMapper = clienteMapper;
+        this.clienteMapstructMapper = clienteMapstructMapper;
     }
 
     public List<ClienteDTO> getAll() {
-        return clienteMapper.mapToDtos(clienteRepository.findAll());
+        return clienteMapstructMapper.mapToDtos(clienteRepository.findAll());
     }
     public ClienteDTO getCliente(Long id) {
-        return clienteMapper.mapToDto(clienteRepository.findById(id).orElseGet(Cliente::new));
+        return clienteMapstructMapper.mapToDto(clienteRepository.findById(id).orElseGet(Cliente::new));
     }
     public ClienteDTO setCliente(ClienteDTO clienteDTO) {
-        Cliente cliente = clienteMapper.mapToEntity(clienteDTO);
+        Cliente cliente = clienteMapstructMapper.mapToEntity(clienteDTO);
         Cliente clienteSaved = clienteRepository.save(cliente);
-        return clienteMapper.mapToDto(clienteSaved);
+        return clienteMapstructMapper.mapToDto(clienteSaved);
     }
     public void deleteCliente(Long id) {
         if (!clienteRepository.existsById(id)) {
@@ -43,20 +41,20 @@ public class ClienteService {
         clienteRepository.deleteById(id);
     }
     public ClienteDTO save( ClienteDTO clienteDTO) {
-        Cliente cliente = clienteMapper.mapToEntity(clienteDTO);
+        Cliente cliente = clienteMapstructMapper.mapToEntity(clienteDTO);
         Cliente save = clienteRepository.save(cliente);
-        return clienteMapper.mapToDto(save);
+        return clienteMapstructMapper.mapToDto(save);
     }
 
     //PAGE
     public PageDTO<ClienteDTO> getPage(Pageable pageable) {
         Page<Cliente> page = clienteRepository.findAll(pageable);
-        return clienteMapper.mapToPageDTO(page);
+        return clienteMapstructMapper.mapToPageDTO(page);
     }
 
     //FILTER
     public List<ClienteDTO> searchClienteBySpecification(ClienteSearchParams clienteSearchParams) {
         List<Cliente> clienteList = clienteRepository.findAll(clienteSearchParams.toSpecification());
-        return clienteMapper.mapToDtos(clienteList);
+        return clienteMapstructMapper.mapToDtos(clienteList);
     }
 }

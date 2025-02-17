@@ -7,7 +7,6 @@ import it.objectmethod.spring_starter.entity.Autista;
 import it.objectmethod.spring_starter.mapper.mapstruct.AutistaMapstructMapper;
 import it.objectmethod.spring_starter.repository.AutistaRepository;
 import jakarta.persistence.EntityNotFoundException;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -19,7 +18,6 @@ public class AutistaService {
     private final AutistaRepository autistaRepository;
     private final AutistaMapstructMapper autistaMapstructMapper;
 
-    @Autowired
     public AutistaService(AutistaRepository autistaRepository, AutistaMapstructMapper autistaMapstructMapper) {
         this.autistaRepository = autistaRepository;
         this.autistaMapstructMapper = autistaMapstructMapper;
