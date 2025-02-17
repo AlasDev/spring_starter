@@ -23,7 +23,7 @@ public class PageDTO<DTO> {
      * Numero di elementi massimi che la pagina può contenere
      */
     @NotNull
-    private Integer pageSize;
+    private Integer size;
 
     /**
      * Numero di elementi effettivamente presenti nella pagina
@@ -35,19 +35,19 @@ public class PageDTO<DTO> {
      * True quando sei alla pagina iniziale (pagina 0)
      */
     @NotNull
-    private Boolean firstPage;
+    private Boolean first;
 
     /**
      * True quando sei all'ultima pagina
      */
     @NotNull
-    private Boolean lastPage;
+    private Boolean last;
 
     /**
      * Numero della pagina (parte da 0)
      */
     @NotNull
-    private Integer pageNumber;
+    private Integer number;
 
     /**
      * Numero di pagine
