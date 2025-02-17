@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Data
 @Builder
@@ -28,8 +29,11 @@ public class ClienteDTO {
     private LocalDate dataNascita;
 
     @NotNull
-    private String codiceFiscale;
+    private String codFiscale;
 
     @NotNull
     private LocalDate dataIscrizione;
+
+    //Foreign key
+    private List<CorsaDTO> corse;
 }

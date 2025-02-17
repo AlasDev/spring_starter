@@ -6,6 +6,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -22,4 +24,7 @@ public class VeicoloDTO {
 
     @NotNull
     private String colore;
+
+    @NotNull
+    private List<AutistaDTO> autisti;
 }
