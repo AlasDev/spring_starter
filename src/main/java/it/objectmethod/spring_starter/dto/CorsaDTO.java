@@ -42,10 +42,8 @@ public class CorsaDTO {
     private LocalDateTime dataFine;
 
     //Foreign Key
-    @NotNull
     private Long autista;
 
     //Foreign Key
-    @NotNull
     private Long cliente;
 }

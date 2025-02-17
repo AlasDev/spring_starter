@@ -4,7 +4,6 @@ import it.objectmethod.spring_starter.dto.ClienteDTO;
 import it.objectmethod.spring_starter.dto.PageDTO;
 import it.objectmethod.spring_starter.dto.filter.ClienteSearchParams;
 import it.objectmethod.spring_starter.service.ClienteService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.validation.annotation.Validated;
