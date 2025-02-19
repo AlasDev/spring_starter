@@ -1,4 +1,4 @@
-package it.objectmethod.spring_starter.dto.filter;
+package it.objectmethod.spring_starter.filter;
 
 import it.objectmethod.spring_starter.entity.Autista;
 import it.objectmethod.spring_starter.entity.Cliente;
@@ -28,42 +28,69 @@ public class CorsaSearchParams {
     private Cliente cliente;
     private Autista autista;
 
+    @SafeVarargs
+    private Specification<Corsa> combineSpecifications(Specification<Corsa>... specs) {
+        Specification<Corsa> result = null;
+        for (Specification<Corsa> spec : specs) {
+            if (spec != null) {
+                result = (result == null) ? spec : result.or(spec);
+            }
+        }
+        return result;
+    }
+
     public Specification<Corsa> toSpecification() {
         return Specification.<Corsa>where(null)
                 //statoCorsa
-                .or(equalStatoCorsaSpecification(statoCorsa))
-                .or(likeStatoCorsaSpecification(statoCorsa))
-                .or(inStatoCorsaSpecification(statoCorsa))
+                .and(combineSpecifications(
+                        equalStatoCorsaSpecification(statoCorsa),
+                        inStatoCorsaSpecification(statoCorsa)
+                ))
                 //distanzaPercorsa
-                .or(equalDistanzaPercorsaSpecification(distanzaPercorsa))
-                .or(inDistanzaPercorsaSpecification(distanzaPercorsa))
+                .and(combineSpecifications(
+                        equalDistanzaPercorsaSpecification(distanzaPercorsa),
+                        inDistanzaPercorsaSpecification(distanzaPercorsa)
+                ))
                 //costoCorsa
-                .or(equalCostoCorsaSpecification(costoCorsa))
-                .or(inCostoCorsaSpecification(costoCorsa))
+                .and(combineSpecifications(
+                        equalCostoCorsaSpecification(costoCorsa),
+                        inCostoCorsaSpecification(costoCorsa)
+                ))
                 //indirizzoInizio
-                .or(equalIndirizzoinizioSpecification(indirizzoInizio))
-                .or(likeIndirizzoinizioSpecification(indirizzoInizio))
-                .or(inIndirizzoinizioSpecification(indirizzoInizio))
+                .and(combineSpecifications(
+                        equalIndirizzoInizioSpecification(indirizzoInizio),
+                        inIndirizzoInizioSpecification(indirizzoInizio)
+                ))
                 //indirizzoFine
-                .or(equalIndirizzoFineSpecification(indirizzoFine))
-                .or(likeIndirizzoFineSpecification(indirizzoFine))
-                .or(inIndirizzoFineSpecification(indirizzoFine))
+                .and(combineSpecifications(
+                        equalIndirizzoFineSpecification(indirizzoFine),
+                        inIndirizzoFineSpecification(indirizzoFine)
+                ))
                 //dataPrenotazione
-                .or(equalDataPrenotazioneSpecification(dataPrenotazione))
-                .or(inDataPrenotazioneSpecification(dataPrenotazione))
+                .and(combineSpecifications(
+                        equalDataPrenotazioneSpecification(dataPrenotazione),
+                        inDataPrenotazioneSpecification(dataPrenotazione)
+                ))
                 //dataInizio
-                .or(equalDataInizioSpecification(dataInizio))
-                .or(inDataInizioSpecification(dataInizio))
+                .and(combineSpecifications(
+                        equalDataInizioSpecification(dataInizio),
+                        inDataInizioSpecification(dataInizio)
+                ))
                 //dataFine
-                .or(equalDataFineSpecification(dataFine))
-                .or(inDataFineSpecification(dataFine))
+                .and(combineSpecifications(
+                        equalDataFineSpecification(dataFine),
+                        inDataFineSpecification(dataFine)
+                ))
                 //cliente
-                .or(equalClienteSpecification(cliente))
-                .or(inClienteSpecification(cliente))
+                .and(combineSpecifications(
+                        equalClienteSpecification(cliente),
+                        inClienteSpecification(cliente)
+                ))
                 //autista
-                .or(equalAutistaSpecification(autista))
-                .or(inAutistaSpecification(autista))
-                ;
+                .and(combineSpecifications(
+                        equalAutistaSpecification(autista),
+                        inAutistaSpecification(autista)
+                ));
     }
 
     //statoCorsa
@@ -73,14 +100,6 @@ public class CorsaSearchParams {
                 return null;
             }
             return criteriaBuilder.equal(root.get("statoCorsa"), statoCorsa);
-        };
-    }
-    private Specification<Corsa> likeStatoCorsaSpecification(String statoCorsa) {
-        return (Root<Corsa> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) -> {
-            if (statoCorsa == null || statoCorsa.isBlank()) {
-                return null;
-            }
-            return criteriaBuilder.like(root.get("statoCorsa"), statoCorsa);
         };
     }
     private Specification<Corsa> inStatoCorsaSpecification(String statoCorsa) {
@@ -129,7 +148,7 @@ public class CorsaSearchParams {
     }
 
     //indirizzoInizio
-    private Specification<Corsa> equalIndirizzoinizioSpecification(String indirizzoInizio) {
+    private Specification<Corsa> equalIndirizzoInizioSpecification(String indirizzoInizio) {
         return (Root<Corsa> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) -> {
             if (indirizzoInizio == null || indirizzoInizio.isBlank()) {
                 return null;
@@ -137,15 +156,7 @@ public class CorsaSearchParams {
             return criteriaBuilder.equal(root.get("indirizzoInizio"), indirizzoInizio);
         };
     }
-    private Specification<Corsa> likeIndirizzoinizioSpecification(String indirizzoInizio) {
-        return (Root<Corsa> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) -> {
-            if (indirizzoInizio == null || indirizzoInizio.isBlank()) {
-                return null;
-            }
-            return criteriaBuilder.like(root.get("indirizzoInizio"), indirizzoInizio);
-        };
-    }
-    private Specification<Corsa> inIndirizzoinizioSpecification(String indirizzoInizio) {
+    private Specification<Corsa> inIndirizzoInizioSpecification(String indirizzoInizio) {
         return (Root<Corsa> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) -> {
             if (indirizzoInizio == null || indirizzoInizio.isBlank()) {
                 return null;
@@ -161,14 +172,6 @@ public class CorsaSearchParams {
                 return null;
             }
             return criteriaBuilder.equal(root.get("indirizzoFine"), indirizzoFine);
-        };
-    }
-    private Specification<Corsa> likeIndirizzoFineSpecification(String indirizzoFine) {
-        return (Root<Corsa> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) -> {
-            if (indirizzoFine == null || indirizzoFine.isBlank()) {
-                return null;
-            }
-            return criteriaBuilder.like(root.get("indirizzoFine"), indirizzoFine);
         };
     }
     private Specification<Corsa> inIndirizzoFineSpecification(String indirizzoFine) {

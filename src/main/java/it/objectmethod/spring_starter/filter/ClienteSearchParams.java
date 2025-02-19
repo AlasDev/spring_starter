@@ -1,4 +1,4 @@
-package it.objectmethod.spring_starter.dto.filter;
+package it.objectmethod.spring_starter.filter;
 
 import it.objectmethod.spring_starter.entity.Cliente;
 import jakarta.persistence.criteria.CriteriaBuilder;
@@ -18,27 +18,44 @@ public class ClienteSearchParams {
     private String codFiscale;
     private LocalDate dataIscrizione;
 
+    @SafeVarargs
+    private Specification<Cliente> combineSpecifications(Specification<Cliente>... specs) {
+        Specification<Cliente> result = null;
+        for (Specification<Cliente> spec : specs) {
+            if (spec != null) {
+                result = (result == null) ? spec : result.or(spec);
+            }
+        }
+        return result;
+    }
+
     public Specification<Cliente> toSpecification() {
         return Specification.<Cliente>where(null)
                 //nome
-                .or(equalNomeSpecification(nome))
-                .or(likeNomeSpecification(nome))
-                .or(inNomeSpecification(nome))
+                .and(combineSpecifications(
+                        equalNomeSpecification(nome),
+                        inNomeSpecification(nome)
+                ))
                 //cognome
-                .or(equalCognomeSpecification(cognome))
-                .or(likeCognomeSpecification(cognome))
-                .or(inCognomeSpecification(cognome))
+                .and(combineSpecifications(
+                        equalCognomeSpecification(cognome),
+                        inCognomeSpecification(cognome)
+                ))
                 //dataNascita
-                .or(equalDataNascitaSpecification(dataNascita))
-                .or(inDataNascitaSpecification(dataNascita))
+                .and(combineSpecifications(
+                        equalDataNascitaSpecification(dataNascita),
+                        inDataNascitaSpecification(dataNascita)
+                ))
                 //codFiscale
-                .or(equalCodFiscaleSpecification(codFiscale))
-                .or(likeCodFiscaleSpecification(codFiscale))
-                .or(inCodFiscaleSpecification(codFiscale))
+                .and(combineSpecifications(
+                        equalCodFiscaleSpecification(codFiscale),
+                        inCodFiscaleSpecification(codFiscale)
+                ))
                 //dataIscrizione
-                .or(equalDataIscrizioneSpecification(dataIscrizione))
-                .or(inDataIscrizioneSpecification(dataIscrizione))
-                ;
+                .and(combineSpecifications(
+                        equalDataIscrizioneSpecification(dataIscrizione),
+                        inDataIscrizioneSpecification(dataIscrizione)
+                ));
     }
 
     //nome
@@ -48,14 +65,6 @@ public class ClienteSearchParams {
                 return null;
             }
             return criteriaBuilder.equal(root.get("nome"), nome);
-        };
-    }
-    private Specification<Cliente> likeNomeSpecification(String nome) {
-        return (Root<Cliente> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) -> {
-            if (nome == null || nome.isBlank()) {
-                return null;
-            }
-            return criteriaBuilder.like(root.get("nome"), nome);
         };
     }
     private Specification<Cliente> inNomeSpecification(String nome) {
@@ -74,14 +83,6 @@ public class ClienteSearchParams {
                 return null;
             }
             return criteriaBuilder.equal(root.get("cognome"), cognome);
-        };
-    }
-    private Specification<Cliente> likeCognomeSpecification(String cognome) {
-        return (Root<Cliente> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) -> {
-            if (cognome == null || cognome.isBlank()) {
-                return null;
-            }
-            return criteriaBuilder.like(root.get("cognome"), cognome);
         };
     }
     private Specification<Cliente> inCognomeSpecification(String cognome) {
@@ -125,15 +126,6 @@ public class ClienteSearchParams {
             }
 
             return criteriaBuilder.equal(root.get("codFiscale"), codFiscale);
-        };
-    }
-    private Specification<Cliente> likeCodFiscaleSpecification(String codFiscale) {
-        return (Root<Cliente> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) -> {
-            if (codFiscale == null || codFiscale.isBlank()) {
-                return null;
-            }
-
-            return criteriaBuilder.like(root.get("codFiscale"), codFiscale);
         };
     }
     private Specification<Cliente> inCodFiscaleSpecification(String codFiscale) {

@@ -1,4 +1,4 @@
-package it.objectmethod.spring_starter.dto.filter;
+package it.objectmethod.spring_starter.filter;
 
 import it.objectmethod.spring_starter.entity.Autista;
 import it.objectmethod.spring_starter.entity.Veicolo;
@@ -18,26 +18,44 @@ public class AutistaSearchParams {
     private String codFiscale;
     private Veicolo veicolo;
 
+    @SafeVarargs
+    private Specification<Autista> combineSpecifications(Specification<Autista>... specs) {
+        Specification<Autista> result = null;
+        for (Specification<Autista> spec : specs) {
+            if (spec != null) {
+                result = (result == null) ? spec : result.or(spec);
+            }
+        }
+        return result;
+    }
+
     public Specification<Autista> toSpecification() {
         return Specification.<Autista>where(null)
                 //nome
-                .or(equalNomeSpecification(nome))
-                .or(likeNomeSpecification(nome))
-                .or(inNomeSpecification(nome))
+                .and(combineSpecifications(
+                        equalNomeSpecification(nome),
+                        inNomeSpecification(nome)
+                ))
                 //cognome
-                .or(equalCognomeSpecification(cognome))
-                .or(likeCognomeSpecification(cognome))
-                .or(inCognomeSpecification(cognome))
+                .and(combineSpecifications(
+                        equalCognomeSpecification(cognome),
+                        inCognomeSpecification(cognome)
+                ))
                 //dataNascita
-                .or(equalDataNascitaSpecification(dataNascita))
-                .or(inDataNascitaSpecification(dataNascita))
+                .and(combineSpecifications(
+                        equalDataNascitaSpecification(dataNascita),
+                        inDataNascitaSpecification(dataNascita)
+                ))
                 //codFiscale
-                .or(equalCodFiscaleSpecification(codFiscale))
-                .or(likeCodFiscaleSpecification(codFiscale))
-                .or(inCodFiscaleSpecification(codFiscale))
+                .and(combineSpecifications(
+                        equalCodFiscaleSpecification(codFiscale),
+                        inCodFiscaleSpecification(codFiscale)
+                ))
                 //veicoloId
-                .or(equalVeicoloIdSpecification(veicolo))
-                .or(inVeicoloIdSpecification(veicolo));
+                .and(combineSpecifications(
+                        equalVeicoloIdSpecification(veicolo),
+                        inVeicoloIdSpecification(veicolo)
+                ));
     }
 
     //nome
@@ -47,14 +65,6 @@ public class AutistaSearchParams {
                 return null;
             }
             return criteriaBuilder.equal(root.get("nome"), nome);
-        };
-    }
-    private Specification<Autista> likeNomeSpecification(String nome) {
-        return (root, query, criteriaBuilder) -> {
-            if (nome == null || nome.isBlank()) {
-                return null;
-            }
-            return criteriaBuilder.like(root.get("nome"), nome);
         };
     }
     private Specification<Autista> inNomeSpecification(String nome) {
@@ -73,14 +83,6 @@ public class AutistaSearchParams {
                 return null;
             }
             return criteriaBuilder.equal(root.get("cognome"), cognome);
-        };
-    }
-    private Specification<Autista> likeCognomeSpecification(String cognome) {
-        return (root, query, criteriaBuilder) -> {
-            if (cognome == null || cognome.isBlank()) {
-                return null;
-            }
-            return criteriaBuilder.like(root.get("cognome"), cognome);
         };
     }
     private Specification<Autista> inCognomeSpecification(String cognome) {
@@ -123,14 +125,6 @@ public class AutistaSearchParams {
                 return null;
             }
             return criteriaBuilder.equal(root.get("codFiscale"), codFiscale);
-        };
-    }
-    private Specification<Autista> likeCodFiscaleSpecification(String codFiscale) {
-        return (root, query, criteriaBuilder) -> {
-            if (codFiscale == null || codFiscale.isBlank()) {
-                return null;
-            }
-            return criteriaBuilder.like(root.get("codFiscale"), codFiscale);
         };
     }
     private Specification<Autista> inCodFiscaleSpecification(String codFiscale) {
