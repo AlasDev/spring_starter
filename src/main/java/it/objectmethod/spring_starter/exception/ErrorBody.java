@@ -1,13 +1,12 @@
-package it.objectmethod.spring_starter.util;
+package it.objectmethod.spring_starter.exception;
 
 import lombok.Getter;
 
 import java.sql.Timestamp;
 
+@Getter
 public class ErrorBody {
-    @Getter
     private final String message;
-    @Getter
     private final Timestamp timestamp;
 
     /**
