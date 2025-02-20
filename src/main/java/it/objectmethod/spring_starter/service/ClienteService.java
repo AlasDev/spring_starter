@@ -2,16 +2,16 @@ package it.objectmethod.spring_starter.service;
 
 import it.objectmethod.spring_starter.dto.ClienteDTO;
 import it.objectmethod.spring_starter.dto.PageDTO;
-import it.objectmethod.spring_starter.dto.filter.ClienteSearchParams;
 import it.objectmethod.spring_starter.entity.Cliente;
+import it.objectmethod.spring_starter.filter.ClienteSearchParams;
 import it.objectmethod.spring_starter.mapper.mapstruct.ClienteMapstructMapper;
 import it.objectmethod.spring_starter.repository.ClienteRepository;
-import jakarta.persistence.EntityNotFoundException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @Service
 public class ClienteService {
@@ -27,6 +27,9 @@ public class ClienteService {
         return clienteMapstructMapper.mapToDtos(clienteRepository.findAll());
     }
     public ClienteDTO getCliente(Long id) {
+        if (!clienteRepository.existsById(id)) {
+            throw new NoSuchElementException("Cliente with id " + id + " not found");
+        }
         return clienteMapstructMapper.mapToDto(clienteRepository.findById(id).orElseGet(Cliente::new));
     }
     public ClienteDTO setCliente(ClienteDTO clienteDTO) {
@@ -36,7 +39,7 @@ public class ClienteService {
     }
     public void deleteCliente(Long id) {
         if (!clienteRepository.existsById(id)) {
-            throw new EntityNotFoundException("Il cliente con id: " + id + " che stai provando a cancellare non è stato trovato");
+            throw new NoSuchElementException("Cliente with id: " + id + " not found");
         }
         clienteRepository.deleteById(id);
     }

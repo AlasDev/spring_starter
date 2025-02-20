@@ -2,16 +2,16 @@ package it.objectmethod.spring_starter.service;
 
 import it.objectmethod.spring_starter.dto.PageDTO;
 import it.objectmethod.spring_starter.dto.VeicoloDTO;
-import it.objectmethod.spring_starter.dto.filter.VeicoloSearchParams;
 import it.objectmethod.spring_starter.entity.Veicolo;
+import it.objectmethod.spring_starter.filter.VeicoloSearchParams;
 import it.objectmethod.spring_starter.mapper.mapstruct.VeicoloMapstructMapper;
 import it.objectmethod.spring_starter.repository.VeicoloRepository;
-import jakarta.persistence.EntityNotFoundException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @Service
 public class VeicoloService {
@@ -27,6 +27,9 @@ public class VeicoloService {
         return veicoloMapstructMapper.mapToDtos(veicoloRepository.findAll());
     }
     public VeicoloDTO getVeicolo(Long id) {
+        if (!veicoloRepository.existsById(id)) {
+            throw new NoSuchElementException("Veicolo with id " + id + " not found");
+        }
         return veicoloMapstructMapper.mapToDto(veicoloRepository.getVeicoloById(id).orElseGet(Veicolo::new));
     }
     public VeicoloDTO setVeicolo(VeicoloDTO veicoloDTO) {
@@ -36,7 +39,7 @@ public class VeicoloService {
     }
     public void deleteVeicolo(Long id) {
         if (!veicoloRepository.existsById(id)) {
-            throw new EntityNotFoundException("Il veicolo con id:" + id + " che stai provando a cancellare non è stato trovato");
+            throw new NoSuchElementException("Veicolo with id " + id + " not found");
         }
         veicoloRepository.deleteById(id);
     }
