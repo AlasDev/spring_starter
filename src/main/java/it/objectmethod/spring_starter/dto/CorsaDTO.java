@@ -1,5 +1,6 @@
 package it.objectmethod.spring_starter.dto;
 
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -17,7 +18,7 @@ public class CorsaDTO {
 
     private Long id;
 
-    @NotNull
+    @NotBlank
     private String statoCorsa;
 
     @NotNull
@@ -26,10 +27,10 @@ public class CorsaDTO {
     @NotNull
     private Double costoCorsa;
 
-    @NotNull
+    @NotBlank
     private String indirizzoInizio;
 
-    @NotNull
+    @NotBlank
     private String indirizzoFine;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")

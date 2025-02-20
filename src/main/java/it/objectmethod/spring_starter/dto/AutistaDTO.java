@@ -1,5 +1,6 @@
 package it.objectmethod.spring_starter.dto;
 
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -18,17 +19,17 @@ public class AutistaDTO {
 
     private Long id;
 
-    @NotNull
+    @NotBlank
     private String nome;
 
-    @NotNull
+    @NotBlank
     private String cognome;
 
     @NotNull
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate dataNascita;
 
-    @NotNull
+    @NotBlank
     private String codFiscale;
 
     //Foreign Key
