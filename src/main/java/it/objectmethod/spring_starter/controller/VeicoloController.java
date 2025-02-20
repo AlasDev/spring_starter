@@ -2,7 +2,7 @@ package it.objectmethod.spring_starter.controller;
 
 import it.objectmethod.spring_starter.dto.PageDTO;
 import it.objectmethod.spring_starter.dto.VeicoloDTO;
-import it.objectmethod.spring_starter.dto.filter.VeicoloSearchParams;
+import it.objectmethod.spring_starter.filter.VeicoloSearchParams;
 import it.objectmethod.spring_starter.service.VeicoloService;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -48,7 +48,7 @@ public class VeicoloController {
 
     //PAGE
     @GetMapping("/page")
-    public PageDTO<VeicoloDTO> getPage(@PageableDefault(page = 0, size = 5) Pageable pageable) {
+    public PageDTO<VeicoloDTO> getPage(@PageableDefault(size = 5) Pageable pageable) {
         return veicoloService.getPage(pageable);
     }
 

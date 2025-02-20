@@ -2,7 +2,7 @@ package it.objectmethod.spring_starter.controller;
 
 import it.objectmethod.spring_starter.dto.AutistaDTO;
 import it.objectmethod.spring_starter.dto.PageDTO;
-import it.objectmethod.spring_starter.dto.filter.AutistaSearchParams;
+import it.objectmethod.spring_starter.filter.AutistaSearchParams;
 import it.objectmethod.spring_starter.service.AutistaService;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -21,44 +21,44 @@ public class AutistaController {
         this.autistaService = autistaService;
     }
 
-    //copy all
-    @GetMapping("/get/all") // esempio di url: localhost:8080/autista/get/all
+    //read all
+    @GetMapping("/get/all") //url example: localhost:8080/autista/get/all
     public List<AutistaDTO> getAll() {
         return autistaService.getAll();
     }
 
-    //read something
-    @GetMapping("/get/{id}") // esempio di url: localhost:8080/autista/get/5
-    public AutistaDTO getAutista(@PathVariable @Validated Long id) {
+    //read one in particular
+    @GetMapping("/get/{id}") //url example: localhost:8080/autista/get/1
+    public AutistaDTO getAutista(@PathVariable Long id) {
         return autistaService.getAutista(id);
     }
 
     //update something
-    @PutMapping("/update") // esempio di url: localhost:8080/autista/update
+    @PutMapping("/update") //url example: localhost:8080/autista/update
     public AutistaDTO updateAutista(@RequestBody @Validated AutistaDTO autistaDTO) {
         return autistaService.setAutista(autistaDTO);
     }
 
     //delete something
-    @DeleteMapping("/delete/{id}") // esempio di url: localhost:8080/autista/delete/3
-    public void deleteAutista(@PathVariable @Validated Long id) {
-         autistaService.deleteAutista(id);
+    @DeleteMapping("/delete/{id}") //url example: localhost:8080/autista/delete/3
+    public void deleteAutista(@PathVariable Long id) {
+        autistaService.deleteAutista(id);
     }
 
     //post (save) something new
-    @PostMapping("/post") // esempio di url: localhost:8080/autista/post
+    @PostMapping("/post") //url example: localhost:8080/autista/post
     public AutistaDTO addAutista(@RequestBody @Validated AutistaDTO autistaDTO) {
         return autistaService.save(autistaDTO);
     }
 
     //PAGE
-    @GetMapping("/page")
-    public PageDTO<AutistaDTO> getPage(@PageableDefault(page = 0, size = 5) Pageable pageable) {
+    @GetMapping("/page") //url example: localhost:8080/autista/page?page=0&size=5
+    public PageDTO<AutistaDTO> getPage(@PageableDefault(size = 5) Pageable pageable) {
         return autistaService.getPage(pageable);
     }
 
     //FILTER
-    @GetMapping("/filter")
+    @GetMapping("/filter") //url example: localhost:8080/autista/filter?nome=Mario&cognome=Rossi
     public List<AutistaDTO> filter(AutistaSearchParams autistaSearchParams) {
         return autistaService.searchAutistaBySpecification(autistaSearchParams);
     }

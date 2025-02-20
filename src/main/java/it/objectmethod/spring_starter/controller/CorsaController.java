@@ -2,7 +2,7 @@ package it.objectmethod.spring_starter.controller;
 
 import it.objectmethod.spring_starter.dto.CorsaDTO;
 import it.objectmethod.spring_starter.dto.PageDTO;
-import it.objectmethod.spring_starter.dto.filter.CorsaSearchParams;
+import it.objectmethod.spring_starter.filter.CorsaSearchParams;
 import it.objectmethod.spring_starter.service.CorsaService;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -48,7 +48,7 @@ public class CorsaController {
 
     //PAGE
     @GetMapping("/page")
-    public PageDTO<CorsaDTO> getPage(@PageableDefault(page = 0, size = 5) Pageable pageable) {
+    public PageDTO<CorsaDTO> getPage(@PageableDefault(size = 5) Pageable pageable) {
         return corsaService.getPage(pageable);
     }
 

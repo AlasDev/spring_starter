@@ -2,7 +2,7 @@ package it.objectmethod.spring_starter.controller;
 
 import it.objectmethod.spring_starter.dto.ClienteDTO;
 import it.objectmethod.spring_starter.dto.PageDTO;
-import it.objectmethod.spring_starter.dto.filter.ClienteSearchParams;
+import it.objectmethod.spring_starter.filter.ClienteSearchParams;
 import it.objectmethod.spring_starter.service.ClienteService;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -48,7 +48,7 @@ public class ClienteController {
 
     //PAGE
     @GetMapping("/page")
-    public PageDTO<ClienteDTO> getPage(@PageableDefault(page = 0, size = 5) Pageable pageable) {
+    public PageDTO<ClienteDTO> getPage(@PageableDefault(size = 5) Pageable pageable) {
         return clienteService.getPage(pageable);
     }
 
