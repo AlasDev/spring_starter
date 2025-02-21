@@ -30,7 +30,7 @@ public class CorsaService {
         if (!corsaRepository.existsById(id)) {
             throw new NoSuchElementException("Corsa with id " + id + " not found");
         }
-        return corsaMapstructMapper.mapToDto(corsaRepository.getCorsaById(id).orElseGet(Corsa::new));
+        return corsaMapstructMapper.mapToDto(corsaRepository.findById(id).orElseGet(Corsa::new));
     }
     public CorsaDTO setCorsa(CorsaDTO corsaDTO) {
         Corsa corsa = corsaMapstructMapper.mapToEntity(corsaDTO);
