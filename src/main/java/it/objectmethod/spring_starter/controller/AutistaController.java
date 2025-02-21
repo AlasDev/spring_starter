@@ -36,7 +36,7 @@ public class AutistaController {
     //update something
     @PutMapping("/update") //url example: localhost:8080/autista/update
     public AutistaDTO updateAutista(@RequestBody @Validated AutistaDTO autistaDTO) {
-        return autistaService.setAutista(autistaDTO);
+        return autistaService.updateAutista(autistaDTO);
     }
 
     //delete something
