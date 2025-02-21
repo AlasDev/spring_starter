@@ -40,6 +40,6 @@ public class Autista {
     @JoinColumn(name = "veicolo_ID")
     private Veicolo veicolo;
 
-    @OneToMany(mappedBy = "autista")
+    @OneToMany(mappedBy = "autista", cascade = CascadeType.ALL)
     private List<Corsa> corse;
 }
