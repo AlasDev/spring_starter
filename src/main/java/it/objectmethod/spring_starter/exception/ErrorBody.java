@@ -1,13 +1,14 @@
 package it.objectmethod.spring_starter.exception;
 
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import lombok.Getter;
 import org.springframework.http.HttpStatus;
 
 import java.sql.Timestamp;
-
 import java.util.List;
 
 @Getter
+@JsonPropertyOrder({"timestamp", "status", "message", "errors"})
 public class ErrorBody {
     private final Timestamp timestamp;
     private final Long status;
