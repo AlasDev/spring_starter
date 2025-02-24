@@ -32,8 +32,8 @@ public class CorsaController {
     }
 
     @PutMapping("/update")
-    public CorsaDTO updateCliente(@RequestBody @Validated CorsaDTO corsaDTO) {
-        return corsaService.setCorsa(corsaDTO);
+    public CorsaDTO updateCorsa(@RequestBody @Validated CorsaDTO corsaDTO) {
+        return corsaService.updateCorsa(corsaDTO);
     }
 
     @DeleteMapping("/delete/{id}")
@@ -42,7 +42,7 @@ public class CorsaController {
     }
 
     @PostMapping("/post")
-    public CorsaDTO addCorsa(@RequestBody @Validated CorsaDTO corsaDTO) {
+    public CorsaDTO save(@RequestBody @Validated CorsaDTO corsaDTO) {
         return corsaService.save(corsaDTO);
     }
 
