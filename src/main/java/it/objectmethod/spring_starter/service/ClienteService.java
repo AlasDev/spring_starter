@@ -3,6 +3,7 @@ package it.objectmethod.spring_starter.service;
 import it.objectmethod.spring_starter.dto.ClienteDTO;
 import it.objectmethod.spring_starter.dto.PageDTO;
 import it.objectmethod.spring_starter.entity.Cliente;
+import it.objectmethod.spring_starter.exception.exceptions.RequiredValueIsMissingException;
 import it.objectmethod.spring_starter.filter.ClienteSearchParams;
 import it.objectmethod.spring_starter.mapper.mapstruct.ClienteMapstructMapper;
 import it.objectmethod.spring_starter.repository.ClienteRepository;
@@ -26,27 +27,43 @@ public class ClienteService {
     public List<ClienteDTO> getAll() {
         return clienteMapstructMapper.mapToDtos(clienteRepository.findAll());
     }
+
     public ClienteDTO getCliente(Long id) {
         if (!clienteRepository.existsById(id)) {
             throw new NoSuchElementException("Cliente with id " + id + " not found");
         }
         return clienteMapstructMapper.mapToDto(clienteRepository.findById(id).orElseGet(Cliente::new));
     }
-    public ClienteDTO setCliente(ClienteDTO clienteDTO) {
+
+    public ClienteDTO updateCliente(ClienteDTO clienteDTO) {
+        Long clienteId = clienteDTO.getId(); //Id
+
+        if (clienteId == null) {
+            throw new RequiredValueIsMissingException("Id");
+        }
+
+        clienteMapstructMapper.mapToDto(clienteRepository.findById(clienteId).orElseThrow(
+                () -> new NoSuchElementException("Cliente with id " + clienteId + " not found")
+        ));
+
         Cliente cliente = clienteMapstructMapper.mapToEntity(clienteDTO);
-        Cliente clienteSaved = clienteRepository.save(cliente);
-        return clienteMapstructMapper.mapToDto(clienteSaved);
+        Cliente clienteUpdated = clienteRepository.save(cliente);
+        return clienteMapstructMapper.mapToDto(clienteUpdated);
     }
+
     public void deleteCliente(Long id) {
         if (!clienteRepository.existsById(id)) {
             throw new NoSuchElementException("Cliente with id: " + id + " not found");
         }
         clienteRepository.deleteById(id);
     }
+
     public ClienteDTO save( ClienteDTO clienteDTO) {
+        clienteDTO.setId(null);
+
         Cliente cliente = clienteMapstructMapper.mapToEntity(clienteDTO);
-        Cliente save = clienteRepository.save(cliente);
-        return clienteMapstructMapper.mapToDto(save);
+        Cliente clienteSaved = clienteRepository.save(cliente);
+        return clienteMapstructMapper.mapToDto(clienteSaved);
     }
 
     //PAGE

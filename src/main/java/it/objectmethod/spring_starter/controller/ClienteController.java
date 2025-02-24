@@ -33,7 +33,7 @@ public class ClienteController {
 
     @PutMapping("/update")
     public ClienteDTO updateCliente(@RequestBody @Validated ClienteDTO clienteDTO) {
-        return clienteService.setCliente(clienteDTO);
+        return clienteService.updateCliente(clienteDTO);
     }
 
     @DeleteMapping("/delete/{id}")
