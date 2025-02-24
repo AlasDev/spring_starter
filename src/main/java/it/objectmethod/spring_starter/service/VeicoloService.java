@@ -3,7 +3,7 @@ package it.objectmethod.spring_starter.service;
 import it.objectmethod.spring_starter.dto.PageDTO;
 import it.objectmethod.spring_starter.dto.VeicoloDTO;
 import it.objectmethod.spring_starter.entity.Veicolo;
-import it.objectmethod.spring_starter.exception.exceptions.RequiredValueIsMissingException;
+import it.objectmethod.spring_starter.exception.exceptions.RequiredValueException;
 import it.objectmethod.spring_starter.filter.VeicoloSearchParams;
 import it.objectmethod.spring_starter.mapper.mapstruct.VeicoloMapstructMapper;
 import it.objectmethod.spring_starter.repository.VeicoloRepository;
@@ -39,7 +39,7 @@ public class VeicoloService {
         Long veicoloId = veicoloDTO.getId(); //Id
 
         if (veicoloId == null) {
-            throw new RequiredValueIsMissingException("Id");
+            throw new RequiredValueException("Id");
         }
 
         veicoloMapstructMapper.mapToDto(veicoloRepository.findById(veicoloId).orElseThrow(

@@ -7,18 +7,18 @@ import org.springframework.http.HttpStatus;
 import java.util.List;
 
 @Getter
-public class RequiredValueIsMissingException extends CustomRuntimeException {
+public class RequiredValueException extends CustomRuntimeException {
     String message;
     HttpStatus status;
     List<String> missingValues;
 
-    public RequiredValueIsMissingException(String... missingValues) {
+    public RequiredValueException(String... missingValues) {
         this.status = HttpStatus.BAD_REQUEST;
         this.message = "Values are missing";
         this.missingValues = List.of(missingValues);
     }
 
-    public RequiredValueIsMissingException(List<String> missingValues) {
+    public RequiredValueException(List<String> missingValues) {
         this.status = HttpStatus.BAD_REQUEST;
         this.message = "Values are missing";
         this.missingValues = missingValues;

@@ -4,7 +4,7 @@ import it.objectmethod.spring_starter.dto.AutistaDTO;
 import it.objectmethod.spring_starter.dto.PageDTO;
 import it.objectmethod.spring_starter.entity.Autista;
 import it.objectmethod.spring_starter.entity.Veicolo;
-import it.objectmethod.spring_starter.exception.exceptions.RequiredValueIsMissingException;
+import it.objectmethod.spring_starter.exception.exceptions.RequiredValueException;
 import it.objectmethod.spring_starter.filter.AutistaSearchParams;
 import it.objectmethod.spring_starter.mapper.mapstruct.AutistaMapstructMapper;
 import it.objectmethod.spring_starter.repository.AutistaRepository;
@@ -45,10 +45,10 @@ public class AutistaService {
         Long veicoloId = autistaDTO.getVeicolo(); //Veicolo
 
         if (autistaId == null) {
-            throw new RequiredValueIsMissingException("Id");
+            throw new RequiredValueException("Id");
         }
         if (veicoloId == null) {
-            throw new RequiredValueIsMissingException("Veicolo");
+            throw new RequiredValueException("Veicolo");
         }
 
         autistaMapstructMapper.mapToDto(autistaRepository.findById(autistaId).orElseThrow(
@@ -76,7 +76,7 @@ public class AutistaService {
         if (autistaDTO.getVeicolo() == null) {
             //"Un autista senza veicolo non è un autista, è solo un pedone."
             //-cit Sala Davide
-            throw new RequiredValueIsMissingException("Veicolo");
+            throw new RequiredValueException("Veicolo");
         }
 
         Long veicoloId = autistaDTO.getVeicolo();

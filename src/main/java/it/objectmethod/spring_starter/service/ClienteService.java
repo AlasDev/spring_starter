@@ -3,7 +3,7 @@ package it.objectmethod.spring_starter.service;
 import it.objectmethod.spring_starter.dto.ClienteDTO;
 import it.objectmethod.spring_starter.dto.PageDTO;
 import it.objectmethod.spring_starter.entity.Cliente;
-import it.objectmethod.spring_starter.exception.exceptions.RequiredValueIsMissingException;
+import it.objectmethod.spring_starter.exception.exceptions.RequiredValueException;
 import it.objectmethod.spring_starter.filter.ClienteSearchParams;
 import it.objectmethod.spring_starter.mapper.mapstruct.ClienteMapstructMapper;
 import it.objectmethod.spring_starter.repository.ClienteRepository;
@@ -39,7 +39,7 @@ public class ClienteService {
         Long clienteId = clienteDTO.getId(); //Id
 
         if (clienteId == null) {
-            throw new RequiredValueIsMissingException("Id");
+            throw new RequiredValueException("Id");
         }
 
         clienteMapstructMapper.mapToDto(clienteRepository.findById(clienteId).orElseThrow(

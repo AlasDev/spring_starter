@@ -1,6 +1,6 @@
 package it.objectmethod.spring_starter.exception;
 
-import it.objectmethod.spring_starter.exception.exceptions.RequiredValueIsMissingException;
+import it.objectmethod.spring_starter.exception.exceptions.RequiredValueException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
@@ -69,8 +69,8 @@ public class GlobalExceptionHandler {
      * @param ex the exception
      * @return ResponseEntity with error body and appropriate HTTP status
      */
-    @ExceptionHandler(RequiredValueIsMissingException.class)
-    public ResponseEntity<ErrorBody> handleCustomException(RequiredValueIsMissingException ex) {
+    @ExceptionHandler(RequiredValueException.class)
+    public ResponseEntity<ErrorBody> handleCustomException(RequiredValueException ex) {
         HttpStatus status = ex.getStatus();
         List<String> errorMessages = ex.getMissingValues()
                 .stream()

@@ -5,7 +5,7 @@ import it.objectmethod.spring_starter.dto.PageDTO;
 import it.objectmethod.spring_starter.entity.Autista;
 import it.objectmethod.spring_starter.entity.Cliente;
 import it.objectmethod.spring_starter.entity.Corsa;
-import it.objectmethod.spring_starter.exception.exceptions.RequiredValueIsMissingException;
+import it.objectmethod.spring_starter.exception.exceptions.RequiredValueException;
 import it.objectmethod.spring_starter.filter.CorsaSearchParams;
 import it.objectmethod.spring_starter.mapper.mapstruct.CorsaMapstructMapper;
 import it.objectmethod.spring_starter.repository.AutistaRepository;
@@ -49,13 +49,13 @@ public class CorsaService {
         Long clienteId = corsaDTO.getCliente();
 
         if (corsaId == null) {
-            throw new RequiredValueIsMissingException("Id");
+            throw new RequiredValueException("Id");
         }
         if (autistaId == null) {
-            throw new RequiredValueIsMissingException("Autista");
+            throw new RequiredValueException("Autista");
         }
         if (clienteId == null) {
-            throw new RequiredValueIsMissingException("Cliente");
+            throw new RequiredValueException("Cliente");
         }
 
         corsaMapstructMapper.mapToDto(corsaRepository.findById(corsaId).orElseThrow(
@@ -90,10 +90,10 @@ public class CorsaService {
         Long clienteId = corsaDTO.getCliente();
 
         if (autistaId == null) {
-            throw new RequiredValueIsMissingException("Autista");
+            throw new RequiredValueException("Autista");
         }
         if (clienteId == null) {
-            throw new RequiredValueIsMissingException("Cliente");
+            throw new RequiredValueException("Cliente");
         }
 
         Autista autista = autistaRepository.findById(autistaId).orElseThrow(
