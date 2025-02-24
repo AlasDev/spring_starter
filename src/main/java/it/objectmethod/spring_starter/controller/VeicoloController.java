@@ -33,7 +33,7 @@ public class VeicoloController {
 
     @PutMapping("/update")
     public VeicoloDTO updateVeicolo(@RequestBody @Validated VeicoloDTO veicoloDTO) {
-        return veicoloService.setVeicolo(veicoloDTO);
+        return veicoloService.updateVeicolo(veicoloDTO);
     }
 
     @DeleteMapping("/delete/{id}")
