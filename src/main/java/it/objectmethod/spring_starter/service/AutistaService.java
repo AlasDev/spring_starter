@@ -11,7 +11,6 @@ import it.objectmethod.spring_starter.repository.AutistaRepository;
 import it.objectmethod.spring_starter.repository.VeicoloRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -60,8 +59,8 @@ public class AutistaService {
 
         Autista autista = autistaMapstructMapper.mapToEntity(autistaDTO);
         autista.setVeicolo(veicolo);
-        autistaRepository.save(autista);
-        return autistaMapstructMapper.mapToDto(autista);
+        Autista autistaUpdated = autistaRepository.save(autista);
+        return autistaMapstructMapper.mapToDto(autistaUpdated);
     }
 
     public void deleteAutista(Long id) {
@@ -72,7 +71,7 @@ public class AutistaService {
     }
 
     public AutistaDTO save(AutistaDTO autistaDTO) {
-        autistaDTO.setId(null); //Veicolo id must not be there, that's why we will ignore it if it gets inputted anyway.
+        autistaDTO.setId(null); //Autista id must not be there, that's why we will ignore it if it gets inputted anyway.
 
         if (autistaDTO.getVeicolo() == null) {
             //"Un autista senza veicolo non è un autista, è solo un pedone."
@@ -80,16 +79,15 @@ public class AutistaService {
             throw new RequiredValueIsMissingException("Veicolo");
         }
 
-        Long veicoloId; //Veicolo
-        veicoloId = autistaDTO.getVeicolo();
+        Long veicoloId = autistaDTO.getVeicolo();
 
         Veicolo veicolo = veicoloRepository.findById(veicoloId).orElseThrow(
                 () -> new NoSuchElementException("Veicolo with id '" + veicoloId + "' not found"));
 
         Autista autista = autistaMapstructMapper.mapToEntity(autistaDTO);
         autista.setVeicolo(veicolo);
-        autistaRepository.save(autista);
-        return autistaMapstructMapper.mapToDto(autista);
+        Autista autistaSaved = autistaRepository.save(autista);
+        return autistaMapstructMapper.mapToDto(autistaSaved);
     }
 
     //PAGE
