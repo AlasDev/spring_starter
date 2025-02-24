@@ -35,7 +35,7 @@ public class AutistaService {
 
     public AutistaDTO getAutista(Long id) {
         if (!autistaRepository.existsById(id)) {
-            throw new NoSuchElementException("Autista with id " + id + " not found");
+            throw new NoSuchElementException("Autista with id '" + id + "' not found");
         }
         return autistaMapstructMapper.mapToDto(autistaRepository.getReferenceById(id));
     }

@@ -38,7 +38,7 @@ public class CorsaService {
 
     public CorsaDTO getCorsa(Long id) {
         if (!corsaRepository.existsById(id)) {
-            throw new NoSuchElementException("Corsa with id " + id + " not found");
+            throw new NoSuchElementException("Corsa with id '" + id + "' not found");
         }
         return corsaMapstructMapper.mapToDto(corsaRepository.findById(id).orElseGet(Corsa::new));
     }
@@ -59,15 +59,15 @@ public class CorsaService {
         }
 
         corsaMapstructMapper.mapToDto(corsaRepository.findById(corsaId).orElseThrow(
-                () -> new NoSuchElementException("Corsa with id " + corsaId + " not found"))
+                () -> new NoSuchElementException("Corsa with id '" + corsaId + "' not found"))
         );
 
         Autista autista = autistaRepository.findById(autistaId).orElseThrow(
-                () -> new NoSuchElementException("Autista with id " + autistaId + " not found")
+                () -> new NoSuchElementException("Autista with id '" + autistaId + "' not found")
         );
 
         Cliente cliente = clienteRepository.findById(clienteId).orElseThrow(
-                () -> new NoSuchElementException("Cliente with id " + clienteId + " not found")
+                () -> new NoSuchElementException("Cliente with id '" + clienteId + "' not found")
         );
 
         Corsa corsa = corsaMapstructMapper.mapToEntity(corsaDTO);

@@ -30,7 +30,7 @@ public class VeicoloService {
 
     public VeicoloDTO getVeicolo(Long id) {
         if (!veicoloRepository.existsById(id)) {
-            throw new NoSuchElementException("Veicolo with id " + id + " not found");
+            throw new NoSuchElementException("Veicolo with id '" + id + "' not found");
         }
         return veicoloMapstructMapper.mapToDto(veicoloRepository.findById(id).orElseGet(Veicolo::new));
     }

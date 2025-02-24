@@ -30,7 +30,7 @@ public class ClienteService {
 
     public ClienteDTO getCliente(Long id) {
         if (!clienteRepository.existsById(id)) {
-            throw new NoSuchElementException("Cliente with id " + id + " not found");
+            throw new NoSuchElementException("Cliente with id '" + id + "' not found");
         }
         return clienteMapstructMapper.mapToDto(clienteRepository.findById(id).orElseGet(Cliente::new));
     }
@@ -43,7 +43,7 @@ public class ClienteService {
         }
 
         clienteMapstructMapper.mapToDto(clienteRepository.findById(clienteId).orElseThrow(
-                () -> new NoSuchElementException("Cliente with id " + clienteId + " not found")
+                () -> new NoSuchElementException("Cliente with id '" + clienteId + "' not found")
         ));
 
         Cliente cliente = clienteMapstructMapper.mapToEntity(clienteDTO);
