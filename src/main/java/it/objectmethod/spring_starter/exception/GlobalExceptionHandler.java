@@ -48,7 +48,7 @@ public class GlobalExceptionHandler {
 
     /**
      * Exception handler for MethodArgumentNotValidException.
-     * It is thrown every time an argument annotated with {@code @Valid}(or gets validated automatically) tries to get validated but fails.
+     * It is thrown every time an argument annotated with {@code @Validated}(or one that gets validated automatically) tries to get validated but fails.
      * @param ex the exception
      * @return ResponseEntity with error body and appropriate HTTP status
      */
@@ -58,7 +58,10 @@ public class GlobalExceptionHandler {
         List<String> errorMessages = ex.getBindingResult()
                 .getFieldErrors()
                 .stream()
-                .map(error -> "Value '"+ error.getRejectedValue() +"' inserted in field '" + error.getField() + "' is not a valid value")
+                .map(error -> String.format("Field '%s': %s (rejected value: '%s')",
+                        error.getField(),
+                        error.getDefaultMessage(),
+                        error.getRejectedValue()))
                 .toList();
 
         ErrorBody errorBody = new ErrorBody("Validation Error", status, errorMessages);
