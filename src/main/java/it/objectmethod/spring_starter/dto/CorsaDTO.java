@@ -1,5 +1,6 @@
 package it.objectmethod.spring_starter.dto;
 
+import it.objectmethod.spring_starter.annotation.DecimalValidation;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -22,9 +23,11 @@ public class CorsaDTO {
     private String statoCorsa;
 
     @NotNull(message = "insert distance travelled")
+    @DecimalValidation(max = 3, message = "'distanzaPercorsa' cant have more than 3 decimal digits" )
     private Double distanzaPercorsa;
 
     @NotNull(message = "insert the price")
+    @DecimalValidation(max = 2, message = "'costoCorsa' cant have more than 2 decimal digits" )
     private Double costoCorsa;
 
     @NotBlank(message = "'indirizzoInizio' cant be empty")
