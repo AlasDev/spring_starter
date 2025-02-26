@@ -29,7 +29,7 @@ public class AutistaController {
 
     //read one in particular
     @GetMapping("/get/{id}") //url example: localhost:8080/autista/get/1
-    public AutistaDTO getAutista(@PathVariable Long id) {
+    public AutistaDTO getAutista(@PathVariable @Validated Long id) {
         return autistaService.getAutista(id);
     }
 
@@ -41,7 +41,7 @@ public class AutistaController {
 
     //delete something
     @DeleteMapping("/delete/{id}") //url example: localhost:8080/autista/delete/3
-    public void deleteAutista(@PathVariable Long id) {
+    public void deleteAutista(@PathVariable @Validated Long id) {
         autistaService.deleteAutista(id);
     }
 

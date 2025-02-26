@@ -18,19 +18,19 @@ public class CorsaDTO {
 
     private Long id;
 
-    @NotBlank
+    @NotBlank(message = "'statoCorsa' cant be empty")
     private String statoCorsa;
 
-    @NotNull
+    @NotNull(message = "insert distance travelled")
     private Double distanzaPercorsa;
 
-    @NotNull
+    @NotNull(message = "insert the price")
     private Double costoCorsa;
 
-    @NotBlank
+    @NotBlank(message = "'indirizzoInizio' cant be empty")
     private String indirizzoInizio;
 
-    @NotBlank
+    @NotBlank(message = "'indirizzoFine' cant be empty")
     private String indirizzoFine;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")

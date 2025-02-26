@@ -1,7 +1,6 @@
 package it.objectmethod.spring_starter.dto;
 
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -19,17 +18,21 @@ public class AutistaDTO {
 
     private Long id;
 
-    @NotBlank
+    @NotBlank(message = "'nome' cant be empty")
     private String nome;
 
-    @NotBlank
+    @NotBlank(message = "'cognome' cant be empty")
     private String cognome;
 
-    @NotNull
+    @Past(message = "date of birth cant be a date that has yet to come")
+    @NotNull(message = "insert date of birth")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate dataNascita;
 
-    @NotBlank
+    @NotBlank(message = "'codFiscale' cant be empty")
+    @Max(value = 16, message = "codFiscale is too long. Must be max 16 characters.")
+    @Min(value = 11, message = "codFiscale is too short. Must be at least 11 characters.")
+    @Pattern(regexp = "^[A-Za-z]{6}\\d{2}[A-Za-z]\\d{2}[a-zA-Z_0-9]{4}[A-Za-z]$")
     private String codFiscale;
 
     //Foreign Key
