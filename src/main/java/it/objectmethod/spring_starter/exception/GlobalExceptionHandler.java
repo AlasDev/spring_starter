@@ -1,6 +1,7 @@
 package it.objectmethod.spring_starter.exception;
 
 import it.objectmethod.spring_starter.exception.exceptions.RequiredValueException;
+import it.objectmethod.spring_starter.exception.exceptions.UnauthorizedException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
@@ -101,6 +102,18 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ErrorBody> handleCustomException(SQLException ex) {
         HttpStatus status = HttpStatus.BAD_REQUEST;
         ErrorBody errorBody = new ErrorBody("SQL error", status, List.of(ex.getLocalizedMessage()));
+        return ResponseEntity.status(status).body(errorBody);
+    }
+
+    /**
+     * Exception handler for UnauthorizedException.
+     * @param ex the exception
+     * @return ResponseEntity with error body and appropriate HTTP status
+     */
+    @ExceptionHandler(UnauthorizedException.class)
+    public ResponseEntity<ErrorBody> handleCustomException(UnauthorizedException ex) {
+        HttpStatus status = HttpStatus.UNAUTHORIZED;
+        ErrorBody errorBody = new ErrorBody("Unauthorized", status, List.of(ex.getLocalizedMessage()));
         return ResponseEntity.status(status).body(errorBody);
     }
 }
