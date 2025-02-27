@@ -55,16 +55,28 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ErrorBody> handleCustomException(MethodArgumentNotValidException ex) {
         HttpStatus status = HttpStatus.BAD_REQUEST;
-        List<String> errorMessages = ex.getBindingResult()
-                .getFieldErrors()
-                .stream()
-                .map(error -> String.format("Field '%s': %s (rejected value: '%s')",
-                        error.getField(),
-                        error.getDefaultMessage(),
-                        error.getRejectedValue()))
-                .toList();
+        List<String> errorMessages = List.of();
 
-        ErrorBody errorBody = new ErrorBody("Validation Error", status, errorMessages);
+        if (ex.hasFieldErrors()) {
+            errorMessages = ex.getBindingResult()
+                    .getFieldErrors()
+                    .stream()
+                    .map(fieldError -> String.format("Field '%s': %s (rejected value: '%s')",
+                            fieldError.getField(),
+                            fieldError.getDefaultMessage(),
+                            fieldError.getRejectedValue()))
+                    .toList();
+        } else if (ex.hasGlobalErrors()) {
+            errorMessages = ex.getBindingResult()
+                    .getAllErrors()
+                    .stream()
+                    .map(error -> String.format("Object '%s': %s",
+                            error.getObjectName(),
+                            error.getDefaultMessage()))
+                    .toList();
+        }
+
+        ErrorBody errorBody = new ErrorBody("Object Validation Error", status, errorMessages);
         return ResponseEntity.status(status).body(errorBody);
     }
 
