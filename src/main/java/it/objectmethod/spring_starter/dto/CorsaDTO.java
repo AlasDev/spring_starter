@@ -1,6 +1,7 @@
 package it.objectmethod.spring_starter.dto;
 
 import it.objectmethod.spring_starter.annotation.DecimalValidation;
+import it.objectmethod.spring_starter.annotation.TimeComparatorValidation;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -15,6 +16,7 @@ import java.time.LocalDateTime;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@TimeComparatorValidation(maxHours = 48)
 public class CorsaDTO {
 
     private Long id;
@@ -23,11 +25,11 @@ public class CorsaDTO {
     private String statoCorsa;
 
     @NotNull(message = "insert distance travelled")
-    @DecimalValidation(max = 3, message = "'distanzaPercorsa' cant have more than 3 decimal digits" )
+    @DecimalValidation(max = 3)
     private Double distanzaPercorsa;
 
     @NotNull(message = "insert the price")
-    @DecimalValidation(max = 2, message = "'costoCorsa' cant have more than 2 decimal digits" )
+    @DecimalValidation(max = 2)
     private Double costoCorsa;
 
     @NotBlank(message = "'indirizzoInizio' cant be empty")
