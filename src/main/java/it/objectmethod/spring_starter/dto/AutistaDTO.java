@@ -18,18 +18,18 @@ public class AutistaDTO {
 
     private Long id;
 
-    @NotBlank(message = "'nome' cant be empty")
+    @NotBlank(message = "This field is required")
     private String nome;
 
-    @NotBlank(message = "'cognome' cant be empty")
+    @NotBlank(message = "This field is required")
     private String cognome;
 
     @Past(message = "date of birth cant be a date that has yet to come")
-    @NotNull(message = "insert date of birth")
+    @NotNull(message = "This field is required")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate dataNascita;
 
-    @NotBlank(message = "'codFiscale' cant be empty")
+    @NotBlank(message = "This field is required")
     @Max(value = 16, message = "codFiscale is too long. Must be max 16 characters.")
     @Min(value = 11, message = "codFiscale is too short. Must be at least 11 characters.")
     @Pattern(regexp = "^[A-Za-z]{6}\\d{2}[A-Za-z]\\d{2}[a-zA-Z_0-9]{4}[A-Za-z]$")

@@ -21,10 +21,10 @@ public class CorsaDTO {
 
     private Long id;
 
-    @NotBlank(message = "'statoCorsa' cant be empty")
+    @NotBlank(message = "This field is required")
     private String statoCorsa;
 
-    @NotNull(message = "insert distance travelled")
+    @NotNull(message = "This field is required")
     @DecimalValidation(max = 3)
     private Double distanzaPercorsa;
 
@@ -32,10 +32,10 @@ public class CorsaDTO {
     @DecimalValidation(max = 2)
     private Double costoCorsa;
 
-    @NotBlank(message = "'indirizzoInizio' cant be empty")
+    @NotBlank(message = "This field is required")
     private String indirizzoInizio;
 
-    @NotBlank(message = "'indirizzoFine' cant be empty")
+    @NotBlank(message = "This field is required")
     private String indirizzoFine;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")

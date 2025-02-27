@@ -15,10 +15,10 @@ public class UtenteDTO {
 
     private Long id;
 
-    @NotBlank(message = "'email' cant be empty")
+    @NotBlank(message = "This field is required")
     @Email(message = "You have to provide a valid email address.")
     private String email;
 
-    @NotBlank(message = "'password' cant be empty")
+    @NotBlank(message = "This field is required")
     private String password;
 }
