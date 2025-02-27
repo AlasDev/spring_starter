@@ -21,15 +21,24 @@ public class DecimalValidator implements ConstraintValidator<DecimalValidation, 
     }
 
     @Override
-    public boolean isValid(Double value, ConstraintValidatorContext context) {
+    public boolean isValid(Double num, ConstraintValidatorContext context) {
 
-        if (value == null) {
+        if (num == null) {
             return true;
         }
 
-        List<String> list = List.of(value.toString().split("\\."));
-        int decimal = list.get(1).length();
+        int decimal;
+        List<String> list = List.of(num.toString().split("\\."));
+        if (list.size() == 1) {
+            //list size 1 means that .split() didn't split anything, it doesn't have any decimals
+            decimal = 0;
+        } else {
+            decimal = list.get(1).length();
+        }
 
-        return decimal <= maxDecimalDigits && decimal >= minDecimalDigits;
+        context.disableDefaultConstraintViolation();
+        context.buildConstraintViolationWithTemplate("Value must have minimum '" + minDecimalDigits + "' and maximum '" + maxDecimalDigits + "' decimal digits.").addConstraintViolation();
+
+        return decimal >= minDecimalDigits && decimal <= maxDecimalDigits;
     }
 }

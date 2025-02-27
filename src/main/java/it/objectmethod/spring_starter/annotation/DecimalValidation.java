@@ -15,7 +15,7 @@ public @interface DecimalValidation {
 
     String message() default "Invalid decimal digits.";
 
-    int max() default 1;
+    int max() default 12;
 
     int min() default 0;
 
