@@ -39,6 +39,10 @@ public class Cliente {
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate dataIscrizione;
 
+    @OneToOne
+    @JoinColumn(name = "utente_ID")
+    private Utente utente;
+
     @OneToMany(mappedBy = "cliente")
     private List<Corsa> corse;
 }
