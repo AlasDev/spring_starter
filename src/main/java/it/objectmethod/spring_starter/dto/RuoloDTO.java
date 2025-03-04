@@ -1,26 +1,23 @@
 package it.objectmethod.spring_starter.dto;
 
-import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class UtenteDTO {
+public class RuoloDTO {
 
     private Long id;
 
     @NotBlank(message = "This field is required")
-    @Email(message = "You have to provide a valid email address.")
-    private String email;
+    private String descrizione;
 
-    @NotBlank(message = "This field is required")
-    private String password;
-
-    private Long ruolo;
+    private List<Long> utenti;
 }
