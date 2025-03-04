@@ -1,6 +1,7 @@
 package it.objectmethod.spring_starter.filter;
 
 import it.objectmethod.spring_starter.entity.Cliente;
+import it.objectmethod.spring_starter.entity.Utente;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Root;
@@ -17,6 +18,7 @@ public class ClienteSearchParams {
     private LocalDate dataNascita;
     private String codFiscale;
     private LocalDate dataIscrizione;
+    private Utente utente;
 
     @SafeVarargs
     private Specification<Cliente> combineSpecifications(Specification<Cliente>... specs) {
@@ -55,6 +57,11 @@ public class ClienteSearchParams {
                 .and(combineSpecifications(
                         equalDataIscrizioneSpecification(dataIscrizione),
                         inDataIscrizioneSpecification(dataIscrizione)
+                ))
+                //utenteId
+                .and(combineSpecifications(
+                        equalUtenteIdSpecification(utente),
+                        inUtenteIdSpecification(utente)
                 ));
     }
 
@@ -159,6 +166,32 @@ public class ClienteSearchParams {
                 return null;
             }
             return criteriaBuilder.in(root.get("dataIscrizione"));
+        };
+    }
+
+    //utenteId
+    private Specification<Cliente> equalUtenteIdSpecification(Utente utente) {
+        return (root, query, criteriaBuilder) -> {
+            if (utente == null) {
+                return null;
+            }
+            Long utenteId = utente.getId();
+            if (utenteId == null) {
+                return null;
+            }
+            return criteriaBuilder.equal(root.get("utente").get("id"), utenteId);
+        };
+    }
+    private Specification<Cliente> inUtenteIdSpecification(Utente utente) {
+        return (root, query, criteriaBuilder) -> {
+            if (utente == null) {
+                return null;
+            }
+            Long utenteId = utente.getId();
+            if (utenteId == null) {
+                return null;
+            }
+            return criteriaBuilder.in(root.get("utente").get("id"));
         };
     }
 }
