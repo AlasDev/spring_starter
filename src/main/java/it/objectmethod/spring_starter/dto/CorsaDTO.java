@@ -21,8 +21,8 @@ public class CorsaDTO {
 
     private Long id;
 
-    @NotBlank(message = "This field is required")
-    private String statoCorsa;
+    //Foreign Key
+    private Long statoCorsa;
 
     @NotNull(message = "This field is required")
     @DecimalValidation(max = 3)
