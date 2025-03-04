@@ -39,6 +39,9 @@ public class ClienteDTO {
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate dataIscrizione;
 
-    //Foreign key
+    //Foreign Key
+    private Long utente;
+
+    //Foreign Key (reference)
     private List<Long> corse;
 }
