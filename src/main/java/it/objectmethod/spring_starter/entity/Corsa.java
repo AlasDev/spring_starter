@@ -19,8 +19,9 @@ public class Corsa {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "stato_corsa")
-    private String statoCorsa;
+    @ManyToOne
+    @JoinColumn(name = "stato_corsa")
+    private StatoCorsa statoCorsa;
 
     @Column(name = "distanza_percorsa")
     private Double distanzaPercorsa;
