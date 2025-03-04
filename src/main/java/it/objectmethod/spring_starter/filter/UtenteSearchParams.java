@@ -12,7 +12,6 @@ import org.springframework.data.jpa.domain.Specification;
 public class UtenteSearchParams {
     //presi dall'entità
     private String email;
-    private String password;
     private Ruolo ruolo;
 
     @SafeVarargs
@@ -32,11 +31,6 @@ public class UtenteSearchParams {
                 .and(combineSpecifications(
                         equalEmailSpecification(email),
                         inEmailSpecification(email)
-                ))
-                //password
-                .and(combineSpecifications(
-                        equalPasswordSpecification(password),
-                        inPasswordSpecification(password)
                 ))
                 //ruolo
                 .and(combineSpecifications(
@@ -61,24 +55,6 @@ public class UtenteSearchParams {
                 return null;
             }
             return criteriaBuilder.in(root.get("email"));
-        };
-    }
-
-    //password
-    private Specification<Utente> equalPasswordSpecification(String password) {
-        return (root, query, criteriaBuilder) -> {
-            if (password == null || password.isBlank()) {
-                return null;
-            }
-            return criteriaBuilder.equal(root.get("password"), password);
-        };
-    }
-    private Specification<Utente> inPasswordSpecification(String password) {
-        return (root, query, criteriaBuilder) -> {
-            if (password == null || password.isBlank()) {
-                return null;
-            }
-            return criteriaBuilder.in(root.get("password"));
         };
     }
 
