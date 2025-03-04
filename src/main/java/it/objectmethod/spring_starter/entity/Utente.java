@@ -1,11 +1,10 @@
 package it.objectmethod.spring_starter.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
+@Setter
+@Getter
 @Data
 @Builder
 @NoArgsConstructor
@@ -15,8 +14,7 @@ import lombok.NoArgsConstructor;
 public class Utente {
 
     @Column(name = "utente_ID")
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(name = "email", unique = true)
@@ -24,4 +22,9 @@ public class Utente {
 
     @Column(name = "password")
     private String password;
+
+    @ManyToOne
+    @JoinColumn(name = "ruolo_id")
+    private Ruolo ruolo;
+
 }
