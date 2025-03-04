@@ -3,6 +3,7 @@ package it.objectmethod.spring_starter.filter;
 import it.objectmethod.spring_starter.entity.Autista;
 import it.objectmethod.spring_starter.entity.Cliente;
 import it.objectmethod.spring_starter.entity.Corsa;
+import it.objectmethod.spring_starter.entity.StatoCorsa;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Root;
@@ -14,7 +15,7 @@ import java.time.LocalDateTime;
 @Data
 public class CorsaSearchParams {
     //presi dalla entity
-    private String statoCorsa;
+    private StatoCorsa statoCorsa;
     private Double distanzaPercorsa;
     private Double costoCorsa;
     private String indirizzoInizio;
@@ -43,8 +44,8 @@ public class CorsaSearchParams {
         return Specification.<Corsa>where(null)
                 //statoCorsa
                 .and(combineSpecifications(
-                        equalStatoCorsaSpecification(statoCorsa),
-                        inStatoCorsaSpecification(statoCorsa)
+                        equalStatoCorsaIdSpecification(statoCorsa),
+                        inStatoCorsaIdSpecification(statoCorsa)
                 ))
                 //distanzaPercorsa
                 .and(combineSpecifications(
@@ -94,20 +95,29 @@ public class CorsaSearchParams {
     }
 
     //statoCorsa
-    private Specification<Corsa> equalStatoCorsaSpecification(String statoCorsa) {
+    private Specification<Corsa> equalStatoCorsaIdSpecification(StatoCorsa statoCorsa) {
         return (Root<Corsa> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) -> {
-            if (statoCorsa == null || statoCorsa.isBlank()) {
+            if (statoCorsa == null) {
                 return null;
             }
+            Long statoCorsaId = statoCorsa.getId();
+            if (statoCorsaId == null) {
+                return null;
+            }
+
             return criteriaBuilder.equal(root.get("statoCorsa"), statoCorsa);
         };
     }
-    private Specification<Corsa> inStatoCorsaSpecification(String statoCorsa) {
-        return (Root<Corsa> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) -> {
-            if (statoCorsa == null || statoCorsa.isBlank()) {
+    private Specification<Corsa> inStatoCorsaIdSpecification(StatoCorsa statoCorsa) {
+        return (root, query, criteriaBuilder) -> {
+            if (statoCorsa == null) {
                 return null;
             }
-            return criteriaBuilder.in(root.get("statoCorsa"));
+            Long statoCorsaId = statoCorsa.getId();
+            if (statoCorsaId == null) {
+                return null;
+            }
+            return criteriaBuilder.in(root.get("statoCorsa").get("id"));
         };
     }
 
