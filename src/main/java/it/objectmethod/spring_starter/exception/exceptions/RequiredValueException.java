@@ -8,9 +8,9 @@ import java.util.List;
 
 @Getter
 public class RequiredValueException extends CustomRuntimeException {
-    String message;
-    HttpStatus status;
-    List<String> missingValues;
+    final String message;
+    final HttpStatus status;
+    final List<String> missingValues;
 
     public RequiredValueException(String... missingValues) {
         this.status = HttpStatus.BAD_REQUEST;
