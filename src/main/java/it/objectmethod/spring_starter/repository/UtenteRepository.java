@@ -7,4 +7,8 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface UtenteRepository extends JpaRepository<Utente, Long>, JpaSpecificationExecutor<Utente> {
+
+    Boolean existsByEmailAndPassword(String email, String password);
+
+    Boolean existsByEmail(String email);
 }
