@@ -1,5 +1,6 @@
 package it.objectmethod.spring_starter.exception;
 
+import it.objectmethod.spring_starter.exception.exceptions.EmailAlreadyRegisteredException;
 import it.objectmethod.spring_starter.exception.exceptions.RequiredValueException;
 import it.objectmethod.spring_starter.exception.exceptions.UnauthorizedException;
 import org.springframework.http.HttpStatus;
@@ -19,6 +20,7 @@ public class GlobalExceptionHandler {
 
     /**
      * Exception handler for AutistaRuntimeException
+     *
      * @param ex the exception
      * @return ResponseEntity with error body and appropriate HTTP status
      */
@@ -33,6 +35,7 @@ public class GlobalExceptionHandler {
     /**
      * Exception handler for MethodArgumentTypeMismatchException.
      * It is thrown every time something receives a type it cant handle properly.
+     *
      * @param ex the exception
      * @return ResponseEntity with error body and appropriate HTTP status
      */
@@ -42,13 +45,14 @@ public class GlobalExceptionHandler {
         ErrorBody errorBody = new ErrorBody("Type received is not valid",
                 status,
                 List.of(ex.getName() + " of type: '" + ex.getValue().getClass().getSimpleName() + "' should be of type: '" + ex.getRequiredType().getSimpleName() + "' instead.")
-                );
+        );
         return ResponseEntity.status(status).body(errorBody);
     }
 
     /**
      * Exception handler for MethodArgumentNotValidException.
      * It is thrown every time an argument annotated with {@code @Validated}(or one that gets validated automatically) tries to get validated but fails.
+     *
      * @param ex the exception
      * @return ResponseEntity with error body and appropriate HTTP status
      */
@@ -82,6 +86,7 @@ public class GlobalExceptionHandler {
 
     /**
      * Exception handler for custom exception RequiredValueIsMissingException.
+     *
      * @param ex the exception
      * @return ResponseEntity with error body and appropriate HTTP status
      */
@@ -90,7 +95,7 @@ public class GlobalExceptionHandler {
         HttpStatus status = ex.getStatus();
         List<String> errorMessages = ex.getMissingValues()
                 .stream()
-                .map(error -> "Required value '"+ error +"' is missing.")
+                .map(error -> "Required value '" + error + "' is missing.")
                 .toList();
         ErrorBody errorBody = new ErrorBody(ex.getMessage(), status, errorMessages);
         return ResponseEntity.status(status).body(errorBody);
@@ -98,6 +103,7 @@ public class GlobalExceptionHandler {
 
     /**
      * Exception handler for HttpMessageNotReadableException.
+     *
      * @param ex the exception
      * @return ResponseEntity with error body and appropriate HTTP status
      */
@@ -110,6 +116,7 @@ public class GlobalExceptionHandler {
 
     /**
      * Exception handler for SQLException.
+     *
      * @param ex the exception
      * @return ResponseEntity with error body and appropriate HTTP status
      */
@@ -122,6 +129,7 @@ public class GlobalExceptionHandler {
 
     /**
      * Exception handler for UnauthorizedException.
+     *
      * @param ex the exception
      * @return ResponseEntity with error body and appropriate HTTP status
      */
@@ -129,6 +137,13 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ErrorBody> handleCustomException(UnauthorizedException ex) {
         HttpStatus status = HttpStatus.UNAUTHORIZED;
         ErrorBody errorBody = new ErrorBody("Unauthorized", status, List.of(ex.getLocalizedMessage()));
+        return ResponseEntity.status(status).body(errorBody);
+    }
+
+    @ExceptionHandler(EmailAlreadyRegisteredException.class)
+    public ResponseEntity<ErrorBody> handleCustomException(EmailAlreadyRegisteredException ex) {
+        HttpStatus status = HttpStatus.CONFLICT;
+        ErrorBody errorBody = new ErrorBody("Email already registered", status, List.of("Email: '" + ex.getEmail() + "' already registered to another user."));
         return ResponseEntity.status(status).body(errorBody);
     }
 }
