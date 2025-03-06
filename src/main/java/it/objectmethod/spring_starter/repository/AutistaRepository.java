@@ -6,4 +6,5 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface AutistaRepository extends JpaRepository<Autista, Long>, JpaSpecificationExecutor<Autista> {}
+public interface AutistaRepository extends JpaRepository<Autista, Long>, JpaSpecificationExecutor<Autista> {
+}

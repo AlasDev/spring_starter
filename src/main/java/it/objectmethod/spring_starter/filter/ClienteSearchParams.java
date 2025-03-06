@@ -74,6 +74,7 @@ public class ClienteSearchParams {
             return criteriaBuilder.equal(root.get("nome"), nome);
         };
     }
+
     private Specification<Cliente> inNomeSpecification(String nome) {
         return (Root<Cliente> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) -> {
             if (nome == null || nome.isBlank()) {
@@ -92,6 +93,7 @@ public class ClienteSearchParams {
             return criteriaBuilder.equal(root.get("cognome"), cognome);
         };
     }
+
     private Specification<Cliente> inCognomeSpecification(String cognome) {
         return (Root<Cliente> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) -> {
             if (cognome == null || cognome.isBlank()) {
@@ -113,6 +115,7 @@ public class ClienteSearchParams {
             return criteriaBuilder.equal(root.get("dataNascita"), dataNascita);
         };
     }
+
     private Specification<Cliente> inDataNascitaSpecification(LocalDate dataNascita) {
         return (root, query, criteriaBuilder) -> {
             if (dataNascita == null) {
@@ -135,6 +138,7 @@ public class ClienteSearchParams {
             return criteriaBuilder.equal(root.get("codFiscale"), codFiscale);
         };
     }
+
     private Specification<Cliente> inCodFiscaleSpecification(String codFiscale) {
         return (Root<Cliente> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) -> {
             if (codFiscale == null || codFiscale.isBlank()) {
@@ -157,6 +161,7 @@ public class ClienteSearchParams {
             return criteriaBuilder.equal(root.get("dataIscrizione"), dataIscrizione);
         };
     }
+
     private Specification<Cliente> inDataIscrizioneSpecification(LocalDate dataIscrizione) {
         return (root, query, criteriaBuilder) -> {
             if (dataIscrizione == null) {
@@ -182,6 +187,7 @@ public class ClienteSearchParams {
             return criteriaBuilder.equal(root.get("utente").get("id"), utenteId);
         };
     }
+
     private Specification<Cliente> inUtenteIdSpecification(Utente utente) {
         return (root, query, criteriaBuilder) -> {
             if (utente == null) {

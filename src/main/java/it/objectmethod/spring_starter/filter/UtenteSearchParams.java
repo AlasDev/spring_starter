@@ -49,6 +49,7 @@ public class UtenteSearchParams {
             return criteriaBuilder.equal(root.get("email"), email);
         };
     }
+
     private Specification<Utente> inEmailSpecification(String email) {
         return (root, query, criteriaBuilder) -> {
             if (email == null || email.isBlank()) {
@@ -67,6 +68,7 @@ public class UtenteSearchParams {
             return criteriaBuilder.equal(root.get("ruolo"), ruolo);
         };
     }
+
     private Specification<Utente> inRuoloSpecification(Ruolo ruolo) {
         return (root, query, criteriaBuilder) -> {
             if (ruolo == null) {

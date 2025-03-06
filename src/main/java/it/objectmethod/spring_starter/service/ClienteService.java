@@ -69,7 +69,7 @@ public class ClienteService {
         clienteRepository.deleteById(id);
     }
 
-    public ClienteDTO save( ClienteDTO clienteDTO) {
+    public ClienteDTO save(ClienteDTO clienteDTO) {
         clienteDTO.setId(null);
 
         if (clienteDTO.getUtente() == null) {

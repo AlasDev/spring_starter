@@ -13,7 +13,8 @@ import lombok.*;
 public class Utente {
 
     @Column(name = "utente_ID")
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(name = "email", unique = true)

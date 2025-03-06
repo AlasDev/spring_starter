@@ -38,7 +38,7 @@ public class VeicoloController {
 
     @DeleteMapping("/delete/{id}")
     public void deleteVeicolo(@PathVariable @Validated Long id) {
-         veicoloService.deleteVeicolo(id);
+        veicoloService.deleteVeicolo(id);
     }
 
     @PostMapping("/post")

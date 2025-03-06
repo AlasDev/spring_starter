@@ -108,6 +108,7 @@ public class CorsaSearchParams {
             return criteriaBuilder.equal(root.get("statoCorsa"), statoCorsa);
         };
     }
+
     private Specification<Corsa> inStatoCorsaIdSpecification(StatoCorsa statoCorsa) {
         return (root, query, criteriaBuilder) -> {
             if (statoCorsa == null) {
@@ -130,6 +131,7 @@ public class CorsaSearchParams {
             return criteriaBuilder.equal(root.get("distanzaPercorsa"), distanzaPercorsa);
         };
     }
+
     private Specification<Corsa> inDistanzaPercorsaSpecification(Double distanzaPercorsa) {
         return (Root<Corsa> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) -> {
             if (distanzaPercorsa == null) {
@@ -148,6 +150,7 @@ public class CorsaSearchParams {
             return criteriaBuilder.equal(root.get("costoCorsa"), costoCorsa);
         };
     }
+
     private Specification<Corsa> inCostoCorsaSpecification(Double costoCorsa) {
         return (Root<Corsa> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) -> {
             if (costoCorsa == null) {
@@ -166,6 +169,7 @@ public class CorsaSearchParams {
             return criteriaBuilder.equal(root.get("indirizzoInizio"), indirizzoInizio);
         };
     }
+
     private Specification<Corsa> inIndirizzoInizioSpecification(String indirizzoInizio) {
         return (Root<Corsa> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) -> {
             if (indirizzoInizio == null || indirizzoInizio.isBlank()) {
@@ -184,6 +188,7 @@ public class CorsaSearchParams {
             return criteriaBuilder.equal(root.get("indirizzoFine"), indirizzoFine);
         };
     }
+
     private Specification<Corsa> inIndirizzoFineSpecification(String indirizzoFine) {
         return (Root<Corsa> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) -> {
             if (indirizzoFine == null || indirizzoFine.isBlank()) {
@@ -205,6 +210,7 @@ public class CorsaSearchParams {
             return criteriaBuilder.equal(root.get("dataPrenotazione"), dataPrenotazione);
         };
     }
+
     private Specification<Corsa> inDataPrenotazioneSpecification(LocalDateTime dataPrenotazione) {
         return (Root<Corsa> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) -> {
             if (dataPrenotazione == null) {
@@ -229,6 +235,7 @@ public class CorsaSearchParams {
             return criteriaBuilder.equal(root.get("dataInizio"), dataInizio);
         };
     }
+
     private Specification<Corsa> inDataInizioSpecification(LocalDateTime dataInizio) {
         return (Root<Corsa> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) -> {
             if (dataInizio == null) {
@@ -253,6 +260,7 @@ public class CorsaSearchParams {
             return criteriaBuilder.equal(root.get("dataFine"), dataFine);
         };
     }
+
     private Specification<Corsa> inDataFineSpecification(LocalDateTime dataFine) {
         return (Root<Corsa> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) -> {
             if (dataFine == null) {
@@ -278,6 +286,7 @@ public class CorsaSearchParams {
             return criteriaBuilder.equal(root.get("cliente").get("id"), clienteId);
         };
     }
+
     private Specification<Corsa> inClienteSpecification(Cliente cliente) {
         return (Root<Corsa> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) -> {
             if (cliente == null) {
@@ -304,6 +313,7 @@ public class CorsaSearchParams {
             return criteriaBuilder.equal(root.get("autista").get("id"), autistaId);
         };
     }
+
     private Specification<Corsa> inAutistaSpecification(Autista autista) {
         return (Root<Corsa> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) -> {
             if (autista == null) {

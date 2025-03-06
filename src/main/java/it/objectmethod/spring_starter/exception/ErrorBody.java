@@ -17,8 +17,9 @@ public class ErrorBody {
 
     /**
      * Constructor for ErrorBody
+     *
      * @param message error message
-     * @param errors list of errors
+     * @param errors  list of errors
      */
     public ErrorBody(String message, HttpStatus status, List<String> errors) {
         this.timestamp = new Timestamp(System.currentTimeMillis());

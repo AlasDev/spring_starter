@@ -54,7 +54,7 @@ public class CorsaController {
 
     //FILTER
     @GetMapping("/filter")
-    public List<CorsaDTO> filter( CorsaSearchParams corsaSearchParams) {
+    public List<CorsaDTO> filter(CorsaSearchParams corsaSearchParams) {
         return corsaService.searchCorsaBySpecification(corsaSearchParams);
     }
 }

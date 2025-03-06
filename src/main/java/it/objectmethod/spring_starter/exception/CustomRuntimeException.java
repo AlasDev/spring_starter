@@ -8,5 +8,6 @@ public class CustomRuntimeException extends RuntimeException {
     /**
      * Constructor of CustomRuntimeException
      */
-    public CustomRuntimeException() {}
+    public CustomRuntimeException() {
+    }
 }

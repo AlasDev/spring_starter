@@ -54,6 +54,7 @@ public class VeicoloSearchParams {
             return criteriaBuilder.equal(root.get("numTarga"), numTarga);
         };
     }
+
     private Specification<Veicolo> inNumTargaSpecification(String numTarga) {
         return (root, query, criteriaBuilder) -> {
             if (numTarga == null || numTarga.isBlank()) {
@@ -72,6 +73,7 @@ public class VeicoloSearchParams {
             return criteriaBuilder.equal(root.get("modello"), modello);
         };
     }
+
     private Specification<Veicolo> inModelloSpecification(String modello) {
         return (root, query, criteriaBuilder) -> {
             if (modello == null || modello.isBlank()) {
@@ -90,6 +92,7 @@ public class VeicoloSearchParams {
             return criteriaBuilder.equal(root.get("colore"), colore);
         };
     }
+
     private Specification<Veicolo> inColoreSpecification(String colore) {
         return (root, query, criteriaBuilder) -> {
             if (colore == null || colore.isBlank()) {

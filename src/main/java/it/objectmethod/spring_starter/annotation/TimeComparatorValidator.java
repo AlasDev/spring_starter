@@ -13,7 +13,7 @@ public class TimeComparatorValidator implements ConstraintValidator<TimeComparat
     int timeMax;
 
     @Override
-    public void initialize(TimeComparatorValidation timeComparatorValidation){
+    public void initialize(TimeComparatorValidation timeComparatorValidation) {
         this.timeMax = timeComparatorValidation.maxHours();
     }
 

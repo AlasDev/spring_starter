@@ -16,7 +16,8 @@ import java.time.LocalDateTime;
 @Table(name = "corsa")
 public class Corsa {
     @Column(name = "corsa_ID")
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne
