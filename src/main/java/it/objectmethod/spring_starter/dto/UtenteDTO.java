@@ -2,6 +2,7 @@ package it.objectmethod.spring_starter.dto;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -20,6 +21,7 @@ public class UtenteDTO {
     private String email;
 
     @NotBlank(message = "This field is required")
+    @Size(min = 6, message = "Password should be at least 6 characters long for security reasons.")
     private String password;
 
     private Long ruolo;
