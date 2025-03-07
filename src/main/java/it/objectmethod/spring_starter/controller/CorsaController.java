@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/corsa")
+@RequestMapping("/api/corsa")
 public class CorsaController {
 
     private final CorsaService corsaService;

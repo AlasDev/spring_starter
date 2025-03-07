@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/autista")
+@RequestMapping("/api/autista")
 public class AutistaController {
 
     private final AutistaService autistaService;
@@ -32,6 +32,8 @@ public class AutistaController {
     public AutistaDTO getAutista(@PathVariable @Validated Long id) {
         return autistaService.getAutista(id);
     }
+
+
 
     //update something
     @PutMapping("/update") //url example: localhost:8080/autista/update

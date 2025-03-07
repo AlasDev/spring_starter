@@ -28,6 +28,7 @@ public class AuthController {
 
     /**
      * Post per effettuare il login e generare il token.
+     *
      * @param utenteDTO credenziali d'accesso
      * @return the token
      */
@@ -41,6 +42,7 @@ public class AuthController {
 
     /**
      * Post per effettuare la registrazione e verificare se la mail è già registrata.
+     *
      * @param utenteDTO credenziali d'accesso
      */
     @PostMapping("/register")
