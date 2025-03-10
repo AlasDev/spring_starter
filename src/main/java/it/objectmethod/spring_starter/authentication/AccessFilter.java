@@ -1,5 +1,11 @@
 package it.objectmethod.spring_starter.authentication;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.MalformedJwtException;
+import io.jsonwebtoken.security.SignatureException;
+import it.objectmethod.spring_starter.exception.ErrorBody;
+import it.objectmethod.spring_starter.exception.exceptions.RoleNotAuthorizedException;
 import it.objectmethod.spring_starter.exception.exceptions.UnauthorizedException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -11,14 +17,15 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Objects;
 
 @Component
 @Order(1)
 public class AccessFilter extends OncePerRequestFilter {
     private static final String AUTH_ENDPOINT = "/api/auth";
-
     private final JwtTokenProvider jwtTokenProvider;
+    private final ObjectMapper objectMapper = new ObjectMapper();
 
     public AccessFilter(JwtTokenProvider jwtTokenProvider) {
         this.jwtTokenProvider = jwtTokenProvider;
@@ -26,46 +33,111 @@ public class AccessFilter extends OncePerRequestFilter {
 
     /**
      * Is called by default each time a new request arrives.
-     * @param request
-     * @param response
-     * @param filterChain
-     * @throws ServletException
-     * @throws IOException
+     *
+     * @param request           Request received from the user
+     * @param response          Response returned to the user
+     * @param filterChain       Object provided by the servlet container to the developer giving a view into the invocation chain of a filtered request for a resource. Filters use the FilterChain to invoke the next filter in the chain,
+     * @throws ServletException Possible exception
+     * @throws IOException      Possible exception
      */
     @Override
     protected void doFilterInternal(HttpServletRequest request,
                                     HttpServletResponse response,
                                     FilterChain filterChain) throws ServletException, IOException {
+        String url = request.getRequestURI();
+        String method = request.getMethod();
+
+        if (!url.contains("/api")) return; //if url doesn't have '/api' in it, it will be ignored
+
         /*
          * Used by front-ent to make sure that backend is working (operation of pre-flight)
          * A preflight request is an automatic browser initiated OPTIONS request that takes
          * occurs before certain cors-origin requests to ensure that backend/server is working,
          * so that server accepts the upcoming request method, header and credentials.
          */
-        if (request.getMethod().equalsIgnoreCase("OPTIONS")) {
+        if (method.equalsIgnoreCase("OPTIONS")) {
             response.setStatus(HttpServletResponse.SC_OK);
             return;
         }
 
-        if (request.getMethod().equalsIgnoreCase("GET")) {
+        //don't ask for a token to login or register
+        if (method.equalsIgnoreCase("POST") &&
+                url.endsWith("/login")
+                || url.endsWith("/register")) {
             filterChain.doFilter(request, response);
-            return;
         }
 
-        final String jwtToken = request.getHeader("Authorization");
-        String requestURI = request.getRequestURI() != null ? request.getRequestURI() : "";
-        if (!requestURI.startsWith(AUTH_ENDPOINT)) {
-            if (Objects.isNull(jwtToken) || !isAuthenticated(jwtToken)) {
-                response.setStatus(HttpStatus.UNAUTHORIZED.value());
-                return;
+        try {
+            final String token = request.getHeader("Authorization");
+            String requestURI = url != null ? url : "";
+            if (!requestURI.startsWith(AUTH_ENDPOINT)) {
+                if (Objects.isNull(token) || !isAuthenticated(token)) {
+                    response.setStatus(HttpStatus.UNAUTHORIZED.value());
+                    return;
+                }
             }
+            filterChain.doFilter(request, response);
+        } catch (ExpiredJwtException e) {
+            handleException(e, "Token expired", HttpStatus.UNAUTHORIZED, response);
+        } catch (SignatureException e) {
+            handleException(e, "Invalid token signature", HttpStatus.UNAUTHORIZED, response);
+        } catch (MalformedJwtException e) {
+            handleException(e, "Malformed token", HttpStatus.BAD_REQUEST, response);
+        } catch (IllegalArgumentException e) {
+            handleException(e, "Invalid argument", HttpStatus.BAD_REQUEST, response);
+        } catch (UnauthorizedException e) {
+            handleException(e, e.getMessage(), HttpStatus.UNAUTHORIZED, response);
         }
-        filterChain.doFilter(request, response);
+
+        final String token = request.getHeader("Authorization");
+        final String roleEnum = jwtTokenProvider.extractRuoloFromClaims(token);
+
+        switch (roleEnum) {
+            case "ROLE_USER":
+                if (method.equalsIgnoreCase("GET")) {
+                    filterChain.doFilter(request, response);
+                } else {
+                    handleException(
+                            new RoleNotAuthorizedException(roleEnum, method),
+                            "Role'" + roleEnum + "' can't use method '" + method + "'.",
+                            HttpStatus.FORBIDDEN,
+                            response);
+                }
+                break;
+            case "ROLE_ADVANCED_USER":
+                if (method.equalsIgnoreCase("GET") ||
+                        method.equalsIgnoreCase("POST") ||
+                        method.equalsIgnoreCase("PUT")) {
+                    filterChain.doFilter(request, response);
+                } else {
+                    handleException(
+                            new RoleNotAuthorizedException(roleEnum, method),
+                            "Role'" + roleEnum + "' can't use method '" + method + "'.",
+                            HttpStatus.FORBIDDEN,
+                            response);
+                }
+                break;
+            case "ROLE_ADMIN":
+                filterChain.doFilter(request, response);
+                break;
+            default: response.setStatus(HttpStatus.BAD_REQUEST.value());
+        }
     }
 
-    private Boolean isAuthenticated(final String jwtToken) {
-        if (!jwtTokenProvider.isValid(jwtToken) || jwtTokenProvider.isTokenExpired(jwtToken))
+    private boolean isAuthenticated(final String jwtToken) {
+        if (jwtTokenProvider.isTokenEmpty(jwtToken) || !jwtTokenProvider.isValid(jwtToken) || jwtTokenProvider.isTokenExpired(jwtToken))
             throw new UnauthorizedException("User is not authenticated", HttpStatus.UNAUTHORIZED);
         return true;
     }
+
+    private void handleException(Throwable e, String message, HttpStatus status, HttpServletResponse response) {
+        ErrorBody errorBody = new ErrorBody(message, status, List.of(e.getLocalizedMessage()));
+        try {
+            response.getWriter().write(objectMapper.writeValueAsString(errorBody));
+        } catch (IOException ex) {
+            throw new RuntimeException(ex);
+        }
+    }
+
+
 }
