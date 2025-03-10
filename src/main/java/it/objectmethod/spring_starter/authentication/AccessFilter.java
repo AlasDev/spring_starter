@@ -34,9 +34,9 @@ public class AccessFilter extends OncePerRequestFilter {
     /**
      * Is called by default each time a new request arrives.
      *
-     * @param request           Request received from the user
-     * @param response          Response returned to the user
-     * @param filterChain       Object provided by the servlet container to the developer giving a view into the invocation chain of a filtered request for a resource. Filters use the FilterChain to invoke the next filter in the chain,
+     * @param request     Request received from the user
+     * @param response    Response returned to the user
+     * @param filterChain Object provided by the servlet container to the developer giving a view into the invocation chain of a filtered request for a resource. Filters use the FilterChain to invoke the next filter in the chain,
      * @throws ServletException Possible exception
      * @throws IOException      Possible exception
      */
@@ -120,7 +120,8 @@ public class AccessFilter extends OncePerRequestFilter {
             case "ROLE_ADMIN":
                 filterChain.doFilter(request, response);
                 break;
-            default: response.setStatus(HttpStatus.BAD_REQUEST.value());
+            default:
+                response.setStatus(HttpStatus.BAD_REQUEST.value());
         }
     }
 
