@@ -1,5 +1,6 @@
 package it.objectmethod.spring_starter.entity;
 
+import it.objectmethod.spring_starter.util.Role;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -20,8 +21,9 @@ public class Ruolo {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Enumerated(EnumType.STRING) //it will use the string value of the enum, not the ordinal value
     @Column(name = "descrizione")
-    private String descrizione;
+    private Role descrizione;
 
     @OneToMany(mappedBy = "ruolo")
     private List<Utente> utenti;
