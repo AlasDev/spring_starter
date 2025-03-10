@@ -31,6 +31,23 @@ public class AccessFilter extends OncePerRequestFilter {
         this.jwtTokenProvider = jwtTokenProvider;
     }
 
+    private boolean isAuthenticated(final String jwtToken, HttpServletResponse response) throws IOException {
+        if (jwtTokenProvider.isTokenEmpty(jwtToken) || !jwtTokenProvider.isValid(jwtToken) || jwtTokenProvider.isTokenExpired(jwtToken)) {
+            handleException(new UnauthorizedException("User is not authenticated", HttpStatus.UNAUTHORIZED), "User is not authenticated", HttpStatus.UNAUTHORIZED, response);
+            return false;
+        }
+        return true;
+    }
+
+    private void handleException(Throwable e, String message, HttpStatus status, HttpServletResponse response) throws IOException {
+        ErrorBody errorBody = new ErrorBody(message, status, List.of(e.getLocalizedMessage()));
+        response.setStatus(status.value());
+        response.getWriter().write(objectMapper.writeValueAsString(errorBody));
+        response.getWriter().flush();
+        response.getWriter().close();
+        return;
+    }
+
     /**
      * Is called by default each time a new request arrives.
      *
@@ -71,7 +88,7 @@ public class AccessFilter extends OncePerRequestFilter {
         try {
             final String token = request.getHeader("Authorization");
             if (!url.startsWith(AUTH_ENDPOINT)) {
-                if (Objects.isNull(token) || !isAuthenticated(token)) {
+                if (Objects.isNull(token) || !isAuthenticated(token, response)) {
                     response.setStatus(HttpStatus.UNAUTHORIZED.value());
                     return;
                 }
@@ -124,21 +141,4 @@ public class AccessFilter extends OncePerRequestFilter {
                 response.setStatus(HttpStatus.BAD_REQUEST.value());
         }
     }
-
-    private boolean isAuthenticated(final String jwtToken) {
-        if (jwtTokenProvider.isTokenEmpty(jwtToken) || !jwtTokenProvider.isValid(jwtToken) || jwtTokenProvider.isTokenExpired(jwtToken))
-            throw new UnauthorizedException("User is not authenticated", HttpStatus.UNAUTHORIZED);
-        return true;
-    }
-
-    private void handleException(Throwable e, String message, HttpStatus status, HttpServletResponse response) {
-        ErrorBody errorBody = new ErrorBody(message, status, List.of(e.getLocalizedMessage()));
-        try {
-            response.getWriter().write(objectMapper.writeValueAsString(errorBody));
-        } catch (IOException ex) {
-            throw new RuntimeException(ex);
-        }
-    }
-
-
 }
