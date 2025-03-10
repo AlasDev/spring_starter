@@ -61,16 +61,16 @@ public class AccessFilter extends OncePerRequestFilter {
         }
 
         //don't ask for a token to login or register
-        if (method.equalsIgnoreCase("POST") &&
-                url.endsWith("/login")
-                || url.endsWith("/register")) {
+        if (method.equalsIgnoreCase("POST") && url.startsWith(AUTH_ENDPOINT) &&
+                url.endsWith("/login") ||
+                url.endsWith("/register")) {
             filterChain.doFilter(request, response);
+            return;
         }
 
         try {
             final String token = request.getHeader("Authorization");
-            String requestURI = url != null ? url : "";
-            if (!requestURI.startsWith(AUTH_ENDPOINT)) {
+            if (!url.startsWith(AUTH_ENDPOINT)) {
                 if (Objects.isNull(token) || !isAuthenticated(token)) {
                     response.setStatus(HttpStatus.UNAUTHORIZED.value());
                     return;
