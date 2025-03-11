@@ -1,4 +1,4 @@
-package it.objectmethod.spring_starter.mapper.mapstruct;
+package it.objectmethod.spring_starter.mapper;
 
 import it.objectmethod.spring_starter.dto.CorsaDTO;
 import it.objectmethod.spring_starter.dto.PageDTO;
