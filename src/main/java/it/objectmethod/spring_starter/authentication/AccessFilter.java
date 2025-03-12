@@ -7,6 +7,7 @@ import io.jsonwebtoken.security.SignatureException;
 import it.objectmethod.spring_starter.exception.ErrorBody;
 import it.objectmethod.spring_starter.exception.exceptions.RoleNotAuthorizedException;
 import it.objectmethod.spring_starter.exception.exceptions.UnauthorizedException;
+import it.objectmethod.spring_starter.util.Role;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -45,7 +46,6 @@ public class AccessFilter extends OncePerRequestFilter {
         response.getWriter().write(objectMapper.writeValueAsString(errorBody));
         response.getWriter().flush();
         response.getWriter().close();
-        return;
     }
 
     /**
@@ -81,6 +81,7 @@ public class AccessFilter extends OncePerRequestFilter {
         if (method.equalsIgnoreCase("POST") && url.startsWith(AUTH_ENDPOINT) &&
                 url.endsWith("/login") ||
                 url.endsWith("/register")) {
+            System.out.println("Login/Registration started");
             filterChain.doFilter(request, response);
             return;
         }
@@ -107,11 +108,12 @@ public class AccessFilter extends OncePerRequestFilter {
         }
 
         final String token = request.getHeader("Authorization");
-        final String roleEnum = jwtTokenProvider.extractRuoloFromClaims(token);
+        final Role roleEnum = jwtTokenProvider.extractRuoloFromClaims(token);
 
         switch (roleEnum) {
-            case "ROLE_USER":
+            case ROLE_USER:
                 if (method.equalsIgnoreCase("GET")) {
+                    System.out.println("role: " + roleEnum);
                     filterChain.doFilter(request, response);
                 } else {
                     handleException(
@@ -121,10 +123,11 @@ public class AccessFilter extends OncePerRequestFilter {
                             response);
                 }
                 break;
-            case "ROLE_ADVANCED_USER":
+            case ROLE_ADVANCED_USER:
                 if (method.equalsIgnoreCase("GET") ||
                         method.equalsIgnoreCase("POST") ||
                         method.equalsIgnoreCase("PUT")) {
+                    System.out.println("role: " + roleEnum);
                     filterChain.doFilter(request, response);
                 } else {
                     handleException(
@@ -134,7 +137,8 @@ public class AccessFilter extends OncePerRequestFilter {
                             response);
                 }
                 break;
-            case "ROLE_ADMIN":
+            case ROLE_ADMIN:
+                System.out.println("role: " + roleEnum);
                 filterChain.doFilter(request, response);
                 break;
             default:
