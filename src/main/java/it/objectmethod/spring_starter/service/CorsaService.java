@@ -11,6 +11,7 @@ import it.objectmethod.spring_starter.mapper.CorsaMapstructMapper;
 import it.objectmethod.spring_starter.repository.AutistaRepository;
 import it.objectmethod.spring_starter.repository.ClienteRepository;
 import it.objectmethod.spring_starter.repository.CorsaRepository;
+import it.objectmethod.spring_starter.util.StatoCorsa;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -88,12 +89,16 @@ public class CorsaService {
         corsaDTO.setId(null);
         Long autistaId = corsaDTO.getAutista();
         Long clienteId = corsaDTO.getCliente();
+        StatoCorsa statoCorsa = corsaDTO.getStatoCorsa();
 
         if (autistaId == null) {
             throw new RequiredValueException("Autista");
         }
         if (clienteId == null) {
             throw new RequiredValueException("Cliente");
+        }
+        if (statoCorsa == null) {
+            throw new RequiredValueException("StatoCorsa");
         }
 
         Autista autista = autistaRepository.findById(autistaId).orElseThrow(

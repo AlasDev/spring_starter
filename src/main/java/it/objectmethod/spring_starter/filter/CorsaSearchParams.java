@@ -3,7 +3,7 @@ package it.objectmethod.spring_starter.filter;
 import it.objectmethod.spring_starter.entity.Autista;
 import it.objectmethod.spring_starter.entity.Cliente;
 import it.objectmethod.spring_starter.entity.Corsa;
-import it.objectmethod.spring_starter.entity.StatoCorsa;
+import it.objectmethod.spring_starter.util.StatoCorsa;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Root;
@@ -100,10 +100,6 @@ public class CorsaSearchParams {
             if (statoCorsa == null) {
                 return null;
             }
-            Long statoCorsaId = statoCorsa.getId();
-            if (statoCorsaId == null) {
-                return null;
-            }
 
             return criteriaBuilder.equal(root.get("statoCorsa"), statoCorsa);
         };
@@ -114,11 +110,8 @@ public class CorsaSearchParams {
             if (statoCorsa == null) {
                 return null;
             }
-            Long statoCorsaId = statoCorsa.getId();
-            if (statoCorsaId == null) {
-                return null;
-            }
-            return criteriaBuilder.in(root.get("statoCorsa").get("id"));
+
+            return criteriaBuilder.in(root.get("statoCorsa"));
         };
     }
 

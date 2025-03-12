@@ -1,5 +1,6 @@
 package it.objectmethod.spring_starter.entity;
 
+import it.objectmethod.spring_starter.util.StatoCorsa;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -20,8 +21,8 @@ public class Corsa {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "stato_corsa")
+    @Enumerated(EnumType.STRING)
+    @Column(name = "stato_corsa")
     private StatoCorsa statoCorsa;
 
     @Column(name = "distanza_percorsa")
