@@ -84,8 +84,8 @@ public class UtenteService {
     }
 
     //FILTER
-    public List<UtenteDTO> searchUtenteBySpecification(UtenteSearchParams utenteSearchParams) {
-        List<Utente> utenteList = utenteRepository.findAll(utenteSearchParams.toSpecification());
-        return utenteMapstructMapper.mapToDtos(utenteList);
+    public PageDTO<UtenteDTO> searchUtenteBySpecification(UtenteSearchParams utenteSearchParams, Pageable pageable) {
+        Page<Utente> utenteList = utenteRepository.findAll(utenteSearchParams.toSpecification(), pageable);
+        return utenteMapstructMapper.mapToPageDTO(utenteList);
     }
 }

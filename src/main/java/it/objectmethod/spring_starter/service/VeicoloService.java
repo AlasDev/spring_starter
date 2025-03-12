@@ -71,8 +71,8 @@ public class VeicoloService {
     }
 
     //FILTER
-    public List<VeicoloDTO> searchVeicoloBySpecification(VeicoloSearchParams veicoloSearchParams) {
-        List<Veicolo> veicoloList = veicoloRepository.findAll(veicoloSearchParams.toSpecification());
-        return veicoloMapstructMapper.mapToDtos(veicoloList);
+    public PageDTO<VeicoloDTO> searchVeicoloBySpecification(VeicoloSearchParams veicoloSearchParams, Pageable pageable) {
+        Page<Veicolo> veicoloList = veicoloRepository.findAll(veicoloSearchParams.toSpecification(), pageable);
+        return veicoloMapstructMapper.mapToPageDTO(veicoloList);
     }
 }

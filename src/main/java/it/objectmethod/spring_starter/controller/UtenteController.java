@@ -54,7 +54,7 @@ public class UtenteController {
 
     //FILTER
     @GetMapping("/filter")
-    public List<UtenteDTO> filter(UtenteSearchParams utenteSearchParams) {
-        return utenteService.searchUtenteBySpecification(utenteSearchParams);
+    public PageDTO<UtenteDTO> filter(@PageableDefault(size = 5) Pageable pageable, UtenteSearchParams utenteSearchParams) {
+        return utenteService.searchUtenteBySpecification(utenteSearchParams, pageable);
     }
 }

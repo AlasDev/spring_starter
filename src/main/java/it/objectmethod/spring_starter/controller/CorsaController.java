@@ -54,7 +54,7 @@ public class CorsaController {
 
     //FILTER
     @GetMapping("/filter")
-    public List<CorsaDTO> filter(CorsaSearchParams corsaSearchParams) {
-        return corsaService.searchCorsaBySpecification(corsaSearchParams);
+    public PageDTO<CorsaDTO> filter(@PageableDefault(size = 5) Pageable pageable, CorsaSearchParams corsaSearchParams) {
+        return corsaService.searchCorsaBySpecification(corsaSearchParams, pageable);
     }
 }

@@ -54,7 +54,7 @@ public class VeicoloController {
 
     //FILTER
     @GetMapping("/filter")
-    public List<VeicoloDTO> filter(VeicoloSearchParams veicoloSearchParams) {
-        return veicoloService.searchVeicoloBySpecification(veicoloSearchParams);
+    public PageDTO<VeicoloDTO> filter(@PageableDefault(size = 5) Pageable pageable, VeicoloSearchParams veicoloSearchParams) {
+        return veicoloService.searchVeicoloBySpecification(veicoloSearchParams, pageable);
     }
 }

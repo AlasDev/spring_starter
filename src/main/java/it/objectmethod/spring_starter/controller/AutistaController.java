@@ -22,45 +22,45 @@ public class AutistaController {
     }
 
     //read all
-    @GetMapping("/get/all") //url example: localhost:8080/autista/get/all
+    @GetMapping("/get/all") //url example: localhost:8080/api/autista/get/all
     public List<AutistaDTO> getAll() {
         return autistaService.getAll();
     }
 
     //read one in particular
-    @GetMapping("/get/{id}") //url example: localhost:8080/autista/get/1
+    @GetMapping("/get/{id}") //url example: localhost:8080/api/autista/get/1
     public AutistaDTO getAutista(@PathVariable @Validated Long id) {
         return autistaService.getAutista(id);
     }
 
 
     //update something
-    @PutMapping("/update") //url example: localhost:8080/autista/update
+    @PutMapping("/update") //url example: localhost:8080/api/autista/update
     public AutistaDTO updateAutista(@RequestBody @Validated AutistaDTO autistaDTO) {
         return autistaService.updateAutista(autistaDTO);
     }
 
     //delete something
-    @DeleteMapping("/delete/{id}") //url example: localhost:8080/autista/delete/3
+    @DeleteMapping("/delete/{id}") //url example: localhost:8080/api/autista/delete/3
     public void deleteAutista(@PathVariable @Validated Long id) {
         autistaService.deleteAutista(id);
     }
 
     //post (save) something new
-    @PostMapping("/post") //url example: localhost:8080/autista/post
+    @PostMapping("/post") //url example: localhost:8080/api/autista/post
     public AutistaDTO addAutista(@RequestBody @Validated AutistaDTO autistaDTO) {
         return autistaService.save(autistaDTO);
     }
 
     //PAGE
-    @GetMapping("/page") //url example: localhost:8080/autista/page?page=0&size=5
+    @GetMapping("/page") //url example: localhost:8080/api/autista/page?page=0&size=5
     public PageDTO<AutistaDTO> getPage(@PageableDefault(size = 5) Pageable pageable) {
         return autistaService.getPage(pageable);
     }
 
     //FILTER
-    @GetMapping("/filter") //url example: localhost:8080/autista/filter?nome=Mario&cognome=Rossi
-    public List<AutistaDTO> filter(AutistaSearchParams autistaSearchParams) {
-        return autistaService.searchAutistaBySpecification(autistaSearchParams);
+    @GetMapping("/filter") //url example: localhost:8080/api/autista/filter?nome=Mario&cognome=Rossi
+    public PageDTO<AutistaDTO> filter(@PageableDefault(size = 5) Pageable pageable, AutistaSearchParams autistaSearchParams) {
+        return autistaService.searchAutistaBySpecification(autistaSearchParams, pageable);
     }
 }

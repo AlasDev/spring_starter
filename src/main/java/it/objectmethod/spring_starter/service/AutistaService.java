@@ -116,8 +116,8 @@ public class AutistaService {
     }
 
     //FILTER
-    public List<AutistaDTO> searchAutistaBySpecification(AutistaSearchParams autistaSearchParams) {
-        List<Autista> autistaList = autistaRepository.findAll(autistaSearchParams.toSpecification());
-        return autistaMapstructMapper.mapToDtos(autistaList);
+    public PageDTO<AutistaDTO> searchAutistaBySpecification(AutistaSearchParams autistaSearchParams, Pageable pageable) {
+        Page<Autista> autistaList = autistaRepository.findAll(autistaSearchParams.toSpecification(), pageable);
+        return autistaMapstructMapper.mapToPageDTO(autistaList);
     }
 }

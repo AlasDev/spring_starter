@@ -94,8 +94,8 @@ public class ClienteService {
     }
 
     //FILTER
-    public List<ClienteDTO> searchClienteBySpecification(ClienteSearchParams clienteSearchParams) {
-        List<Cliente> clienteList = clienteRepository.findAll(clienteSearchParams.toSpecification());
-        return clienteMapstructMapper.mapToDtos(clienteList);
+    public PageDTO<ClienteDTO> searchClienteBySpecification(ClienteSearchParams clienteSearchParams, Pageable pageable) {
+        Page<Cliente> clienteList = clienteRepository.findAll(clienteSearchParams.toSpecification(), pageable);
+        return clienteMapstructMapper.mapToPageDTO(clienteList);
     }
 }

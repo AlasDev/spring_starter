@@ -54,7 +54,7 @@ public class ClienteController {
 
     //FILTER
     @GetMapping("/filter")
-    public List<ClienteDTO> filter(ClienteSearchParams clienteSearchParams) {
-        return clienteService.searchClienteBySpecification(clienteSearchParams);
+    public PageDTO<ClienteDTO> filter(@PageableDefault(size = 5) Pageable pageable, ClienteSearchParams clienteSearchParams) {
+        return clienteService.searchClienteBySpecification(clienteSearchParams, pageable);
     }
 }

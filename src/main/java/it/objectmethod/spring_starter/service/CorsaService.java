@@ -118,8 +118,8 @@ public class CorsaService {
     }
 
     //FILTER
-    public List<CorsaDTO> searchCorsaBySpecification(CorsaSearchParams corsaSearchParams) {
-        List<Corsa> corsaList = corsaRepository.findAll(corsaSearchParams.toSpecification());
-        return corsaMapstructMapper.mapToDtos(corsaList);
+    public PageDTO<CorsaDTO> searchCorsaBySpecification(CorsaSearchParams corsaSearchParams, Pageable pageable) {
+        Page<Corsa> corsaList = corsaRepository.findAll(corsaSearchParams.toSpecification(), pageable);
+        return corsaMapstructMapper.mapToPageDTO(corsaList);
     }
 }
