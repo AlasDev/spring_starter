@@ -11,4 +11,6 @@ public interface UtenteRepository extends JpaRepository<Utente, Long>, JpaSpecif
     Boolean existsByEmailAndPassword(String email, String password);
 
     Boolean existsByEmail(String email);
+
+    Utente findByEmail(String email);
 }
