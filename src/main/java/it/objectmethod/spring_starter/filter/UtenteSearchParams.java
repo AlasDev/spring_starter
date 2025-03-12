@@ -1,7 +1,7 @@
 package it.objectmethod.spring_starter.filter;
 
-import it.objectmethod.spring_starter.entity.Ruolo;
 import it.objectmethod.spring_starter.entity.Utente;
+import it.objectmethod.spring_starter.util.Role;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Root;
@@ -12,7 +12,7 @@ import org.springframework.data.jpa.domain.Specification;
 public class UtenteSearchParams {
     //presi dall'entità
     private String email;
-    private Ruolo ruolo;
+    private Role ruolo;
 
     @SafeVarargs
     private Specification<Utente> combineSpecifications(Specification<Utente>... specs) {
@@ -60,7 +60,7 @@ public class UtenteSearchParams {
     }
 
     //ruolo
-    private Specification<Utente> equalRuoloSpecification(Ruolo ruolo) {
+    private Specification<Utente> equalRuoloSpecification(Role ruolo) {
         return (root, query, criteriaBuilder) -> {
             if (ruolo == null) {
                 return null;
@@ -69,7 +69,7 @@ public class UtenteSearchParams {
         };
     }
 
-    private Specification<Utente> inRuoloSpecification(Ruolo ruolo) {
+    private Specification<Utente> inRuoloSpecification(Role ruolo) {
         return (root, query, criteriaBuilder) -> {
             if (ruolo == null) {
                 return null;

@@ -1,6 +1,7 @@
 package it.objectmethod.spring_starter.exception.exceptions;
 
 import it.objectmethod.spring_starter.exception.CustomRuntimeException;
+import it.objectmethod.spring_starter.util.Role;
 import lombok.Getter;
 import org.springframework.http.HttpStatus;
 
@@ -8,10 +9,9 @@ import org.springframework.http.HttpStatus;
 public class RoleNotAuthorizedException extends CustomRuntimeException {
     final String message;
     final HttpStatus status;
-    final String role;
+    final Role role;
     String method;
-
-    public RoleNotAuthorizedException(String roleEnum, String method) {
+    public RoleNotAuthorizedException(Role roleEnum, String method) {
         this.status = HttpStatus.FORBIDDEN;
         this.role = roleEnum;
         this.method = method;

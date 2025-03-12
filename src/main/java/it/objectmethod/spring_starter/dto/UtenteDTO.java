@@ -1,5 +1,6 @@
 package it.objectmethod.spring_starter.dto;
 
+import it.objectmethod.spring_starter.util.Role;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
@@ -24,5 +25,5 @@ public class UtenteDTO {
     @Size(min = 6, message = "Password should be at least 6 characters long for security reasons.")
     private String password;
 
-    private Long ruolo;
+    private Role ruolo;
 }

@@ -1,5 +1,6 @@
 package it.objectmethod.spring_starter.entity;
 
+import it.objectmethod.spring_starter.util.Role;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -23,8 +24,8 @@ public class Utente {
     @Column(name = "password")
     private String password;
 
-    @ManyToOne
-    @JoinColumn(name = "ruolo_id")
-    private Ruolo ruolo;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "ruolo")
+    private Role ruolo;
 
 }

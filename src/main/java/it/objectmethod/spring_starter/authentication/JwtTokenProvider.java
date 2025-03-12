@@ -4,6 +4,7 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 import it.objectmethod.spring_starter.dto.UtenteDTO;
+import it.objectmethod.spring_starter.util.Role;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -29,10 +30,10 @@ public class JwtTokenProvider {
      * Genera un nuovo token JWT basato sull'oggetto AuthorizationRequest.
      *
      * @param request l'oggetto AuthorizationRequest contenente le informazioni per la generazione del token
-     * @return il token JWT generato
+     * @return        il token JWT generato
      */
     public String generateToken(final UtenteDTO request) {
-        final Map<String, Long> claims = new HashMap<>();
+        final Map<String, Object> claims = new HashMap<>();
         claims.put("id", request.getId());
         claims.put("ruolo", request.getRuolo());
         return createToken(claims, request.getEmail());
@@ -43,9 +44,9 @@ public class JwtTokenProvider {
      *
      * @param claims  la mappa dei claims da includere nel token
      * @param subject il soggetto del token, una sorta di identifier
-     * @return il token JWT creato
+     * @return        il token JWT creato
      */
-    private String createToken(final Map<String, Long> claims, final String subject) {
+    private String createToken(final Map<String, Object> claims, final String subject) {
         return Jwts.builder()
                 .setClaims(claims)
                 .setSubject(subject)
@@ -59,7 +60,7 @@ public class JwtTokenProvider {
      * Valida un token JWT confrontando l'email estratta con il nome fornito nell'oggetto AuthorizationRequest e verifica se il token è scaduto.
      *
      * @param token il token JWT da validare
-     * @return 'true' se il token è valido, 'false' altrimenti
+     * @return      'true' se il token è valido, 'false' altrimenti
      */
     public boolean isValid(final String token) {
         final Claims claims = extractAllClaims(token);
@@ -71,33 +72,27 @@ public class JwtTokenProvider {
      * Verifica se il token JWT è scaduto confrontando la data di scadenza del token con la data in cui si sta effettuando il controllo.
      *
      * @param token il token JWT da verificare
-     * @return 'true' se il token è scaduto, 'false' altrimenti
+     * @return      'true' se il token è scaduto, 'false' altrimenti
      */
     public boolean isTokenExpired(final String token) {
-        if (extractExpiration(token).before(new Date())) {
-            return true;
-        }
-        return false;
+        return extractExpiration(token).before(new Date());
     }
 
     /**
      * Verifica se è presente un token JWT.
      *
      * @param token il token JWT da verificare
-     * @return 'false' se un token è presente
+     * @return      'false' se un token è presente
      */
     public boolean isTokenEmpty(final String token) {
-        if (token.isBlank()) {
-            return true;
-        }
-        return false;
+        return token.isBlank();
     }
 
     /**
      * Estrae la data di scadenza dal token JWT.
      *
      * @param token il token JWT da cui estrarre la data di scadenza
-     * @return la data di scadenza estratta dal token
+     * @return      la data di scadenza estratta dal token
      */
     public Date extractExpiration(final String token) {
         return extractClaim(token, Claims::getExpiration);
@@ -107,7 +102,7 @@ public class JwtTokenProvider {
      * Estrae l'indirizzo email(in questo caso è nel subject) dal token JWT.
      *
      * @param token il token JWT da cui estrarre l'email
-     * @return l'indirizzo email estratto dal token
+     * @return      l'indirizzo email estratto dal token
      */
     public String extractEmail(final String token) {
         return extractClaim(token, Claims::getSubject);
@@ -117,7 +112,7 @@ public class JwtTokenProvider {
      * Estrae il valore associato alla chiave "id" dai claims del token JWT.
      *
      * @param token il token JWT da cui estrarre l'id
-     * @return il valore del campo "id" estratto dai claims del token
+     * @return      il valore del campo "id" estratto dai claims del token
      */
     public Long extractIdFromClaims(final String token) {
         return extractClaim(token, claims -> claims.get("id", Long.class));
@@ -127,10 +122,11 @@ public class JwtTokenProvider {
      * Estrae il valore associato alla chiave "ruolo" dai claims del token JWT.
      *
      * @param token il token JWT da cui estrarre il ruolo
-     * @return il valore del campo "ruolo" estratto dai claims del token
+     * @return      il valore del campo "ruolo" estratto dai claims del token
      */
-    public String extractRuoloFromClaims(final String token) {
-        return extractClaim(token, claims -> claims.get("ruolo", String.class));
+    public Role extractRuoloFromClaims(final String token) {
+        String roleString = extractClaim(token, claims -> claims.get("ruolo", String.class));
+        return Role.valueOf(roleString);
     }
 
     /**
@@ -139,7 +135,7 @@ public class JwtTokenProvider {
      * @param token          il token JWT da cui estrarre il claim
      * @param claimsResolver funzione che definisce come estrarre il claim dai claims
      * @param <R>            il tipo del claim da estrarre
-     * @return il valore del claim estratto
+     * @return               il valore del claim estratto
      */
     public <R> R extractClaim(final String token, Function<Claims, R> claimsResolver) {
         final Claims claims = extractAllClaims(token);
@@ -150,7 +146,7 @@ public class JwtTokenProvider {
      * Estrae tutti i claims dal token JWT.
      *
      * @param token il token JWT da cui estrarre i claims
-     * @return i claims estratti dal token
+     * @return      i claims estratti dal token
      */
     private Claims extractAllClaims(final String token) {
         return Jwts.parserBuilder()
