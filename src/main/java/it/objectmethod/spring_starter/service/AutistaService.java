@@ -7,7 +7,7 @@ import it.objectmethod.spring_starter.entity.Utente;
 import it.objectmethod.spring_starter.entity.Veicolo;
 import it.objectmethod.spring_starter.exception.exceptions.RequiredValueException;
 import it.objectmethod.spring_starter.filter.AutistaSearchParams;
-import it.objectmethod.spring_starter.mapper.mapstruct.AutistaMapstructMapper;
+import it.objectmethod.spring_starter.mapper.AutistaMapstructMapper;
 import it.objectmethod.spring_starter.repository.AutistaRepository;
 import it.objectmethod.spring_starter.repository.UtenteRepository;
 import it.objectmethod.spring_starter.repository.VeicoloRepository;

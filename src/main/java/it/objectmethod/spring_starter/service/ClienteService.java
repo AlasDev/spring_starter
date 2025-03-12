@@ -6,7 +6,7 @@ import it.objectmethod.spring_starter.entity.Cliente;
 import it.objectmethod.spring_starter.entity.Utente;
 import it.objectmethod.spring_starter.exception.exceptions.RequiredValueException;
 import it.objectmethod.spring_starter.filter.ClienteSearchParams;
-import it.objectmethod.spring_starter.mapper.mapstruct.ClienteMapstructMapper;
+import it.objectmethod.spring_starter.mapper.ClienteMapstructMapper;
 import it.objectmethod.spring_starter.repository.ClienteRepository;
 import it.objectmethod.spring_starter.repository.UtenteRepository;
 import org.springframework.data.domain.Page;

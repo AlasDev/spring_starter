@@ -18,9 +18,12 @@ public class SpringStarterApplication {
     CommandLineRunner commandLineRunner(ApplicationContext ctx) {
         return args -> {
             final String[] beanNames = ctx.getBeanDefinitionNames();
+            int n = 0;
             for (final String beanName : beanNames) {
                 System.out.printf("Bean name -----> %s\n", beanName);
+                n++;
             }
+            System.out.println("Number of beans: " + n);
         };
     }
 }

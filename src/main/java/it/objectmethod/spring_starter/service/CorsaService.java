@@ -7,7 +7,7 @@ import it.objectmethod.spring_starter.entity.Cliente;
 import it.objectmethod.spring_starter.entity.Corsa;
 import it.objectmethod.spring_starter.exception.exceptions.RequiredValueException;
 import it.objectmethod.spring_starter.filter.CorsaSearchParams;
-import it.objectmethod.spring_starter.mapper.mapstruct.CorsaMapstructMapper;
+import it.objectmethod.spring_starter.mapper.CorsaMapstructMapper;
 import it.objectmethod.spring_starter.repository.AutistaRepository;
 import it.objectmethod.spring_starter.repository.ClienteRepository;
 import it.objectmethod.spring_starter.repository.CorsaRepository;

@@ -5,7 +5,7 @@ import it.objectmethod.spring_starter.dto.VeicoloDTO;
 import it.objectmethod.spring_starter.entity.Veicolo;
 import it.objectmethod.spring_starter.exception.exceptions.RequiredValueException;
 import it.objectmethod.spring_starter.filter.VeicoloSearchParams;
-import it.objectmethod.spring_starter.mapper.mapstruct.VeicoloMapstructMapper;
+import it.objectmethod.spring_starter.mapper.VeicoloMapstructMapper;
 import it.objectmethod.spring_starter.repository.VeicoloRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
