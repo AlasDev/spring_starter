@@ -22,6 +22,7 @@ public class GlobalExceptionHandler {
     /**
      * Exception handler for AutistaRuntimeException
      * Thrown by various accessor methods to indicate that the element being requested does not exist.
+     *
      * @param ex the exception
      * @return ResponseEntity with error body and appropriate HTTP status
      */
@@ -53,6 +54,7 @@ public class GlobalExceptionHandler {
     /**
      * Exception handler for EntityNotFoundException.
      * Thrown by the persistence provider when an entity reference is accessed but the entity does not exist.
+     *
      * @param ex the exception
      * @return ResponseEntity with error body and appropriate HTTP status
      */
