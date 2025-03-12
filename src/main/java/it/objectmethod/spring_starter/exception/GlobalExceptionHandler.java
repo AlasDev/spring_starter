@@ -3,6 +3,7 @@ package it.objectmethod.spring_starter.exception;
 import it.objectmethod.spring_starter.exception.exceptions.EmailAlreadyRegisteredException;
 import it.objectmethod.spring_starter.exception.exceptions.RequiredValueException;
 import it.objectmethod.spring_starter.exception.exceptions.UnauthorizedException;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
@@ -20,7 +21,7 @@ public class GlobalExceptionHandler {
 
     /**
      * Exception handler for AutistaRuntimeException
-     *
+     * Thrown by various accessor methods to indicate that the element being requested does not exist.
      * @param ex the exception
      * @return ResponseEntity with error body and appropriate HTTP status
      */
@@ -29,12 +30,12 @@ public class GlobalExceptionHandler {
         HttpStatus status = HttpStatus.NOT_FOUND;
         List<String> errorMessages = List.of(ex.getMessage());
         ErrorBody errorBody = new ErrorBody("Could not find element", status, errorMessages);
-        return ResponseEntity.status(status).body(errorBody);
+        return new ResponseEntity<>(errorBody, status);
     }
 
     /**
      * Exception handler for MethodArgumentTypeMismatchException.
-     * It is thrown every time something receives a type it cant handle properly.
+     * Exception raised while resolving a controller method argument
      *
      * @param ex the exception
      * @return ResponseEntity with error body and appropriate HTTP status
@@ -45,6 +46,22 @@ public class GlobalExceptionHandler {
         ErrorBody errorBody = new ErrorBody("Type received is not valid",
                 status,
                 List.of(ex.getName() + " of type: '" + ex.getValue().getClass().getSimpleName() + "' should be of type: '" + ex.getRequiredType().getSimpleName() + "' instead.")
+        );
+        return ResponseEntity.status(status).body(errorBody);
+    }
+
+    /**
+     * Exception handler for EntityNotFoundException.
+     * Thrown by the persistence provider when an entity reference is accessed but the entity does not exist.
+     * @param ex the exception
+     * @return ResponseEntity with error body and appropriate HTTP status
+     */
+    @ExceptionHandler(EntityNotFoundException.class)
+    public ResponseEntity<ErrorBody> handleCustomException(EntityNotFoundException ex) {
+        HttpStatus status = HttpStatus.BAD_REQUEST;
+        ErrorBody errorBody = new ErrorBody("Entity was not found",
+                status,
+                List.of(ex.getMessage())
         );
         return ResponseEntity.status(status).body(errorBody);
     }
