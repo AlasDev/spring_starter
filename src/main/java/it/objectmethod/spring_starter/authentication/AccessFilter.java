@@ -94,17 +94,21 @@ public class AccessFilter extends OncePerRequestFilter {
                     return;
                 }
             }
-            filterChain.doFilter(request, response);
         } catch (ExpiredJwtException e) {
             handleException(e, "Token expired", HttpStatus.UNAUTHORIZED, response);
+            return;
         } catch (SignatureException e) {
             handleException(e, "Invalid token signature", HttpStatus.UNAUTHORIZED, response);
+            return;
         } catch (MalformedJwtException e) {
             handleException(e, "Malformed token", HttpStatus.BAD_REQUEST, response);
+            return;
         } catch (IllegalArgumentException e) {
             handleException(e, "Invalid argument", HttpStatus.BAD_REQUEST, response);
+            return;
         } catch (UnauthorizedException e) {
             handleException(e, e.getMessage(), HttpStatus.UNAUTHORIZED, response);
+            return;
         }
 
         final String token = request.getHeader("Authorization");
@@ -124,7 +128,8 @@ public class AccessFilter extends OncePerRequestFilter {
                 }
                 break;
             case ROLE_ADVANCED_USER:
-                if (method.equalsIgnoreCase("GET") ||
+                if (
+                        method.equalsIgnoreCase("GET") ||
                         method.equalsIgnoreCase("POST") ||
                         method.equalsIgnoreCase("PUT")) {
                     System.out.println("role: " + roleEnum);
