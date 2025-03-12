@@ -11,6 +11,7 @@ public class RoleNotAuthorizedException extends CustomRuntimeException {
     final HttpStatus status;
     final Role role;
     String method;
+
     public RoleNotAuthorizedException(Role roleEnum, String method) {
         this.status = HttpStatus.FORBIDDEN;
         this.role = roleEnum;
