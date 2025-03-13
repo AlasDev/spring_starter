@@ -74,7 +74,7 @@ public class AuthService {
         boolean isMailValid = canRegister(utenteDTO);
         if (isMailValid) {
             utenteDTO.setId(null);
-            utenteDTO.setRuolo(Role.ROLE_USER); //default role.
+            utenteDTO.setRuolo(Role.USER); //default role.
             utenteService.save(utenteDTO);
         }
     }

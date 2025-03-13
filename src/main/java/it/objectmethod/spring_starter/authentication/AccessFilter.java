@@ -115,9 +115,9 @@ public class AccessFilter extends OncePerRequestFilter {
         final Role roleEnum = jwtTokenProvider.extractRuoloFromClaims(token);
 
         switch (roleEnum) {
-            case ROLE_USER:
+            case USER:
+                System.out.println("role: " + roleEnum);
                 if (method.equalsIgnoreCase("GET")) {
-                    System.out.println("role: " + roleEnum);
                     filterChain.doFilter(request, response);
                 } else {
                     handleException(
@@ -127,12 +127,12 @@ public class AccessFilter extends OncePerRequestFilter {
                             response);
                 }
                 break;
-            case ROLE_ADVANCED_USER:
+            case TRUSTED_USER:
+                System.out.println("role: " + roleEnum);
                 if (
                         method.equalsIgnoreCase("GET") ||
                         method.equalsIgnoreCase("POST") ||
                         method.equalsIgnoreCase("PUT")) {
-                    System.out.println("role: " + roleEnum);
                     filterChain.doFilter(request, response);
                 } else {
                     handleException(
@@ -142,7 +142,7 @@ public class AccessFilter extends OncePerRequestFilter {
                             response);
                 }
                 break;
-            case ROLE_ADMIN:
+            case ADMIN:
                 System.out.println("role: " + roleEnum);
                 filterChain.doFilter(request, response);
                 break;
