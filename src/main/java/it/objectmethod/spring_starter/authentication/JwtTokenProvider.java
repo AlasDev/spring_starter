@@ -11,8 +11,10 @@ import org.springframework.stereotype.Component;
 import javax.crypto.SecretKey;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 /**
  * Classe responsabile della generazione e validazione dei token JWT.
@@ -35,7 +37,7 @@ public class JwtTokenProvider {
     public String generateToken(final UtenteDTO request) {
         final Map<String, Object> claims = new HashMap<>();
         claims.put("id", request.getId());
-        claims.put("ruolo", request.getRuolo());
+        claims.put("ruoli", request.getRuoli());
         return createToken(claims, request.getEmail());
     }
 
@@ -124,9 +126,12 @@ public class JwtTokenProvider {
      * @param token il token JWT da cui estrarre il ruolo
      * @return il valore del campo "ruolo" estratto dai claims del token
      */
-    public Role extractRuoloFromClaims(final String token) {
-        String roleString = extractClaim(token, claims -> claims.get("ruolo", String.class));
-        return Role.valueOf(roleString);
+    public List<Role> extractRuoloFromClaims(final String token) {
+        List<String> roleString = extractClaim(token, claims -> claims.get("ruoli", List.class));
+
+        return roleString.stream()
+                .map(Role::valueOf)
+                .collect(Collectors.toList());
     }
 
     /**

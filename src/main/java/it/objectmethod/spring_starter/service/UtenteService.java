@@ -38,12 +38,12 @@ public class UtenteService {
 
     public UtenteDTO updateUtente(UtenteDTO utenteDTO) {
         Long utenteId = utenteDTO.getId(); //Id
-        Role ruolo = utenteDTO.getRuolo();
+        List<Role> ruolo = utenteDTO.getRuoli();
 
         if (utenteId == null) {
             throw new RequiredValueException("Id");
         }
-        if (ruolo == null) {
+        if (ruolo == null || ruolo.isEmpty()) {
             throw new RequiredValueException("Ruolo");
         }
 
@@ -51,7 +51,6 @@ public class UtenteService {
                 () -> new NoSuchElementException("Utente with id '" + utenteId + "' not found")));
 
         Utente utente = utenteMapstructMapper.mapToEntity(utenteDTO);
-        utente.setRuolo(ruolo);
         utenteRepository.save(utente);
         return utenteMapstructMapper.mapToDto(utente);
     }
@@ -65,14 +64,13 @@ public class UtenteService {
 
     public UtenteDTO save(UtenteDTO utenteDTO) {
         utenteDTO.setId(null);
-        Role role = utenteDTO.getRuolo();
+        List<Role> role = utenteDTO.getRuoli();
 
-        if (role == null) {
+        if (role == null || role.isEmpty()) {
             throw new RequiredValueException("Ruolo");
         }
 
         Utente utente = utenteMapstructMapper.mapToEntity(utenteDTO);
-        utente.setRuolo(role);
         utenteRepository.save(utente);
         return utenteMapstructMapper.mapToDto(utente);
     }

@@ -1,7 +1,14 @@
 package it.objectmethod.spring_starter.util;
 
+import lombok.NoArgsConstructor;
+
+@NoArgsConstructor
 public enum Role {
     ADMIN,
-    TRUSTED_USER,
-    USER
+    USER,
+    MODIFY_AUTISTA,
+    MODIFY_CLIENTE,
+    MODIFY_CORSA,
+    MODIFY_UTENTE,
+    MODIFY_VEICOLO
 }

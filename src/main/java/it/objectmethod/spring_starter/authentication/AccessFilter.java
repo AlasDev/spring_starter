@@ -25,6 +25,7 @@ import java.util.Objects;
 @Order(1)
 public class AccessFilter extends OncePerRequestFilter {
     private static final String AUTH_ENDPOINT = "/api/auth";
+    public static final int API_LENGTH = "/api".length();
     private final JwtTokenProvider jwtTokenProvider;
     private final ObjectMapper objectMapper = new ObjectMapper();
 
@@ -112,42 +113,40 @@ public class AccessFilter extends OncePerRequestFilter {
         }
 
         final String token = request.getHeader("Authorization");
-        final Role roleEnum = jwtTokenProvider.extractRuoloFromClaims(token);
+        final List<Role> roleEnums = jwtTokenProvider.extractRuoloFromClaims(token);
 
-        switch (roleEnum) {
-            case USER:
-                System.out.println("role: " + roleEnum);
-                if (method.equalsIgnoreCase("GET")) {
-                    filterChain.doFilter(request, response);
-                } else {
-                    handleException(
-                            new RoleNotAuthorizedException(roleEnum, method),
-                            "Role'" + roleEnum + "' can't use method '" + method + "'.",
-                            HttpStatus.FORBIDDEN,
-                            response);
-                }
-                break;
-            case TRUSTED_USER:
-                System.out.println("role: " + roleEnum);
-                if (
-                        method.equalsIgnoreCase("GET") ||
-                        method.equalsIgnoreCase("POST") ||
-                        method.equalsIgnoreCase("PUT")) {
-                    filterChain.doFilter(request, response);
-                } else {
-                    handleException(
-                            new RoleNotAuthorizedException(roleEnum, method),
-                            "Role'" + roleEnum + "' can't use method '" + method + "'.",
-                            HttpStatus.FORBIDDEN,
-                            response);
-                }
-                break;
-            case ADMIN:
-                System.out.println("role: " + roleEnum);
-                filterChain.doFilter(request, response);
-                break;
-            default:
-                response.setStatus(HttpStatus.BAD_REQUEST.value());
+        if (roleEnums.contains(Role.ADMIN)){
+            filterChain.doFilter(request, response);
+            return;
         }
+        if (roleEnums.contains(Role.USER) && method.equalsIgnoreCase("GET")) {
+            filterChain.doFilter(request, response);
+            return;
+        }
+        if (roleEnums.contains(Role.MODIFY_AUTISTA) && url.startsWith("autista", API_LENGTH)) {
+            filterChain.doFilter(request, response);
+            return;
+        }
+        if (roleEnums.contains(Role.MODIFY_CLIENTE) && url.startsWith("cliente", API_LENGTH)) {
+            filterChain.doFilter(request, response);
+            return;
+        }
+        if (roleEnums.contains(Role.MODIFY_CORSA) && url.startsWith("corsa", API_LENGTH)) {
+            filterChain.doFilter(request, response);
+            return;
+        }
+        if (roleEnums.contains(Role.MODIFY_UTENTE) && url.startsWith("utente", API_LENGTH)) {
+            filterChain.doFilter(request, response);
+            return;
+        }
+        if (roleEnums.contains(Role.MODIFY_VEICOLO) && url.startsWith("veicolo", API_LENGTH)) {
+            filterChain.doFilter(request, response);
+            return;
+        }
+        handleException(
+                new RoleNotAuthorizedException(roleEnums, method),
+                "Role'" + roleEnums + "' can't use method '" + method + "'.",
+                HttpStatus.FORBIDDEN,
+                response);
     }
 }
