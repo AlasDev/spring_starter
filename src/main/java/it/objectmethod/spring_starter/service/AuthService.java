@@ -9,6 +9,7 @@ import it.objectmethod.spring_starter.util.Role;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -60,7 +61,7 @@ public class AuthService {
         UtenteDTO user = utenteMapstructMapper.mapToDto(utenteRepository.findByEmail(utenteDTO.getEmail()));
         if (isFound) {
             token = jwtTokenProvider.generateToken(user);
-            System.out.println("token generated with role: " + user.getRuolo() + " \nemail: " + user.getEmail());
+            System.out.println("token generated with roles: " + user.getRuoli() + " \nemail: " + user.getEmail());
         }
         return Map.of("token", token);
     }
@@ -74,7 +75,7 @@ public class AuthService {
         boolean isMailValid = canRegister(utenteDTO);
         if (isMailValid) {
             utenteDTO.setId(null);
-            utenteDTO.setRuolo(Role.USER); //default role.
+            utenteDTO.setRuoli(List.of(Role.USER)); //default role.
             utenteService.save(utenteDTO);
         }
     }

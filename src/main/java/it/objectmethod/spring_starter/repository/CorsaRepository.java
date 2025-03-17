@@ -6,4 +6,5 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface CorsaRepository extends JpaRepository<Corsa, Long>, JpaSpecificationExecutor<Corsa> {}
+public interface CorsaRepository extends JpaRepository<Corsa, Long>, JpaSpecificationExecutor<Corsa> {
+}
