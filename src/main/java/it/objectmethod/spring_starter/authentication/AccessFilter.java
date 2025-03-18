@@ -123,23 +123,23 @@ public class AccessFilter extends OncePerRequestFilter {
             filterChain.doFilter(request, response);
             return;
         }
-        if (roleEnums.contains(Role.MODIFY_AUTISTA) && url.startsWith("autista", API_LENGTH)) {
+        if (roleEnums.contains(Role.MODIFY_AUTISTA) && url.startsWith("/autista", API_LENGTH)) {
             filterChain.doFilter(request, response);
             return;
         }
-        if (roleEnums.contains(Role.MODIFY_CLIENTE) && url.startsWith("cliente", API_LENGTH)) {
+        if (roleEnums.contains(Role.MODIFY_CLIENTE) && url.startsWith("/cliente", API_LENGTH)) {
             filterChain.doFilter(request, response);
             return;
         }
-        if (roleEnums.contains(Role.MODIFY_CORSA) && url.startsWith("corsa", API_LENGTH)) {
+        if (roleEnums.contains(Role.MODIFY_CORSA) && url.startsWith("/corsa", API_LENGTH)) {
             filterChain.doFilter(request, response);
             return;
         }
-        if (roleEnums.contains(Role.MODIFY_UTENTE) && url.startsWith("utente", API_LENGTH)) {
+        if (roleEnums.contains(Role.MODIFY_UTENTE) && url.startsWith("/utente", API_LENGTH)) {
             filterChain.doFilter(request, response);
             return;
         }
-        if (roleEnums.contains(Role.MODIFY_VEICOLO) && url.startsWith("veicolo", API_LENGTH)) {
+        if (roleEnums.contains(Role.MODIFY_VEICOLO) && url.startsWith("/veicolo", API_LENGTH)) {
             filterChain.doFilter(request, response);
             return;
         }

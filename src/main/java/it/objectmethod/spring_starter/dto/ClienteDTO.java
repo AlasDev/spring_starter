@@ -30,8 +30,7 @@ public class ClienteDTO {
     private LocalDate dataNascita;
 
     @NotBlank(message = "This field is required")
-    @Max(value = 16, message = "codFiscale is too long. Must be max 16 characters.")
-    @Min(value = 11, message = "codFiscale is too short. Must be at least 11 characters.")
+    @Size(min = 11, max = 16, message = "codFiscale must be max 16 characters.")
     @Pattern(regexp = "^[A-Za-z]{6}\\d{2}[A-Za-z]\\d{2}[a-zA-Z_0-9]{4}[A-Za-z]$")
     private String codFiscale;
 
