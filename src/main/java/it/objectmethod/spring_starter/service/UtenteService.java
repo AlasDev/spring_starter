@@ -3,7 +3,6 @@ package it.objectmethod.spring_starter.service;
 import it.objectmethod.spring_starter.dto.PageDTO;
 import it.objectmethod.spring_starter.dto.UtenteDTO;
 import it.objectmethod.spring_starter.entity.Utente;
-import it.objectmethod.spring_starter.exception.exceptions.RequiredValueException;
 import it.objectmethod.spring_starter.filter.UtenteSearchParams;
 import it.objectmethod.spring_starter.mapper.UtenteMapstructMapper;
 import it.objectmethod.spring_starter.repository.UtenteRepository;
@@ -11,6 +10,7 @@ import it.objectmethod.spring_starter.util.Role;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.annotation.Validated;
 
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -36,16 +36,9 @@ public class UtenteService {
         return utenteMapstructMapper.mapToDto(utenteRepository.findById(id).orElseGet(Utente::new));
     }
 
-    public UtenteDTO updateUtente(UtenteDTO utenteDTO) {
+    public UtenteDTO updateUtente(@Validated UtenteDTO utenteDTO) {
         Long utenteId = utenteDTO.getId(); //Id
         List<Role> ruolo = utenteDTO.getRuoli();
-
-        if (utenteId == null) {
-            throw new RequiredValueException("Id");
-        }
-        if (ruolo == null || ruolo.isEmpty()) {
-            throw new RequiredValueException("Ruolo");
-        }
 
         utenteMapstructMapper.mapToDto(utenteRepository.findById(utenteId).orElseThrow(
                 () -> new NoSuchElementException("Utente with id '" + utenteId + "' not found")));
@@ -62,17 +55,12 @@ public class UtenteService {
         utenteRepository.deleteById(id);
     }
 
-    public UtenteDTO save(UtenteDTO utenteDTO) {
+    public UtenteDTO save(@Validated UtenteDTO utenteDTO) {
         utenteDTO.setId(null);
         List<Role> role = utenteDTO.getRuoli();
 
-        if (role == null || role.isEmpty()) {
-            throw new RequiredValueException("Ruolo");
-        }
-
         Utente utente = utenteMapstructMapper.mapToEntity(utenteDTO);
-        utenteRepository.save(utente);
-        return utenteMapstructMapper.mapToDto(utente);
+        return utenteMapstructMapper.mapToDto(utenteRepository.save(utente));
     }
 
     //PAGE
