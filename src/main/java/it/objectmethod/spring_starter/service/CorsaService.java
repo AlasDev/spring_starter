@@ -5,16 +5,15 @@ import it.objectmethod.spring_starter.dto.PageDTO;
 import it.objectmethod.spring_starter.entity.Autista;
 import it.objectmethod.spring_starter.entity.Cliente;
 import it.objectmethod.spring_starter.entity.Corsa;
-import it.objectmethod.spring_starter.exception.exceptions.RequiredValueException;
 import it.objectmethod.spring_starter.filter.CorsaSearchParams;
 import it.objectmethod.spring_starter.mapper.CorsaMapstructMapper;
 import it.objectmethod.spring_starter.repository.AutistaRepository;
 import it.objectmethod.spring_starter.repository.ClienteRepository;
 import it.objectmethod.spring_starter.repository.CorsaRepository;
-import it.objectmethod.spring_starter.util.StatoCorsa;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.annotation.Validated;
 
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -44,20 +43,10 @@ public class CorsaService {
         return corsaMapstructMapper.mapToDto(corsaRepository.findById(id).orElseGet(Corsa::new));
     }
 
-    public CorsaDTO updateCorsa(CorsaDTO corsaDTO) {
+    public CorsaDTO updateCorsa(@Validated CorsaDTO corsaDTO) {
         Long corsaId = corsaDTO.getId();
         Long autistaId = corsaDTO.getAutista();
         Long clienteId = corsaDTO.getCliente();
-
-        if (corsaId == null) {
-            throw new RequiredValueException("Id");
-        }
-        if (autistaId == null) {
-            throw new RequiredValueException("Autista");
-        }
-        if (clienteId == null) {
-            throw new RequiredValueException("Cliente");
-        }
 
         corsaMapstructMapper.mapToDto(corsaRepository.findById(corsaId).orElseThrow(
                 () -> new NoSuchElementException("Corsa with id '" + corsaId + "' not found"))
@@ -85,21 +74,10 @@ public class CorsaService {
         corsaRepository.deleteById(id);
     }
 
-    public CorsaDTO save(CorsaDTO corsaDTO) {
+    public CorsaDTO save(@Validated CorsaDTO corsaDTO) {
         corsaDTO.setId(null);
         Long autistaId = corsaDTO.getAutista();
         Long clienteId = corsaDTO.getCliente();
-        StatoCorsa statoCorsa = corsaDTO.getStatoCorsa();
-
-        if (autistaId == null) {
-            throw new RequiredValueException("Autista");
-        }
-        if (clienteId == null) {
-            throw new RequiredValueException("Cliente");
-        }
-        if (statoCorsa == null) {
-            throw new RequiredValueException("StatoCorsa");
-        }
 
         Autista autista = autistaRepository.findById(autistaId).orElseThrow(
                 () -> new NoSuchElementException("Autista with id '" + autistaId + "' not found")
