@@ -8,6 +8,7 @@ import it.objectmethod.spring_starter.repository.UtenteRepository;
 import it.objectmethod.spring_starter.util.Role;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.annotation.Validated;
 
 import java.util.List;
 import java.util.Map;
@@ -26,7 +27,7 @@ public class AuthService {
         this.utenteService = utenteService;
     }
 
-    public boolean canLogin(UtenteDTO utenteDTO) {
+    public boolean canLogin(@Validated UtenteDTO utenteDTO) {
         String email = utenteDTO.getEmail();
         String password = utenteDTO.getPassword();
 
@@ -38,7 +39,7 @@ public class AuthService {
         return true;
     }
 
-    public boolean canRegister(UtenteDTO utenteDTO) {
+    public boolean canRegister(@Validated UtenteDTO utenteDTO) {
         String email = utenteDTO.getEmail();
 
         if (utenteRepository.existsByEmail(email)) {
@@ -55,7 +56,7 @@ public class AuthService {
      * @param utenteDTO credentials
      * @return a new token inside a json
      */
-    public Map<String, String> login(UtenteDTO utenteDTO) {
+    public Map<String, String> login(@Validated UtenteDTO utenteDTO) {
         String token = "";
         boolean isFound = canLogin(utenteDTO);
         UtenteDTO user = utenteMapstructMapper.mapToDto(utenteRepository.findByEmail(utenteDTO.getEmail()));
@@ -71,7 +72,7 @@ public class AuthService {
      *
      * @param utenteDTO email and password
      */
-    public void register(UtenteDTO utenteDTO) {
+    public void register(@Validated UtenteDTO utenteDTO) {
         boolean isMailValid = canRegister(utenteDTO);
         if (isMailValid) {
             utenteDTO.setId(null);

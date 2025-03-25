@@ -5,7 +5,6 @@ import it.objectmethod.spring_starter.dto.UtenteDTO;
 import it.objectmethod.spring_starter.entity.Ruolo;
 import it.objectmethod.spring_starter.entity.Utente;
 import it.objectmethod.spring_starter.entity.UtenteRuolo;
-import it.objectmethod.spring_starter.repository.RuoloRepository;
 import it.objectmethod.spring_starter.service.RuoloService;
 import it.objectmethod.spring_starter.util.BasicMethodMapping;
 import it.objectmethod.spring_starter.util.Role;
@@ -44,10 +43,8 @@ public interface UtenteMapstructMapper extends BasicMethodMapping<UtenteDTO, Ute
     default List<UtenteRuolo> toRuoli(List<Role> roles) {
         List<UtenteRuolo> utenteRuoli = new ArrayList<>();
         for (Role role : roles) {
-            Ruolo ruolo = RuoloRepository.findByNome(role.toString());
-            if (ruolo != null) {
-                utenteRuoli.add(new UtenteRuolo(null, ruolo));  // L'utente verrà settato successivamente
-            }
+            Ruolo ruolo = Ruolo.builder().nome(role.toString()).build();
+            utenteRuoli.add(new UtenteRuolo(null, ruolo));
         }
         return utenteRuoli;
     }

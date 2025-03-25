@@ -10,7 +10,6 @@ import org.mapstruct.Builder;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Named;
-import org.mapstruct.factory.Mappers;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,33 +19,36 @@ import java.util.List;
         builder = @Builder(disableBuilder = true))
 public interface RuoloMapstructMapper extends BasicMethodMapping<RuoloDTO, Ruolo> {
 
-    UtenteMapstructMapper utenteMapper = Mappers.getMapper(UtenteMapstructMapper.class);
-
-    @Mapping(target = "utenti", source = "utenteRuoli", qualifiedByName = "toUtenti")
+    @Mapping(target = "utenti", source = "utenteRuoli", qualifiedByName = "toUtentiDTOs")
     RuoloDTO mapToDto(Ruolo ruolo);
 
     @Mapping(target = "utenteRuoli", source = "utenti", qualifiedByName = "toUtenteRuoli")
     Ruolo mapToEntity(RuoloDTO ruoloDTO);
 
-    @Named("toUtenti")
-    default List<UtenteDTO> toUtenteDto(List<UtenteRuolo> utenteRuoli) {
-        List<UtenteDTO> utenteDTOS = new ArrayList<>();
-        for (UtenteRuolo utenteRuolo : utenteRuoli) {
-            if (utenteRuolo != null) {
-                UtenteDTO utenteDTO = utenteMapper.mapToDto(utenteRuolo.getUtente());
-                utenteDTOS.add(utenteDTO);
-            }
+    @Named("toUtentiDTOs")
+    default List<UtenteDTO> utenteRuoliToUtentiDTOs(List<UtenteRuolo> utenteRuoli) {
+        if (utenteRuoli == null) {
+            return null;
         }
-        return utenteDTOS;
+
+        return utenteRuoli.stream()
+                .map(utenteRuolo -> UtenteDTO.builder().id(utenteRuolo.getUtente().getId()).build())
+                .toList();
     }
 
     @Named("toUtenteRuoli")
-    default List<UtenteRuolo> toUtenteRuoli(List<UtenteDTO> utenteDTOS) {
+    default List<UtenteRuolo> utentiDTOsToUtenteRuoli(List<UtenteDTO> utenteDTOs) {
+        if (utenteDTOs == null) {
+            return null;
+        }
         List<UtenteRuolo> utenteRuoli = new ArrayList<>();
-        for (UtenteDTO utenteDTO : utenteDTOS) {
-            Utente utente = utenteMapper.mapToEntity(utenteDTO);
+        for (UtenteDTO utenteDTO : utenteDTOs) {
             if (utenteDTO != null) {
-                utenteRuoli.add(new UtenteRuolo(utente, null));  // Il ruolo verrà settato successivamente
+                Utente utente = new Utente();
+                utente.setId(utenteDTO.getId());
+
+                UtenteRuolo utenteRuolo = new UtenteRuolo(utente, null);
+                utenteRuoli.add(utenteRuolo);
             }
         }
         return utenteRuoli;
