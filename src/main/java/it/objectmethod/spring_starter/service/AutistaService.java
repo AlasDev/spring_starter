@@ -5,7 +5,6 @@ import it.objectmethod.spring_starter.dto.PageDTO;
 import it.objectmethod.spring_starter.entity.Autista;
 import it.objectmethod.spring_starter.entity.Utente;
 import it.objectmethod.spring_starter.entity.Veicolo;
-import it.objectmethod.spring_starter.exception.exceptions.RequiredValueException;
 import it.objectmethod.spring_starter.filter.AutistaSearchParams;
 import it.objectmethod.spring_starter.mapper.AutistaMapstructMapper;
 import it.objectmethod.spring_starter.repository.AutistaRepository;
@@ -14,6 +13,7 @@ import it.objectmethod.spring_starter.repository.VeicoloRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.annotation.Validated;
 
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -41,23 +41,13 @@ public class AutistaService {
         if (!autistaRepository.existsById(id)) {
             throw new NoSuchElementException("Autista with id '" + id + "' not found");
         }
-        return autistaMapstructMapper.mapToDto(autistaRepository.getReferenceById(id));
+        return autistaMapstructMapper.mapToDto(autistaRepository.findById(id).orElseGet(Autista::new));
     }
 
-    public AutistaDTO updateAutista(AutistaDTO autistaDTO) {
+    public AutistaDTO updateAutista(@Validated AutistaDTO autistaDTO) {
         Long autistaId = autistaDTO.getId(); //Id
         Long veicoloId = autistaDTO.getVeicolo(); //Veicolo
         Long utenteId = autistaDTO.getUtente(); //Utente
-
-        if (autistaId == null) {
-            throw new RequiredValueException("Id");
-        }
-        if (veicoloId == null) {
-            throw new RequiredValueException("Veicolo");
-        }
-        if (utenteId == null) {
-            throw new RequiredValueException("Utente");
-        }
 
         autistaMapstructMapper.mapToDto(autistaRepository.findById(autistaId).orElseThrow(
                 () -> new NoSuchElementException("Autista with id '" + autistaId + "' not found")));
@@ -82,17 +72,8 @@ public class AutistaService {
         autistaRepository.deleteById(id);
     }
 
-    public AutistaDTO save(AutistaDTO autistaDTO) {
+    public AutistaDTO save(@Validated AutistaDTO autistaDTO) {
         autistaDTO.setId(null); //Autista id must not be there, that's why we will ignore it if it gets inputted anyway.
-
-        if (autistaDTO.getVeicolo() == null) {
-            //"Un autista senza veicolo non è un autista, è solo un pedone."
-            //-cit Sala Davide
-            throw new RequiredValueException("Veicolo");
-        }
-        if (autistaDTO.getUtente() == null) {
-            throw new RequiredValueException("Utente");
-        }
 
         Long veicoloId = autistaDTO.getVeicolo();
         Long utenteId = autistaDTO.getUtente();
