@@ -3,13 +3,13 @@ package it.objectmethod.spring_starter.service;
 import it.objectmethod.spring_starter.dto.PageDTO;
 import it.objectmethod.spring_starter.dto.VeicoloDTO;
 import it.objectmethod.spring_starter.entity.Veicolo;
-import it.objectmethod.spring_starter.exception.exceptions.RequiredValueException;
 import it.objectmethod.spring_starter.filter.VeicoloSearchParams;
 import it.objectmethod.spring_starter.mapper.VeicoloMapstructMapper;
 import it.objectmethod.spring_starter.repository.VeicoloRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.annotation.Validated;
 
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -35,19 +35,15 @@ public class VeicoloService {
         return veicoloMapstructMapper.mapToDto(veicoloRepository.findById(id).orElseGet(Veicolo::new));
     }
 
-    public VeicoloDTO updateVeicolo(VeicoloDTO veicoloDTO) {
+    public VeicoloDTO updateVeicolo(@Validated VeicoloDTO veicoloDTO) {
         Long veicoloId = veicoloDTO.getId(); //Id
-
-        if (veicoloId == null) {
-            throw new RequiredValueException("Id");
-        }
 
         veicoloMapstructMapper.mapToDto(veicoloRepository.findById(veicoloId).orElseThrow(
                 () -> new NoSuchElementException("Veicolo with id '" + veicoloId + "' not found")));
 
         Veicolo veicolo = veicoloMapstructMapper.mapToEntity(veicoloDTO);
-        veicoloRepository.save(veicolo);
-        return veicoloMapstructMapper.mapToDto(veicolo);
+        Veicolo veicoloSaved = veicoloRepository.save(veicolo);
+        return veicoloMapstructMapper.mapToDto(veicoloSaved);
     }
 
     public void deleteVeicolo(Long id) {
@@ -59,9 +55,9 @@ public class VeicoloService {
 
     public VeicoloDTO save(VeicoloDTO veicoloDTO) {
         veicoloDTO.setId(null);
+
         Veicolo veicolo = veicoloMapstructMapper.mapToEntity(veicoloDTO);
-        veicoloRepository.save(veicolo);
-        return veicoloMapstructMapper.mapToDto(veicolo);
+        return veicoloMapstructMapper.mapToDto(veicoloRepository.save(veicolo));
     }
 
     //PAGE
