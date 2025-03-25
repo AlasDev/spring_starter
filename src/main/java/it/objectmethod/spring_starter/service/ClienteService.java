@@ -4,7 +4,6 @@ import it.objectmethod.spring_starter.dto.ClienteDTO;
 import it.objectmethod.spring_starter.dto.PageDTO;
 import it.objectmethod.spring_starter.entity.Cliente;
 import it.objectmethod.spring_starter.entity.Utente;
-import it.objectmethod.spring_starter.exception.exceptions.RequiredValueException;
 import it.objectmethod.spring_starter.filter.ClienteSearchParams;
 import it.objectmethod.spring_starter.mapper.ClienteMapstructMapper;
 import it.objectmethod.spring_starter.repository.ClienteRepository;
@@ -12,6 +11,7 @@ import it.objectmethod.spring_starter.repository.UtenteRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.annotation.Validated;
 
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -39,16 +39,9 @@ public class ClienteService {
         return clienteMapstructMapper.mapToDto(clienteRepository.findById(id).orElseGet(Cliente::new));
     }
 
-    public ClienteDTO updateCliente(ClienteDTO clienteDTO) {
+    public ClienteDTO updateCliente(@Validated ClienteDTO clienteDTO) {
         Long clienteId = clienteDTO.getId(); //Id
         Long utenteId = clienteDTO.getUtente(); //Utente
-
-        if (clienteId == null) {
-            throw new RequiredValueException("Id");
-        }
-        if (utenteId == null) {
-            throw new RequiredValueException("Utente");
-        }
 
         clienteMapstructMapper.mapToDto(clienteRepository.findById(clienteId).orElseThrow(
                 () -> new NoSuchElementException("Cliente with id '" + clienteId + "' not found")
@@ -69,12 +62,8 @@ public class ClienteService {
         clienteRepository.deleteById(id);
     }
 
-    public ClienteDTO save(ClienteDTO clienteDTO) {
+    public ClienteDTO save(@Validated ClienteDTO clienteDTO) {
         clienteDTO.setId(null);
-
-        if (clienteDTO.getUtente() == null) {
-            throw new RequiredValueException("Utente");
-        }
 
         Long utenteId = clienteDTO.getUtente();
 
