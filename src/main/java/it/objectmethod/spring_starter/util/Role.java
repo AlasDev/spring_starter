@@ -9,6 +9,7 @@ public enum Role {
     MODIFY_AUTISTA,
     MODIFY_CLIENTE,
     MODIFY_CORSA,
+    MODIFY_RUOLO,
     MODIFY_UTENTE,
     MODIFY_VEICOLO
 }
