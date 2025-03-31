@@ -82,7 +82,6 @@ public class AccessFilter extends OncePerRequestFilter {
         if (method.equalsIgnoreCase("POST") && url.startsWith(AUTH_ENDPOINT) &&
                 url.endsWith("/login") ||
                 url.endsWith("/register")) {
-            System.out.println("Login/Registration started");
             filterChain.doFilter(request, response);
             return;
         }

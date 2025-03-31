@@ -32,10 +32,8 @@ public class AuthService {
         String password = utenteDTO.getPassword();
 
         if (!utenteRepository.existsByEmailAndPassword(email, password)) {
-            System.out.println("User not found!");
             throw new EntityNotFoundException("User not found!");
         }
-        System.out.println("User found!");
         return true;
     }
 
@@ -43,10 +41,8 @@ public class AuthService {
         String email = utenteDTO.getEmail();
 
         if (utenteRepository.existsByEmail(email)) {
-            System.out.println("User already exists!");
             throw new EmailAlreadyRegisteredException(utenteDTO.getEmail());
         }
-        System.out.println("User can be registered!");
         return true;
     }
 
@@ -62,7 +58,6 @@ public class AuthService {
         UtenteDTO user = utenteMapstructMapper.mapToDto(utenteRepository.findByEmail(utenteDTO.getEmail()));
         if (isFound) {
             token = jwtTokenProvider.generateToken(user);
-            System.out.println("token generated with roles: " + user.getRuoli() + " \nemail: " + user.getEmail());
         }
         return Map.of("token", token);
     }
