@@ -26,7 +26,7 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public void register(@Validated @RequestBody UtenteDTO utenteDTO) {
-        authService.register(utenteDTO);
+    public void register(@RequestBody String email, String password) {
+        authService.register(email, password);
     }
 }
