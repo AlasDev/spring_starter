@@ -37,7 +37,9 @@ public interface AutistaMapstructMapper extends BasicMethodMapping<AutistaDTO, A
 
     @Named("toCorse")
     default Corsa toCorseId(Long id) {
-        return Corsa.builder().id(id).build();
+        return Corsa.builder()
+                .id(id)
+                .build();
     }
 
     @Named("toUtenteId")

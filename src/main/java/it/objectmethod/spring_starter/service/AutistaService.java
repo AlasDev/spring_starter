@@ -65,10 +65,12 @@ public class AutistaService {
                 () -> new NoSuchElementException("Utente with id '" + utenteId + "' not found"));
 
         List<Corsa> corse = new ArrayList<>();
-        autistaDTO.getCorse().forEach(
-                corsaId -> corse.add(corsaRepository.findById(corsaId).orElseThrow(
-                        () -> new NoSuchElementException("Corsa with id '" + corsaId + "' not found")))
-        );
+        if (autistaDTO.getCorse() != null) {
+            autistaDTO.getCorse().forEach(
+                    corsaId -> corse.add(corsaRepository.findById(corsaId).orElseThrow(
+                            () -> new NoSuchElementException("Corsa with id '" + corsaId + "' not found")))
+            );
+        }
 
         Autista autista = autistaMapstructMapper.mapToEntity(autistaDTO);
         autista.setVeicolo(veicolo);
