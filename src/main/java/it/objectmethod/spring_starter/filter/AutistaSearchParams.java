@@ -36,32 +36,29 @@ public class AutistaSearchParams {
                 //nome
                 .and(combineSpecifications(
                         equalNomeSpecification(nome),
-                        inNomeSpecification(nome)
+                        likeNomeSpecification(nome)
                 ))
                 //cognome
                 .and(combineSpecifications(
                         equalCognomeSpecification(cognome),
-                        inCognomeSpecification(cognome)
+                        likeCognomeSpecification(cognome)
                 ))
                 //dataNascita
                 .and(combineSpecifications(
-                        equalDataNascitaSpecification(dataNascita),
-                        inDataNascitaSpecification(dataNascita)
+                        equalDataNascitaSpecification(dataNascita)
                 ))
                 //codFiscale
                 .and(combineSpecifications(
                         equalCodFiscaleSpecification(codFiscale),
-                        inCodFiscaleSpecification(codFiscale)
+                        likeCodFiscaleSpecification(codFiscale)
                 ))
                 //veicoloId
                 .and(combineSpecifications(
-                        equalVeicoloIdSpecification(veicolo),
-                        inVeicoloIdSpecification(veicolo)
+                        equalVeicoloIdSpecification(veicolo)
                 ))
                 //utenteId
                 .and(combineSpecifications(
-                        equalUtenteIdSpecification(utente),
-                        inUtenteIdSpecification(utente)
+                        equalUtenteIdSpecification(utente)
                 ));
     }
 
@@ -75,12 +72,12 @@ public class AutistaSearchParams {
         };
     }
 
-    private Specification<Autista> inNomeSpecification(String nome) {
+    private Specification<Autista> likeNomeSpecification(String nome) {
         return (root, query, criteriaBuilder) -> {
             if (nome == null || nome.isBlank()) {
                 return null;
             }
-            return criteriaBuilder.in(root.get("nome"));
+            return criteriaBuilder.like(root.get("nome"), "%" + nome + "%");
         };
     }
 
@@ -94,12 +91,12 @@ public class AutistaSearchParams {
         };
     }
 
-    private Specification<Autista> inCognomeSpecification(String cognome) {
+    private Specification<Autista> likeCognomeSpecification(String cognome) {
         return (root, query, criteriaBuilder) -> {
             if (cognome == null || cognome.isBlank()) {
                 return null;
             }
-            return criteriaBuilder.in(root.get("cognome"));
+            return criteriaBuilder.like(root.get("cognome"), "%" + cognome + "%");
         };
     }
 
@@ -116,18 +113,6 @@ public class AutistaSearchParams {
         };
     }
 
-    private Specification<Autista> inDataNascitaSpecification(LocalDate dataNascita) {
-        return (root, query, criteriaBuilder) -> {
-            if (dataNascita == null) {
-                return null;
-            }
-            if (dataNascita.toString().isBlank()) {
-                return null;
-            }
-            return criteriaBuilder.in(root.get("dataNascita"));
-        };
-    }
-
     //codFiscale
     private Specification<Autista> equalCodFiscaleSpecification(String codFiscale) {
         return (root, query, criteriaBuilder) -> {
@@ -138,12 +123,12 @@ public class AutistaSearchParams {
         };
     }
 
-    private Specification<Autista> inCodFiscaleSpecification(String codFiscale) {
+    private Specification<Autista> likeCodFiscaleSpecification(String codFiscale) {
         return (root, query, criteriaBuilder) -> {
             if (codFiscale == null || codFiscale.isBlank()) {
                 return null;
             }
-            return criteriaBuilder.in(root.get("codFiscale"));
+            return criteriaBuilder.like(root.get("codFiscale"), "%" + codFiscale + "%");
         };
     }
 
@@ -161,19 +146,6 @@ public class AutistaSearchParams {
         };
     }
 
-    private Specification<Autista> inVeicoloIdSpecification(Veicolo veicolo) {
-        return (root, query, criteriaBuilder) -> {
-            if (veicolo == null) {
-                return null;
-            }
-            Long veicoloId = veicolo.getId();
-            if (veicoloId == null) {
-                return null;
-            }
-            return criteriaBuilder.in(root.get("veicolo").get("id"));
-        };
-    }
-
     //utenteId
     private Specification<Autista> equalUtenteIdSpecification(Utente utente) {
         return (root, query, criteriaBuilder) -> {
@@ -185,19 +157,6 @@ public class AutistaSearchParams {
                 return null;
             }
             return criteriaBuilder.equal(root.get("utente").get("id"), utenteId);
-        };
-    }
-
-    private Specification<Autista> inUtenteIdSpecification(Utente utente) {
-        return (root, query, criteriaBuilder) -> {
-            if (utente == null) {
-                return null;
-            }
-            Long utenteId = utente.getId();
-            if (utenteId == null) {
-                return null;
-            }
-            return criteriaBuilder.in(root.get("utente").get("id"));
         };
     }
 }
