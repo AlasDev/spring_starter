@@ -1,5 +1,6 @@
 package it.objectmethod.spring_starter.service;
 
+import it.objectmethod.spring_starter.authentication.JwtTokenProvider;
 import it.objectmethod.spring_starter.dto.PageDTO;
 import it.objectmethod.spring_starter.dto.UtenteDTO;
 import it.objectmethod.spring_starter.entity.Utente;
@@ -19,10 +20,20 @@ import java.util.NoSuchElementException;
 public class UtenteService {
     private final UtenteRepository utenteRepository;
     private final UtenteMapstructMapper utenteMapstructMapper;
+    private final JwtTokenProvider jwtTokenProvider;
 
-    public UtenteService(UtenteRepository utenteRepository, UtenteMapstructMapper utenteMapstructMapper) {
+    public UtenteService(UtenteRepository utenteRepository, UtenteMapstructMapper utenteMapstructMapper, JwtTokenProvider jwtTokenProvider) {
         this.utenteRepository = utenteRepository;
         this.utenteMapstructMapper = utenteMapstructMapper;
+        this.jwtTokenProvider = jwtTokenProvider;
+    }
+
+    public UtenteDTO getMyUtente( String token) {
+        Long myId = jwtTokenProvider.extractIdFromClaims(token);
+        if (!utenteRepository.existsById(myId)) {
+            throw new NoSuchElementException("your Utente with id '" + myId + "' was not found");
+        }
+        return utenteMapstructMapper.mapToDto(utenteRepository.findById(myId).orElseGet(Utente::new));
     }
 
     public List<UtenteDTO> getAll() {

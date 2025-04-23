@@ -21,6 +21,11 @@ public class UtenteController {
         this.utenteService = utenteService;
     }
 
+    @GetMapping("get/myself")
+    public UtenteDTO getMyself(@RequestHeader("Authorization") String token) {
+        return utenteService.getMyUtente(token);
+    }
+
     @GetMapping("get/all")
     public List<UtenteDTO> getAll() {
         return utenteService.getAll();
