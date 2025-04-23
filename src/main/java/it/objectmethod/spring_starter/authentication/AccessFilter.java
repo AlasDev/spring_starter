@@ -85,6 +85,11 @@ public class AccessFilter extends OncePerRequestFilter {
             filterChain.doFilter(request, response);
             return;
         }
+        //don't ask for a token when using GET on tables that are not Utente
+        if (method.equalsIgnoreCase("GET") && !url.startsWith("/utente", API_LENGTH)){
+            filterChain.doFilter(request, response);
+            return;
+        }
 
         try {
             final String token = request.getHeader("Authorization");
@@ -113,12 +118,13 @@ public class AccessFilter extends OncePerRequestFilter {
 
         final String token = request.getHeader("Authorization");
         final List<Role> roleEnums = jwtTokenProvider.extractRuoloFromClaims(token);
+        final Long myId = jwtTokenProvider.extractIdFromClaims(token);
 
         if (roleEnums.contains(Role.ADMIN)){
             filterChain.doFilter(request, response);
             return;
         }
-        if (roleEnums.contains(Role.USER) && method.equalsIgnoreCase("GET")) {
+        if (roleEnums.contains(Role.USER) && method.equalsIgnoreCase("GET") && url.startsWith("/utente/get/myself/" + myId, API_LENGTH)) {
             filterChain.doFilter(request, response);
             return;
         }
