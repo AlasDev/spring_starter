@@ -52,7 +52,7 @@ import static io.restassured.RestAssured.given;
 @Sql(scripts = {
         "classpath:/dbH2/00-truncate.sql",
         "classpath:/dbH2/01-insert.sql"
-}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_CLASS)
+}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
 public abstract class BaseIntegrationTest {
 
     @LocalServerPort
