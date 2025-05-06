@@ -21,12 +21,12 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public Map<String, String> login(@Validated @RequestBody UtenteDTO utenteDTO) {
+    public Map<String, Object> login(@Validated @RequestBody UtenteDTO utenteDTO) {
         return authService.login(utenteDTO);
     }
 
     @PostMapping("/register")
-    public void register(@RequestBody String email, String password) {
-        authService.register(email, password);
+    public void register(@RequestBody UtenteDTO utenteDTO) {
+        authService.register(utenteDTO);
     }
 }

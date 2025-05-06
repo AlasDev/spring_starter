@@ -24,6 +24,6 @@ public class Utente {
     @Column(name = "password")
     private String password;
 
-    @OneToMany(mappedBy = "utente", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "utente", orphanRemoval = true)
     private List<UtenteRuolo> utenteRuoli;
 }

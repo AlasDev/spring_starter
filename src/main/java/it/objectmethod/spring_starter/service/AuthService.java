@@ -2,15 +2,16 @@ package it.objectmethod.spring_starter.service;
 
 import it.objectmethod.spring_starter.authentication.JwtTokenProvider;
 import it.objectmethod.spring_starter.dto.UtenteDTO;
+import it.objectmethod.spring_starter.exception.exceptions.EmailAlreadyRegisteredException;
 import it.objectmethod.spring_starter.mapper.UtenteMapstructMapper;
 import it.objectmethod.spring_starter.repository.UtenteRepository;
 import it.objectmethod.spring_starter.util.Role;
-import jakarta.validation.constraints.Email;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
 import java.util.List;
 import java.util.Map;
+import java.util.NoSuchElementException;
 
 @Service
 public class AuthService {
@@ -53,32 +54,38 @@ public class AuthService {
      * @param utenteDTO credentials
      * @return a new token inside a json
      */
-    public Map<String, String> login(@Validated UtenteDTO utenteDTO) {
+    public Map<String, Object> login(@Validated UtenteDTO utenteDTO) {
         String token = "";
         boolean isFound = canLogin(utenteDTO);
-        UtenteDTO user = utenteMapstructMapper.mapToDto(utenteRepository.findByEmail(utenteDTO.getEmail()));
         if (isFound) {
+            UtenteDTO user = utenteMapstructMapper.mapToDto(utenteRepository.findByEmail(utenteDTO.getEmail()));
             token = jwtTokenProvider.generateToken(user);
-            return Map.of("token", token);
+            return Map.of("token", token, "roles", user.getRuoli());
+        } else {
+            System.out.println("Could not login");
+            throw new NoSuchElementException("Could not login");
         }
-        return Map.of("result", "User with that email and/or password was not found");
     }
 
     /**
      * register POST request.
      *
-     * @param email email
-     * @param password password
+     * @param utenteDTO email and password (the rest is empty)
      */
-    public void register(@Email String email, String password) {
+    public Map<String, String> register(UtenteDTO utenteDTO) {
+        String email = utenteDTO.getEmail();
+        String password = utenteDTO.getPassword();
         boolean isMailValid = canRegister(email);
         if (isMailValid) {
-            UtenteDTO user = new UtenteDTO();
-            user.setId(null);
-            user.setEmail(email);
-            user.setPassword(password);
-            user.setRuoli(List.of(Role.USER)); //default role.
-            utenteService.save(user);
+            utenteDTO.setId(null);
+            utenteDTO.setEmail(email);
+            utenteDTO.setPassword(password);
+            utenteDTO.setRuoli(List.of(Role.USER)); //default role.
+            utenteService.save(utenteDTO);
+            return Map.of("message", "user registered successfully");
+        } else {
+            System.out.println("Mail already in use");
+            throw new EmailAlreadyRegisteredException("Mail already in use");
         }
     }
 }

@@ -8,23 +8,23 @@ import java.sql.Timestamp;
 import java.util.List;
 
 @Getter
-@JsonPropertyOrder({"timestamp", "status", "message", "errors"})
+@JsonPropertyOrder({"timestamp", "status", "error", "message"})
 public class ErrorBody {
     private final Timestamp timestamp;
     private final Long status;
-    private final String message;
-    private final List<String> errors;
+    private final String error;
+    private final List<String> message;
 
     /**
      * Constructor for ErrorBody
      *
+     * @param error error name
      * @param message error message
-     * @param errors  list of errors
      */
-    public ErrorBody(String message, HttpStatus status, List<String> errors) {
+    public ErrorBody(String error, HttpStatus status, List<String> message) {
         this.timestamp = new Timestamp(System.currentTimeMillis());
         this.status = (long) status.value();
         this.message = message;
-        this.errors = errors;
+        this.error = error;
     }
 }
